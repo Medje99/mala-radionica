@@ -1,0 +1,171 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Form, Input, Select } from 'antd'
+import { useEffect, useState } from 'react'
+import { CustomerSelect } from './types'
+import useGetAllContacts from '@/CustomHooks/useGetAllContants'
+import createTaskFormActions from './actions'
+
+const { Option } = Select
+
+const { setCustomerSelectOptions } = createTaskFormActions()
+
+export const CreateTaskForm = () => {
+  const { customers } = useGetAllContacts()
+  const [form] = Form.useForm()
+  const [currentCustomer, setCurrentCustomer] = useState<string | undefined>('')
+  const [inputValue, setInputValue] = useState<string>(
+    currentCustomer as string
+  )
+
+  const [newCustomer, setNewCustomer] = useState(false)
+
+  const [newCustomerSelect, setNewCustomerSelect] = useState<CustomerSelect[]>()
+
+  useEffect(() => {
+    setCustomerSelectOptions(customers, setNewCustomerSelect)
+  }, [customers])
+
+  useEffect(() => {
+    const customer = customers.find(
+      (item: any) => item.value === currentCustomer
+    )
+    if (customer) {
+      setNewCustomer(false)
+      form.setFieldsValue({
+        phoneNumber: customer?.phoneNumber || '',
+        city: customer?.city || '',
+        address: customer?.address || '',
+        other: customer?.other || '',
+      })
+    } else {
+      setNewCustomer(true)
+      form.resetFields(['phoneNumber', 'city', 'address', 'other'])
+    }
+  }, [currentCustomer, customers, form])
+
+  // Handles selection changes
+  const handleSelectChange = (value: string) => {
+    if (value === 'new') {
+      setCurrentCustomer(value)
+    } else {
+      setCurrentCustomer(value)
+      setInputValue('')
+    }
+  }
+
+  // Handles input changes
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value)
+  }
+
+  // Adds a new customer to the options
+  const handleAddCustomer = () => {
+    if (inputValue.trim()) {
+      const newCustomer = { value: inputValue.trim(), label: inputValue.trim() }
+      if (
+        !customers.some(
+          (option: any) =>
+            option.label.toLowerCase() === inputValue.trim().toLowerCase()
+        )
+      ) {
+        const updatedCustomerSelect = [
+          ...(newCustomerSelect ?? []),
+          newCustomer,
+        ]
+        setNewCustomerSelect([...updatedCustomerSelect, newCustomer])
+        // setCustomerOptions([...customerOptions, newCustomer])
+        setCurrentCustomer(inputValue.trim())
+        setInputValue('')
+      }
+    }
+  }
+  // Filters options based on inputValue
+  const filteredOptions = newCustomerSelect?.filter((option: any) =>
+    option.label.toLowerCase().includes(inputValue.toLowerCase())
+  )
+
+  return (
+    <Form
+      form={form}
+      name="musterija-form"
+      layout="vertical"
+      className="bg-white p-5 rounded-lg"
+    >
+      <Form.Item label="Musterija" required className="mb-4">
+        <Input.Group compact>
+          <Form.Item
+            name="musterija"
+            noStyle
+            rules={[
+              { required: true, message: 'Please select or enter a customer' },
+            ]}
+            className="flex-1"
+          >
+            {currentCustomer === 'new' ? (
+              <>
+                <Input
+                  placeholder="Enter new customer"
+                  value={inputValue}
+                  onChange={handleInputChange}
+                  onPressEnter={handleAddCustomer}
+                  className="ml-2"
+                />
+              </>
+            ) : (
+              <Select
+                showSearch
+                placeholder="Select or type a customer"
+                className="w-full"
+                value={currentCustomer}
+                onChange={handleSelectChange}
+                onSearch={setInputValue} // Update inputValue based on search
+                filterOption={false} // Disable default filtering
+                allowClear
+              >
+                {filteredOptions?.map((option: any) => (
+                  <Option key={option.value} value={option.value}>
+                    {option.label}
+                  </Option>
+                ))}
+                {filteredOptions?.length === 0 && (
+                  <Option value={inputValue}>Add new customer...</Option>
+                )}
+              </Select>
+            )}
+          </Form.Item>
+        </Input.Group>
+      </Form.Item>
+      <Form.Item
+        label="Broj telefona"
+        name="phoneNumber"
+        rules={[
+          { required: true, message: 'Please input a phone number' },
+          { pattern: /^\d+$/, message: 'Phone number must be numeric' },
+        ]}
+        className="mb-4"
+      >
+        <Input disabled={!newCustomer} />
+      </Form.Item>
+
+      <Form.Item
+        label="City"
+        name="city"
+        rules={[{ required: true, message: 'Please input a city' }]}
+        className="mb-4"
+      >
+        <Input disabled={!newCustomer} />
+      </Form.Item>
+      <Form.Item
+        label="Address"
+        name="address"
+        rules={[{ required: true, message: 'Please input an address' }]}
+        className="mb-4"
+      >
+        <Input disabled={!newCustomer} />
+      </Form.Item>
+      <Form.Item label="Other" name="other" className="mb-4">
+        <Input disabled={!newCustomer} />
+      </Form.Item>
+    </Form>
+  )
+}

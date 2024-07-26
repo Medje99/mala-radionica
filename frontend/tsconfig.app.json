@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "ES6", // Modern JavaScript features
+    "module": "ESNext", // Use ES modules (Vite prefers ES modules)
+    "jsx": "react-jsx", // Support for JSX in React 17+
+    "strict": true, // Enable all strict type-checking options
+    "esModuleInterop": true, // Enables emit interoperability between CommonJS and ES Modules
+    "skipLibCheck": true, // Skip type checking of declaration files
+    "forceConsistentCasingInFileNames": true, // Enforce consistent file casing
+    "baseUrl": "./src", // Base directory for module resolution
+    "paths": {
+      "@/*": ["*"] // Alias for absolute imports (optional)
+    },
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src"]
+}
