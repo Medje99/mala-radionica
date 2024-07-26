@@ -4,19 +4,24 @@ import { useEffect, useState } from 'react'
 import { CustomerSelect } from './types'
 import useGetAllContacts from '@/CustomHooks/useGetAllContants'
 import createTaskFormActions from './actions'
+import { IContacts } from '@/model/response/IContactResponse'
 
 const { Option } = Select
 
-const { setCustomerSelectOptions } = createTaskFormActions()
+const {
+  setCustomerSelectOptions,
+  setCustomerFormValues,
+  handleSelectChange,
+  handleInputChange,
+} = createTaskFormActions()
 
 export const CreateTaskForm = () => {
   const { customers } = useGetAllContacts()
-  const [form] = Form.useForm()
+  const [form] = Form.useForm<IContacts>()
   const [currentCustomer, setCurrentCustomer] = useState<string | undefined>('')
   const [inputValue, setInputValue] = useState<string>(
     currentCustomer as string
   )
-
   const [newCustomer, setNewCustomer] = useState(false)
 
   const [newCustomerSelect, setNewCustomerSelect] = useState<CustomerSelect[]>()
@@ -24,62 +29,11 @@ export const CreateTaskForm = () => {
   useEffect(() => {
     setCustomerSelectOptions(customers, setNewCustomerSelect)
   }, [customers])
-
   useEffect(() => {
-    const customer = customers.find(
-      (item: any) => item.value === currentCustomer
-    )
-    if (customer) {
-      setNewCustomer(false)
-      form.setFieldsValue({
-        phoneNumber: customer?.phoneNumber || '',
-        city: customer?.city || '',
-        address: customer?.address || '',
-        other: customer?.other || '',
-      })
-    } else {
-      setNewCustomer(true)
-      form.resetFields(['phoneNumber', 'city', 'address', 'other'])
-    }
+    setCustomerFormValues(customers, currentCustomer, form, setNewCustomer)
   }, [currentCustomer, customers, form])
 
-  // Handles selection changes
-  const handleSelectChange = (value: string) => {
-    if (value === 'new') {
-      setCurrentCustomer(value)
-    } else {
-      setCurrentCustomer(value)
-      setInputValue('')
-    }
-  }
-
-  // Handles input changes
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value)
-  }
-
-  // Adds a new customer to the options
-  const handleAddCustomer = () => {
-    if (inputValue.trim()) {
-      const newCustomer = { value: inputValue.trim(), label: inputValue.trim() }
-      if (
-        !customers.some(
-          (option: any) =>
-            option.label.toLowerCase() === inputValue.trim().toLowerCase()
-        )
-      ) {
-        const updatedCustomerSelect = [
-          ...(newCustomerSelect ?? []),
-          newCustomer,
-        ]
-        setNewCustomerSelect([...updatedCustomerSelect, newCustomer])
-        // setCustomerOptions([...customerOptions, newCustomer])
-        setCurrentCustomer(inputValue.trim())
-        setInputValue('')
-      }
-    }
-  }
-  // Filters options based on inputValue
+  //Filters options based on inputValue
   const filteredOptions = newCustomerSelect?.filter((option: any) =>
     option.label.toLowerCase().includes(inputValue.toLowerCase())
   )
@@ -101,13 +55,12 @@ export const CreateTaskForm = () => {
             ]}
             className="flex-1"
           >
-            {currentCustomer === 'new' ? (
+            {!newCustomer ? (
               <>
                 <Input
                   placeholder="Enter new customer"
                   value={inputValue}
-                  onChange={handleInputChange}
-                  onPressEnter={handleAddCustomer}
+                  onChange={() => handleInputChange(inputValue, setInputValue)}
                   className="ml-2"
                 />
               </>
@@ -117,7 +70,13 @@ export const CreateTaskForm = () => {
                 placeholder="Select or type a customer"
                 className="w-full"
                 value={currentCustomer}
-                onChange={handleSelectChange}
+                onChange={() =>
+                  handleSelectChange(
+                    currentCustomer,
+                    setCurrentCustomer,
+                    setInputValue
+                  )
+                }
                 onSearch={setInputValue} // Update inputValue based on search
                 filterOption={false} // Disable default filtering
                 allowClear
