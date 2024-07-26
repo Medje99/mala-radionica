@@ -21,7 +21,15 @@ const ModalSection = () => {
         open={modalIsOpen}
         onOk={() => setModalIsOpen(false)}
         onCancel={() => setModalIsOpen(false)}
-        okText="if no customer add it and continue, else just continue"
+        okText="Continue"
+        width={'30%'}
+        okButtonProps={{
+          type: 'primary',
+          className: 'float-left',
+        }}
+        cancelButtonProps={{
+          type: 'default',
+        }}
       >
         <CreateTaskForm />
       </Modal>

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Form, Input, Select } from 'antd'
+import { Form, Input, Select, Space } from 'antd'
 import { useEffect, useState } from 'react'
 import { CustomerSelect } from './types'
 import useGetAllContacts from '@/CustomHooks/useGetAllContants'
@@ -46,7 +46,7 @@ export const CreateTaskForm = () => {
       className="bg-white p-5 rounded-lg"
     >
       <Form.Item label="Musterija" required className="mb-4">
-        <Input.Group compact>
+        <Space.Compact>
           <Form.Item
             name="musterija"
             noStyle
@@ -61,7 +61,6 @@ export const CreateTaskForm = () => {
                   placeholder="Enter new customer"
                   value={inputValue}
                   onChange={() => handleInputChange(inputValue, setInputValue)}
-                  className="ml-2"
                 />
               </>
             ) : (
@@ -92,7 +91,7 @@ export const CreateTaskForm = () => {
               </Select>
             )}
           </Form.Item>
-        </Input.Group>
+        </Space.Compact>
       </Form.Item>
       <Form.Item
         label="Broj telefona"
@@ -101,7 +100,7 @@ export const CreateTaskForm = () => {
           { required: true, message: 'Please input a phone number' },
           { pattern: /^\d+$/, message: 'Phone number must be numeric' },
         ]}
-        className="mb-4"
+        className="mb-4 w-1/2"
       >
         <Input disabled={!newCustomer} />
       </Form.Item>
@@ -110,7 +109,7 @@ export const CreateTaskForm = () => {
         label="City"
         name="city"
         rules={[{ required: true, message: 'Please input a city' }]}
-        className="mb-4"
+        className="mb-4 w-1/2"
       >
         <Input disabled={!newCustomer} />
       </Form.Item>
@@ -118,11 +117,11 @@ export const CreateTaskForm = () => {
         label="Address"
         name="address"
         rules={[{ required: true, message: 'Please input an address' }]}
-        className="mb-4"
+        className="mb-4 w-1/2"
       >
         <Input disabled={!newCustomer} />
       </Form.Item>
-      <Form.Item label="Other" name="other" className="mb-4">
+      <Form.Item label="Other" name="other" className="mb-4 w-1/2">
         <Input disabled={!newCustomer} />
       </Form.Item>
     </Form>
