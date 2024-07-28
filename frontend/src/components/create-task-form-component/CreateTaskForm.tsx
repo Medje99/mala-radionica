@@ -5,6 +5,7 @@ import { CustomerSelect } from './types'
 import useGetAllContacts from '@/CustomHooks/useGetAllContants'
 import createTaskFormActions from './actions'
 import { IContacts } from '@/model/response/IContactResponse'
+import { concateFullName } from '@/Utilities/setFullName'
 
 const { Option } = Select
 
@@ -26,19 +27,21 @@ export const CreateTaskForm = () => {
 
   const [newCustomerSelect, setNewCustomerSelect] = useState<CustomerSelect[]>()
 
-  useEffect(() => {
-    setCustomerSelectOptions(customers, setNewCustomerSelect)
-  }, [customers])
-  useEffect(() => {
-    setCustomerFormValues(customers, currentCustomer, form, setNewCustomer)
-  }, [currentCustomer, customers, form])
+  const pickedCustomer = customers.find(
+    (item) => concateFullName(item.firstName, item.lastName) === currentCustomer
+  )
 
-  //Filters options based on inputValue
   const filteredOptions = newCustomerSelect?.filter((option: any) =>
     option.label.toLowerCase().includes(inputValue.toLowerCase())
   )
 
-  console.log(currentCustomer)
+  useEffect(() => {
+    setCustomerSelectOptions(customers, setNewCustomerSelect)
+  }, [customers])
+
+  useEffect(() => {
+    setCustomerFormValues(pickedCustomer, form, setNewCustomer)
+  }, [pickedCustomer, form])
 
   return (
     <Form
@@ -55,7 +58,7 @@ export const CreateTaskForm = () => {
             rules={[{ required: true, message: 'Izaberi ili dodaj' }]}
             className="flex-1"
           >
-            {!newCustomer ? (
+            {newCustomer && pickedCustomer ? (
               <>
                 <Input
                   value={inputValue}
@@ -68,13 +71,9 @@ export const CreateTaskForm = () => {
                 showSearch
                 placeholder="Izaberi ili dodaj"
                 className="w-full"
-                value={currentCustomer}
-                onChange={() =>
-                  handleSelectChange(
-                    currentCustomer,
-                    setCurrentCustomer,
-                    setInputValue
-                  )
+                value={currentCustomer as any}
+                onChange={(event: string) =>
+                  handleSelectChange(event, setCurrentCustomer, setInputValue)
                 }
                 onSearch={setInputValue} // Update inputValue based on search
                 filterOption={false} // Disable default filtering

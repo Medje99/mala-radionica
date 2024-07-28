@@ -19,22 +19,17 @@ const createTaskFormActions = () => {
   }
 
   const setCustomerFormValues = (
-    customers: IContacts[],
-    currentCustomer: string | undefined,
+    pickedCustomer: IContacts | undefined,
     form: FormInstance<IContacts>,
     setNewCustomer: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
-    const customer = customers.find((item) => {
-      console.log(concateFullName(item.firstName, item.lastName))
-      console.log(currentCustomer)
-    })
-    if (customer) {
+    if (pickedCustomer) {
       setNewCustomer(false)
       form.setFieldsValue({
-        phoneNumber: customer?.phoneNumber || 0,
-        city: customer?.city || '',
-        address: customer?.address || '',
-        other: customer?.other || '',
+        phoneNumber: pickedCustomer?.phoneNumber || 0,
+        city: pickedCustomer?.city || '',
+        address: pickedCustomer?.address || '',
+        other: pickedCustomer?.other || '',
       })
     } else {
       setNewCustomer(true)
@@ -44,23 +39,22 @@ const createTaskFormActions = () => {
 
   // Handles selection changes
   const handleSelectChange = (
-    value: string | undefined,
+    pickedCustomer: string,
     setCurrentCustomer: React.Dispatch<
       React.SetStateAction<string | undefined>
     >,
     setInputValue: React.Dispatch<React.SetStateAction<string>>
   ) => {
-    console.log(value)
-    setCurrentCustomer(value)
+    setCurrentCustomer(pickedCustomer)
     setInputValue('')
   }
 
   // Handles input changes
   const handleInputChange = (
-    value: string,
+    inputValue: string,
     setInputValue: React.Dispatch<React.SetStateAction<string>>
   ) => {
-    setInputValue(value)
+    setInputValue(inputValue)
   }
 
   return {
