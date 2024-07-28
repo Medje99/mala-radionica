@@ -9,17 +9,7 @@ const useGetAllContacts = () => {
     const getContacts = async () => {
       try {
         ContactService.getAllCustomers().then((response) => {
-          const customers = response.data.map((item) => ({
-            id: item.id,
-            firstName: item.firstName,
-            lastName: item.lastName,
-            phoneNumber: item.phoneNumber,
-            city: item.city,
-            address: item.address,
-            other: item.other,
-          }))
-
-          setCustomers(customers)
+          setCustomers(response.data)
         })
       } catch (error) {
         console.error('Error fetching contacts:', error)
