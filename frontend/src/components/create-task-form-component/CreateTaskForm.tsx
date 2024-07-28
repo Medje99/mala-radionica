@@ -38,6 +38,8 @@ export const CreateTaskForm = () => {
     option.label.toLowerCase().includes(inputValue.toLowerCase())
   )
 
+  console.log(currentCustomer)
+
   return (
     <Form
       form={form}
@@ -48,25 +50,23 @@ export const CreateTaskForm = () => {
       <Form.Item label="Musterija" required className="mb-4">
         <Space.Compact>
           <Form.Item
-            name="musterija"
+            name="Ime i prezime"
             noStyle
-            rules={[
-              { required: true, message: 'Please select or enter a customer' },
-            ]}
+            rules={[{ required: true, message: 'Izaberi ili dodaj' }]}
             className="flex-1"
           >
             {!newCustomer ? (
               <>
                 <Input
-                  placeholder="Enter new customer"
                   value={inputValue}
                   onChange={() => handleInputChange(inputValue, setInputValue)}
                 />
               </>
             ) : (
+              // ako nije novi korisnik
               <Select
                 showSearch
-                placeholder="Select or type a customer"
+                placeholder="Izaberi ili dodaj"
                 className="w-full"
                 value={currentCustomer}
                 onChange={() =>
@@ -86,7 +86,7 @@ export const CreateTaskForm = () => {
                   </Option>
                 ))}
                 {filteredOptions?.length === 0 && (
-                  <Option value={inputValue}>Add new customer...</Option>
+                  <Option value={inputValue}>Dodaj novi kontakt...</Option>
                 )}
               </Select>
             )}
@@ -94,11 +94,11 @@ export const CreateTaskForm = () => {
         </Space.Compact>
       </Form.Item>
       <Form.Item
-        label="Broj telefona"
+        label="Broj telefona:"
         name="phoneNumber"
         rules={[
-          { required: true, message: 'Please input a phone number' },
-          { pattern: /^\d+$/, message: 'Phone number must be numeric' },
+          { required: true, message: 'Unesite broj telefona' },
+          { pattern: /^\d+$/, message: 'Samo brojevi!' },
         ]}
         className="mb-4 w-1/2"
       >
@@ -106,22 +106,22 @@ export const CreateTaskForm = () => {
       </Form.Item>
 
       <Form.Item
-        label="City"
+        label="Mesto"
         name="city"
-        rules={[{ required: true, message: 'Please input a city' }]}
+        rules={[{ required: true, message: 'Unesite mesto' }]}
         className="mb-4 w-1/2"
       >
         <Input disabled={!newCustomer} />
       </Form.Item>
       <Form.Item
-        label="Address"
+        label="Adresa"
         name="address"
-        rules={[{ required: true, message: 'Please input an address' }]}
+        rules={[{ required: true, message: 'Unesite adresu' }]}
         className="mb-4 w-1/2"
       >
         <Input disabled={!newCustomer} />
       </Form.Item>
-      <Form.Item label="Other" name="other" className="mb-4 w-1/2">
+      <Form.Item label="Ostalo" name="other" className="mb-4 w-1/2">
         <Input disabled={!newCustomer} />
       </Form.Item>
     </Form>

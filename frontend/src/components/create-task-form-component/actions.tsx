@@ -24,10 +24,10 @@ const createTaskFormActions = () => {
     form: FormInstance<IContacts>,
     setNewCustomer: React.Dispatch<React.SetStateAction<boolean>>
   ) => {
-    const customer = customers.find(
-      (item) =>
-        concateFullName(item.firstName, item.lastName) === currentCustomer
-    )
+    const customer = customers.find((item) => {
+      console.log(concateFullName(item.firstName, item.lastName))
+      console.log(currentCustomer)
+    })
     if (customer) {
       setNewCustomer(false)
       form.setFieldsValue({
@@ -50,6 +50,7 @@ const createTaskFormActions = () => {
     >,
     setInputValue: React.Dispatch<React.SetStateAction<string>>
   ) => {
+    console.log(value)
     setCurrentCustomer(value)
     setInputValue('')
   }

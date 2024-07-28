@@ -4,32 +4,32 @@ const Header = () => {
   return (
     <header className="px-4 lg:px-6 h-14 flex items-center bg-black text-white">
       <Link to="/" className="flex items-center justify-center">
-        <span className="sr-only">Task Manager</span>
+        <span className="sr-only">/</span>
       </Link>
       <nav className="ml-auto flex gap-4 sm:gap-6">
         <Link
-          to="/tasks"
+          to="/"
           className="text-sm font-medium hover:underline underline-offset-4"
         >
-          Tasks
+          Pocetna
         </Link>
         <Link
-          to="/projects"
+          to="/Products"
           className="text-sm font-medium hover:underline underline-offset-4"
         >
-          Projects
+          Projzvodi
         </Link>
         <Link
-          to="/calendar"
+          to="/Tasks"
           className="text-sm font-medium hover:underline underline-offset-4"
         >
-          Calendar
+          Poslovi
         </Link>
         <Link
-          to="/settings"
+          to="/Bills"
           className="text-sm font-medium hover:underline underline-offset-4"
         >
-          Settings
+          Finansije
         </Link>
       </nav>
     </header>
