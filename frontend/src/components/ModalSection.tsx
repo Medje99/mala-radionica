@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, Modal } from 'antd'
+import { Button } from 'antd'
 import { CreateTaskForm } from './create-task-form-component/CreateTaskForm'
 
 const ModalSection = () => {
@@ -14,25 +14,12 @@ const ModalSection = () => {
       >
         Dodaj
       </Button>
-
-      <Modal
-        title="Izaberi musteriju ili dodaj novu:"
-        centered
-        open={modalIsOpen}
-        onOk={() => setModalIsOpen(false)}
-        onCancel={() => setModalIsOpen(false)}
-        okText="Continue"
-        width={'30%'}
-        okButtonProps={{
-          type: 'primary',
-          className: 'float-left',
-        }}
-        cancelButtonProps={{
-          type: 'default',
-        }}
-      >
-        <CreateTaskForm />
-      </Modal>
+      {modalIsOpen && (
+        <CreateTaskForm
+          setModalIsOpen={setModalIsOpen}
+          modalIsOpen={modalIsOpen}
+        />
+      )}
     </>
   )
 }
