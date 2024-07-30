@@ -20,6 +20,12 @@ const Header = () => {
           Projzvodi
         </Link>
         <Link
+          to="/ProductsAdvanced"
+          className="text-sm font-medium hover:underline underline-offset-4"
+        >
+          Projzvodi v2
+        </Link>
+        <Link
           to="/Tasks"
           className="text-sm font-medium hover:underline underline-offset-4"
         >

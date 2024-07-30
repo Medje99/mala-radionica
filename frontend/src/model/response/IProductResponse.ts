@@ -4,5 +4,5 @@ export interface IProducts {
   manufecturer: string
   model: string
   price: number
-  quantitiy: number
+  quantity: number
 }
