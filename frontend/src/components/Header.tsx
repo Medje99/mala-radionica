@@ -14,22 +14,16 @@ const Header = () => {
           Pocetna
         </Link>
         <Link
-          to="/Products"
+          to="/ProductCreate"
           className="text-sm font-medium hover:underline underline-offset-4"
         >
-          Projzvodi
+          Kreiraj proizvod
         </Link>
         <Link
-          to="/ProductInput"
+          to="/ProductList"
           className="text-sm font-medium hover:underline underline-offset-4"
         >
-          ProductInput
-        </Link>
-        <Link
-          to="/ProductsAdvanced"
-          className="text-sm font-medium hover:underline underline-offset-4"
-        >
-          Projzvodi v2
+          Lista proizvoda
         </Link>
         <Link
           to="/Tasks"

@@ -1,10 +1,11 @@
-import { Button, Form, Input, Modal, Select, Space, Result } from 'antd'
+import { Button, Form, Input } from 'antd'
 import { IProducts } from '@/model/response/IProductResponse'
 import ProductsService from '@/service/ProductsService.ts'
 
-const CreateProductForm = () => {
+const ProductCreate = () => {
   const [form] = Form.useForm<IProducts>()
-  const onHandleSubmit = (event: any) => {
+
+  const onHandleSubmit = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
     event.preventDefault()
     form
       .validateFields()
@@ -63,4 +64,4 @@ const CreateProductForm = () => {
   )
 }
 
-export default CreateProductForm
+export default ProductCreate

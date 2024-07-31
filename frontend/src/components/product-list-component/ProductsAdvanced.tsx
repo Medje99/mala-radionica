@@ -15,10 +15,11 @@ import {
 } from 'antd'
 import { proizvod, proizvodjac, model, cena, kolicina } from './constats'
 import ProductsAdvancedActions from './actions'
+import { Link } from 'react-router-dom'
 
 const { handleEdit, handleDelete, handleSave } = ProductsAdvancedActions()
 
-const ProductsAdvanced: React.FC = () => {
+const ProductsList: React.FC = () => {
   const { allProducts } = useGetAllProducts()
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredProducts, setFilteredProducts] = useState<IProducts[]>([])
@@ -158,8 +159,15 @@ const ProductsAdvanced: React.FC = () => {
           </Form.Item>
         </Form>
       </Modal>
+      {filteredProducts.length === 0 && (
+        <Link to="/ProductCreate" className="text-center">
+          <h1 className="lg:leading-tighter text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl xl:text-[3.4rem] 2xl:text-[3.75rem]">
+            Dodaj proizvod
+          </h1>
+        </Link>
+      )}
     </div>
   )
 }
 
-export default ProductsAdvanced
+export default ProductsList
