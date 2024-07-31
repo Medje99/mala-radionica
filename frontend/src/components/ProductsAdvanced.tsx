@@ -28,7 +28,7 @@ const ProductsAdvanced: React.FC = () => {
       const searchText = searchTerm.toLowerCase()
       return (
         product.name.toLowerCase().includes(searchText) ||
-        product.manufecturer.toLowerCase().includes(searchText) ||
+        product.manufacturer.toLowerCase().includes(searchText) ||
         product.model.toLowerCase().includes(searchText)
       )
     })
@@ -37,15 +37,15 @@ const ProductsAdvanced: React.FC = () => {
 
   const columns = [
     {
-      title: 'Name',
+      title: 'Proizvod',
       dataIndex: 'name',
       key: 'name',
       editable: true,
     },
     {
-      title: 'Manufacturer',
-      dataIndex: 'manufecturer',
-      key: 'manufecturer',
+      title: 'Proizvodjac',
+      dataIndex: 'manufacturer',
+      key: 'manufacturer',
       editable: true,
     },
     {
@@ -55,30 +55,25 @@ const ProductsAdvanced: React.FC = () => {
       editable: true,
     },
     {
-      title: 'Price',
+      title: 'Cena',
       dataIndex: 'price',
       key: 'price',
       editable: true,
       render: (price: number) => `$${price.toFixed(2)}`, // Format price
     },
     {
-      title: 'Quantity',
+      title: 'Kolicina',
       dataIndex: 'quantity',
       key: 'quantitiy',
       editable: true,
     },
     {
-      title: 'Action',
+      title: 'Izmeni',
       key: 'action',
       render: (text: any, record: IProducts) => (
         <Space size="large">
-          <Button
-            type="primary"
-            icon="edit"
-            ghost
-            onClick={() => handleEdit(record)}
-          >
-            Edit
+          <Button type="primary" ghost onClick={() => handleEdit(record)}>
+            Izmeni
           </Button>
           <Popconfirm
             title="Are you sure to delete this product?"
@@ -86,7 +81,7 @@ const ProductsAdvanced: React.FC = () => {
             onCancel={() => message.error('Delete canceled')}
           >
             <Button danger ghost>
-              Delete
+              Obrisi
             </Button>
           </Popconfirm>
         </Space>
@@ -168,8 +163,8 @@ const ProductsAdvanced: React.FC = () => {
           </Form.Item>
           <Form.Item label="Manufacturer">
             <Input
-              value={editingProduct?.manufecturer || ''}
-              onChange={(e) => handleInputChange(e, 'manufecturer')}
+              value={editingProduct?.manufacturer || ''}
+              onChange={(e) => handleInputChange(e, 'manufacturer')}
             />
           </Form.Item>
           <Form.Item label="Model">

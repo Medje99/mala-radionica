@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import useGetAllProducts from '@/CustomHooks/useGetAllProducts'
 import { IProducts } from '@/model/response/IProductResponse'
-import { Table, Typography, Input } from 'antd'
+import { Table, Typography, Input, Button, Empty, Flex } from 'antd'
 
 //Products without Edit functionality
 
@@ -15,7 +15,7 @@ const Products: React.FC = () => {
       const searchText = searchTerm.toLowerCase()
       return (
         product.name.toLowerCase().includes(searchText) ||
-        product.manufecturer.toLowerCase().includes(searchText) ||
+        product.manufacturer.toLowerCase().includes(searchText) ||
         product.model.toLowerCase().includes(searchText)
       )
     })
@@ -24,14 +24,14 @@ const Products: React.FC = () => {
 
   const columns = [
     {
-      title: 'Name',
+      title: 'Proizvod',
       dataIndex: 'name',
       key: 'name',
     },
     {
-      title: 'Manufacturer',
-      dataIndex: 'manufecturer',
-      key: 'manufecturer',
+      title: 'Proizvodjac',
+      dataIndex: 'manufacturer',
+      key: 'manufacturer',
     },
     {
       title: 'Model',
@@ -39,12 +39,12 @@ const Products: React.FC = () => {
       key: 'model',
     },
     {
-      title: 'Price',
+      title: 'Cena',
       dataIndex: 'price',
       key: 'price',
     },
     {
-      title: 'Quantity',
+      title: 'Kolicina',
       dataIndex: 'quantity',
       key: 'quantitiy',
     },
@@ -63,12 +63,23 @@ const Products: React.FC = () => {
         style={{ marginBottom: 16 }}
       />
 
-      <Table
-        columns={columns}
-        dataSource={filteredProducts}
-        pagination={{ pageSize: 7 }} // Adjust page size as needed
-        rowKey="id" // Use 'id' as the row key
-      />
+      {filteredProducts.length > 0 ? (
+        <Table
+          columns={columns}
+          dataSource={filteredProducts}
+          pagination={{ pageSize: 7 }} // Adjust page size as needed
+          rowKey="id" // Use 'id' as the row key
+        />
+      ) : (
+        <Empty
+          image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+          imageStyle={{
+            height: 120,
+          }}
+        >
+          <Button type="primary">Create Now</Button>
+        </Empty>
+      )}
     </div>
   )
 }
