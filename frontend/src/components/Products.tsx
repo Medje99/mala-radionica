@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import useGetAllProducts from '@/CustomHooks/useGetAllProducts'
 import { IProducts } from '@/model/response/IProductResponse'
-import { Table, Typography, Input, Button, Empty, Flex } from 'antd'
+import { Table, Typography, Input, Button, Empty } from 'antd'
+import { Link } from 'react-router-dom'
 
 //Products without Edit functionality
 
@@ -74,10 +75,18 @@ const Products: React.FC = () => {
         <Empty
           image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
           imageStyle={{
-            height: 120,
+            height: 230,
+            marginLeft: '36%',
+            marginBottom: '30px',
           }}
         >
-          <Button type="primary">Create Now</Button>
+          <Link to="/ProductInput">
+            <h1 className="lg:leading-tighter text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl xl:text-[3.4rem] 2xl:text-[3.75rem]">
+              Dodaj proizvod
+            </h1>
+            <br />
+            Bi spravic da otvera modal :D
+          </Link>
         </Empty>
       )}
     </div>

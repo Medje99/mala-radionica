@@ -106,6 +106,41 @@ app.get("/Products", (req, res) => {
   });
 });
 
+//Products route POST Handler Express
+app.post("/ProductInput", (req, res) => {
+  console.log("POST /ProductInput called");
+  const { name, manufacturer, model, price, quantity } = req.body;
+  console.log("Received data:", req.body);
+
+  const insertQuery =
+    "INSERT INTO `product` ( `name`, `manufacturer`, `model`, `price`, `quantity`) VALUES ( ?, ?, ?, ?, ?);";
+  db.query(
+    insertQuery,
+    [name, manufacturer, model, price, quantity],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting product:", err);
+        res
+          .status(500)
+          .json({ error: `Error inserting product: ${err.message}` });
+      } else {
+        const selectQuery = "SELECT * FROM product WHERE id = ?";
+        db.query(selectQuery, [result.insertId], (err, newProduct) => {
+          if (err) {
+            console.error("Error retrieving new product:", err);
+            res
+              .status(500)
+              .json({ error: `Error retrieving new product: ${err.message}` });
+          } else {
+            console.log("Newly added product:", newProduct[0]);
+            res.json(newProduct[0]);
+          }
+        });
+      }
+    }
+  );
+});
+
 app.use((req, res) => {
   console.log(`Undefined route accessed: ${req.method} ${req.url}`);
   res.status(404).send("Route not found");

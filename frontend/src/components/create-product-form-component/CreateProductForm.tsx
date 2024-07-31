@@ -1,11 +1,66 @@
-import { Form, Input, Modal, Select, Space } from 'antd'
-import { useEffect, useState } from 'react'
-import { useGetAllProducts } from '@/CustomHooks/useGetAllProducts'
+import { Button, Form, Input, Modal, Select, Space, Result } from 'antd'
 import { IProducts } from '@/model/response/IProductResponse'
-import { ProductService } from '@/service/useGetAllProducts'
+import ProductsService from '@/service/ProductsService.ts'
 
 const CreateProductForm = () => {
-  return <div></div>
+  const [form] = Form.useForm<IProducts>()
+  const onHandleSubmit = (event: any) => {
+    event.preventDefault()
+    form
+      .validateFields()
+      .then((values) => {
+        const formatedData = {
+          ...values,
+        }
+        ProductsService.createProductEntry(formatedData).then(
+          (createdProduct) => {
+            console.log('Product created:', createdProduct)
+            // Additional success handling, e.g., reset form, show success message
+          }
+        )
+      })
+
+      .catch((errorInfo) => {
+        console.error('Validation failed:', errorInfo)
+        // Provide user feedback on validation failure
+      })
+  }
+  return (
+    <div>
+      <Form
+        form={form}
+        name="musterija-form"
+        layout="vertical"
+        className="bg-white p-5 rounded-lg"
+      >
+        <Form.Item className="mb-4 w-1/2" label="Naziv proizvoda" name="name">
+          <Input />
+        </Form.Item>
+        <Form.Item
+          className="mb-4 w-1/2"
+          label="Proizvodjac"
+          name="manufacturer"
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item className="mb-4 w-1/2" label="Model" name="model">
+          <Input />
+        </Form.Item>
+        <Form.Item className="mb-4 w-1/2" label="Cena" name="price">
+          <Input />
+        </Form.Item>
+        <Form.Item className="mb-4 w-1/2" label="Kolicina" name="quantity">
+          <Input />
+        </Form.Item>
+        <Button type="primary" onClick={(e) => onHandleSubmit(e)}>
+          Submit
+        </Button>
+        <Button type="default" onClick={(e) => e.preventDefault()}>
+          Cancel
+        </Button>
+      </Form>
+    </div>
+  )
 }
 
 export default CreateProductForm

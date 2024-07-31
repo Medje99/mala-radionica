@@ -7,11 +7,12 @@ const getAllProducts = async () => {
 }
 
 const createProductEntry = async (data: any) => {
-  return await axios.post<IProducts[]>(baseUrl + '/Products', data)
+  return await axios.post<IProducts[]>(baseUrl + '/ProductInput', data)
 }
 
 const ProductsService = {
   getAllProducts,
+  createProductEntry,
 }
 
 export default ProductsService
