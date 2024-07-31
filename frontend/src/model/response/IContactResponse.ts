@@ -5,5 +5,5 @@ export interface IContacts {
   id: number
   lastName: string
   other: string | null
-  phoneNumber: number
+  phoneNumber: string
 }

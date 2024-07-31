@@ -141,6 +141,61 @@ app.post("/ProductInput", (req, res) => {
   );
 });
 
+app.put("/Products/:id", (req, res) => {
+  const productId = req.params.id;
+  const { name, manufacturer, model, price, quantity } = req.body;
+
+  if (!name || !manufacturer || !model || price === undefined || quantity === undefined) {
+    return res.status(400).send("All fields must be provided.");
+  }
+
+  const query = `
+    UPDATE product 
+    SET name = ?, manufacturer = ?, model = ?, price = ?, quantity = ?
+    WHERE id = ?
+  `;
+
+  db.query(
+    query,
+    [name, manufacturer, model, price, quantity, productId],
+    (err, results) => {
+      if (err) {
+        console.error("Error updating product:", err);
+        res.status(500).send("Error updating product");
+      } else if (results.affectedRows === 0) {
+        res.status(404).send("Product not found");
+      } else {
+        console.log("Product updated successfully:", results);
+        res.send("Product updated successfully");
+      }
+    }
+  );
+});
+
+app.delete("/Products/:id", (req, res) => {
+  const productId = req.params.id;
+
+  const query = `
+    DELETE FROM product 
+    WHERE id = ?
+  `;
+
+  db.query(query, [productId], (err, results) => {
+    if (err) {
+      console.error("Error deleting product:", err);
+      res.status(500).send("Error deleting product");
+    } else if (results.affectedRows === 0) {
+      res.status(404).send("Product not found");
+    } else {
+      console.log("Product deleted successfully:", results);
+      res.send("Product deleted successfully");
+    }
+  });
+});
+
+
+
+
 app.use((req, res) => {
   console.log(`Undefined route accessed: ${req.method} ${req.url}`);
   res.status(404).send("Route not found");

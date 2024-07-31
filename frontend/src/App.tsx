@@ -3,7 +3,7 @@ import './index.css'
 import CreateTaskSection from './components/CreateTaskSection'
 import { Route, Routes } from 'react-router-dom'
 import Products from './components/Products'
-import ProductsAdvanced from './components/ProductsAdvanced'
+import ProductsAdvanced from './components/product-list-component/ProductsAdvanced'
 import CreateProductForm from './components/create-product-form-component/CreateProductForm'
 
 function App() {

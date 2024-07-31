@@ -3,13 +3,13 @@ import ProductsService from '@/service/ProductsService'
 import { useEffect, useState } from 'react'
 
 const useGetAllProducts = () => {
-  const [products, setProducts] = useState<IProducts[]>([])
+  const [allProducts, setAllProducts] = useState<IProducts[]>([])
 
   useEffect(() => {
     const getProducts = async () => {
       try {
         ProductsService.getAllProducts().then((response) => {
-          setProducts(response.data)
+          setAllProducts(response.data)
         })
       } catch (error) {
         console.error('Error fetching products:', error)
@@ -19,7 +19,7 @@ const useGetAllProducts = () => {
     getProducts()
   }, [])
 
-  return { customers: products }
+  return { allProducts }
 }
 
 export default useGetAllProducts
