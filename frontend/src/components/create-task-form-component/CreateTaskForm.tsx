@@ -8,6 +8,7 @@ import { IContacts } from '@/model/response/IContactResponse'
 import { concateFullName } from '@/Utilities/setFullName'
 import ContactService from '@/service/ContactsService'
 import { separateFullName } from '@/Utilities/getSeparatedFullName'
+import TextArea from 'antd/es/input/TextArea'
 
 const { Option } = Select
 
@@ -86,9 +87,13 @@ export const CreateTaskForm = ({ ...props }: any) => {
       title="Izaberi musteriju ili dodaj novu:"
       centered
       open={modalIsOpen}
-      onOk={onHandleSubmit}
+      onOk={
+        newCustomer
+          ? () => onHandleSubmit(event)
+          : () => console.log('Next step')
+      }
       onCancel={() => setModalIsOpen(false)}
-      okText="Continue"
+      okText={newCustomer ? 'Dodaj' : 'Izaberi'}
       width={'30%'}
       okButtonProps={{
         type: 'primary',
@@ -113,16 +118,11 @@ export const CreateTaskForm = ({ ...props }: any) => {
               className="flex-1"
             >
               {newCustomer && pickedCustomer ? (
-                <>
-                  <Input
-                    value={inputValue}
-                    onChange={() =>
-                      handleInputChange(inputValue, setInputValue)
-                    }
-                  />
-                </>
+                <Input
+                  value={inputValue}
+                  onChange={() => handleInputChange(inputValue, setInputValue)}
+                />
               ) : (
-                // ako nije novi korisnik
                 <Select
                   showSearch
                   placeholder="Izaberi ili dodaj"
@@ -131,17 +131,20 @@ export const CreateTaskForm = ({ ...props }: any) => {
                   onChange={(event: string) =>
                     handleSelectChange(event, setCurrentCustomer, setInputValue)
                   }
-                  onSearch={setInputValue} // Update inputValue based on search
-                  filterOption={false} // Disable default filtering
+                  onSearch={setInputValue}
+                  filterOption={false}
                   allowClear
+                  onKeyDown={(event: any) => {
+                    form.setFieldValue('firstName', event.target.value)
+                  }}
                 >
-                  {filteredOptions?.map((option: any) => (
+                  {filteredOptions?.map((option) => (
                     <Option key={option.value} value={option.value}>
                       {option.label}
                     </Option>
                   ))}
                   {filteredOptions?.length === 0 && (
-                    <Option value={inputValue}>Dodaj novi kontakt...</Option>
+                    <Option value={inputValue}>{inputValue}</Option>
                   )}
                 </Select>
               )}
@@ -177,7 +180,7 @@ export const CreateTaskForm = ({ ...props }: any) => {
           <Input disabled={!newCustomer} />
         </Form.Item>
         <Form.Item label="Ostalo" name="other" className="mb-4 w-1/2">
-          <Input disabled={!newCustomer} />
+          <TextArea disabled={!newCustomer} />
         </Form.Item>
       </Form>
     </Modal>

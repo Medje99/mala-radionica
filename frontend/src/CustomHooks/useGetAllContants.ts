@@ -6,17 +6,13 @@ const useGetAllContacts = () => {
   const [customers, setCustomers] = useState<IContacts[]>([])
 
   useEffect(() => {
-    const getContacts = async () => {
-      try {
-        ContactService.getAllCustomers().then((response) => {
-          setCustomers(response.data)
-        })
-      } catch (error) {
+    ContactService.getAllCustomers()
+      .then((response) => {
+        setCustomers(response.data)
+      })
+      .catch((error) => {
         console.error('Error fetching contacts:', error)
-      }
-    }
-
-    getContacts()
+      })
   }, [])
 
   return { customers }

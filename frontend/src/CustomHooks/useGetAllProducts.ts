@@ -6,17 +6,13 @@ const useGetAllProducts = () => {
   const [allProducts, setAllProducts] = useState<IProducts[]>([])
 
   useEffect(() => {
-    const getProducts = async () => {
-      try {
-        ProductsService.getAllProducts().then((response) => {
-          setAllProducts(response.data)
-        })
-      } catch (error) {
+    ProductsService.getAllProducts()
+      .then((response) => {
+        setAllProducts(response.data)
+      })
+      .catch((error) => {
         console.error('Error fetching products:', error)
-      }
-    }
-
-    getProducts()
+      })
   }, [])
 
   return { allProducts }

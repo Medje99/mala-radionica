@@ -26,7 +26,7 @@ const createTaskFormActions = () => {
     if (pickedCustomer) {
       setNewCustomer(false)
       form.setFieldsValue({
-        phoneNumber: pickedCustomer?.phoneNumber || 0,
+        phoneNumber: pickedCustomer?.phoneNumber || '',
         city: pickedCustomer?.city || '',
         address: pickedCustomer?.address || '',
         other: pickedCustomer?.other || '',
