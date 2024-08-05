@@ -1,12 +1,13 @@
-import { useState } from 'react'
 import { Button } from 'antd'
-import { CreateTaskForm } from './create-task-form-component/CreateTaskForm'
+import React from 'react'
+import { useFormContext } from '../create-task-form-component/CreateAPI'
+import { CreateTaskForm } from '../create-task-form-component/CreateTaskForm'
 
-const ModalSection = () => {
-  const [modalIsOpen, setModalIsOpen] = useState(false)
+const TestComponent = () => {
+  const { setModalIsOpen, modalIsOpen } = useFormContext()
 
   return (
-    <>
+    <div className="mt-6">
       <Button
         type="primary"
         onClick={() => setModalIsOpen(true)}
@@ -14,14 +15,9 @@ const ModalSection = () => {
       >
         Dodaj
       </Button>
-      {modalIsOpen && (
-        <CreateTaskForm
-          setModalIsOpen={setModalIsOpen}
-          modalIsOpen={modalIsOpen}
-        />
-      )}
-    </>
+      {modalIsOpen && <CreateTaskForm />}
+    </div>
   )
 }
 
-export default ModalSection
+export default TestComponent
