@@ -1,47 +1,65 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Form, Input, Button } from 'antd'
+import { useFormContext } from '@/contexts/FormContextProvider'
+import { Form, Input, DatePicker } from 'antd'
 
 const CreateTaskFormPt2 = () => {
-  const [form] = Form.useForm()
-
-  const onFinish = (values: any) => {
-    console.log('Form values:', values)
-    // Handle form submission logic here
-  }
-
+  const [form2] = Form.useForm()
+  const { form } = useFormContext()
+  console.log(form.getFieldsValue())
   return (
     <Form
-      form={form}
-      name="basic"
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 16 }}
-      initialValues={{ remember: true }}
-      onFinish={onFinish}
-      autoComplete="off"
+      form={form2}
+      name="job-form"
+      layout="vertical"
+      className="bg-white p-5 rounded-lg"
     >
+      {/* Job Name */}
       <Form.Item
-        label="Name"
-        name="name"
-        rules={[{ required: true, message: 'Please input your name!' }]}
+        label="Job Name"
+        name="job_name"
+        rules={[{ required: true, message: 'Please input the job name!' }]}
       >
         <Input />
       </Form.Item>
 
+      {/* Job Description */}
       <Form.Item
-        label="Email"
-        name="email"
+        label="Job Description"
+        name="job_description"
         rules={[
-          { required: true, message: 'Please input your email!' },
-          { type: 'email', message: 'Please enter a valid email address!' },
+          { required: true, message: 'Please input the job description!' },
         ]}
       >
-        <Input />
+        <Input.TextArea />
       </Form.Item>
 
-      <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button type="primary" htmlType="submit">
-          Submit
-        </Button>
+      {/* Contact ID */}
+      <Form.Item
+        label="Contact ID"
+        name="contact_id"
+        rules={[{ required: true, message: 'Please input the contact ID!' }]}
+      >
+        <Input type="number" />
+      </Form.Item>
+
+      {/* Creation Date */}
+      <Form.Item
+        label="Creation Date"
+        name="creation_date"
+        rules={[
+          { required: true, message: 'Please select the creation date!' },
+        ]}
+      >
+        <DatePicker style={{ width: '100%' }} />
+      </Form.Item>
+
+      {/* Finish Date */}
+      <Form.Item
+        label="Finish Date"
+        name="finish_date"
+        rules={[{ required: false, message: 'Please select the finish date!' }]}
+      >
+        <DatePicker style={{ width: '100%' }} />
       </Form.Item>
     </Form>
   )

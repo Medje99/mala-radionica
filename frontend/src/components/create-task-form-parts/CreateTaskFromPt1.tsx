@@ -1,30 +1,50 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Form, Input, Select, Space } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
-import { useFormContext } from '../create-task-form-component/CreateAPI'
+import { useFormContext } from '../../contexts/FormContextProvider'
+
+import createTaskFormActions from '../create-task-form-component/actions'
+import { useEffect, useState } from 'react'
 
 const { Option } = Select
 
+const {
+  setCustomerSelectOptions,
+  setCustomerFormValues,
+  handleInputChange,
+  handleSelectChange,
+} = createTaskFormActions()
+
 const CreateTaskFromPt1 = () => {
+  const [newCustomer, setNewCustomer] = useState(false)
+
   const {
-    newCustomer,
     form,
-    pickedCustomer,
+    customers,
     inputValue,
-    handleInputChange,
-    setInputValue,
-    handleSelectChange,
+    pickedCustomer,
     filteredOptions,
-    setCurrentCustomer,
     currentCustomer,
+    setCurrentCustomer,
+    setNewCustomerSelect,
+    setInputValue,
   } = useFormContext()
+
+  useEffect(() => {
+    setCustomerSelectOptions(customers, setNewCustomerSelect)
+  }, [customers, setNewCustomerSelect])
+
+  useEffect(() => {
+    setCustomerFormValues(pickedCustomer, form, setNewCustomer)
+  }, [pickedCustomer, form])
 
   return (
     <Form
       form={form}
       name="musterija-form"
       layout="vertical"
-      className="bg-white p-5 rounded-lg "
+      className="bg-white p-5 rounded-lg"
+      initialValues={form.getFieldsValue}
     >
       <Form.Item label="Musterija" required className="mb-4 mr-10 ml-10">
         <Space.Compact

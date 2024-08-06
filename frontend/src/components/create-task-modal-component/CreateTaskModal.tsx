@@ -1,10 +1,9 @@
 import { Button } from 'antd'
-import React from 'react'
-import { useFormContext } from '../create-task-form-component/CreateAPI'
 import { CreateTaskForm } from '../create-task-form-component/CreateTaskForm'
+import { useModal } from '../../contexts/ModalContextProvider'
 
-const TestComponent = () => {
-  const { setModalIsOpen, modalIsOpen } = useFormContext()
+const CreateTaskModalComponent = () => {
+  const { setModalIsOpen, modalIsOpen } = useModal()
 
   return (
     <div className="mt-6">
@@ -20,4 +19,4 @@ const TestComponent = () => {
   )
 }
 
-export default TestComponent
+export default CreateTaskModalComponent
