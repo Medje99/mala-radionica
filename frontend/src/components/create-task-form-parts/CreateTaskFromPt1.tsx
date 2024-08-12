@@ -76,15 +76,13 @@ const CreateTaskFromPt1 = () => {
                 onKeyDown={(event: any) => {
                   form.setFieldValue('firstName', event.target.value)
                 }}
+                notFoundContent={null}
               >
                 {filteredOptions?.map((option: any) => (
                   <Option key={option.value} value={option.value}>
                     {option.label}
                   </Option>
                 ))}
-                {filteredOptions?.length === 0 && (
-                  <Option value={inputValue}>{inputValue}</Option>
-                )}
               </Select>
             )}
           </Form.Item>
