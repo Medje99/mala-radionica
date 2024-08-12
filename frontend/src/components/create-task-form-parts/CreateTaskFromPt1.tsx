@@ -8,12 +8,8 @@ import { useEffect, useState } from 'react'
 
 const { Option } = Select
 
-const {
-  setCustomerSelectOptions,
-  setCustomerFormValues,
-  handleInputChange,
-  handleSelectChange,
-} = createTaskFormActions()
+const { setCustomerSelectOptions, setCustomerFormValues, handleSelectChange } =
+  createTaskFormActions()
 
 const CreateTaskFromPt1 = () => {
   const [newCustomer, setNewCustomer] = useState(false)
@@ -21,13 +17,13 @@ const CreateTaskFromPt1 = () => {
   const {
     form,
     customers,
-    inputValue,
+    hybridInputText,
     pickedCustomer,
     filteredOptions,
-    currentCustomer,
-    setCurrentCustomer,
+    hybridInputSelect,
+    setHybridInputSelect,
     setNewCustomerSelect,
-    setInputValue,
+    sethybridInputText,
   } = useFormContext()
 
   useEffect(() => {
@@ -58,19 +54,23 @@ const CreateTaskFromPt1 = () => {
           >
             {newCustomer && pickedCustomer ? (
               <Input
-                value={inputValue}
-                onChange={() => handleInputChange(inputValue, setInputValue)}
+                value={hybridInputText}
+                onChange={() => sethybridInputText(hybridInputText)}
               />
             ) : (
               <Select
                 showSearch
                 placeholder="Izaberi ili dodaj"
-                value={currentCustomer as any}
+                value={hybridInputSelect as any}
                 onChange={(event: string) =>
-                  handleSelectChange(event, setCurrentCustomer, setInputValue)
+                  handleSelectChange(
+                    event,
+                    setHybridInputSelect,
+                    sethybridInputText
+                  )
                 }
                 style={{ width: '100%' }} // Ensure the Select input is 100% width
-                onSearch={setInputValue}
+                onSearch={sethybridInputText}
                 filterOption={false}
                 allowClear
                 onKeyDown={(event: any) => {

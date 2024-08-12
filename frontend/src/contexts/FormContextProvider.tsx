@@ -25,19 +25,22 @@ export const useFormContext = (): any => {
 export const FormProvider = ({ children }: { children: React.ReactNode }) => {
   const { customers } = useGetAllContacts()
   const [form] = Form.useForm<IContacts>()
-  const [currentCustomer, setCurrentCustomer] = useState<string | undefined>('')
-  const [inputValue, setInputValue] = useState<string>(
-    currentCustomer as string
+  const [hybridInputSelect, setHybridInputSelect] = useState<
+    string | undefined
+  >('')
+  const [hybridInputText, sethybridInputText] = useState<string>(
+    hybridInputSelect as string
   )
 
   const [newCustomerSelect, setNewCustomerSelect] = useState<CustomerSelect[]>()
 
   const pickedCustomer = customers.find(
-    (item) => concateFullName(item.firstName, item.lastName) === currentCustomer
+    (item) =>
+      concateFullName(item.firstName, item.lastName) === hybridInputSelect
   )
 
   const filteredOptions = newCustomerSelect?.filter((option: any) =>
-    option.label.toLowerCase().includes(inputValue.toLowerCase())
+    option.label.toLowerCase().includes(hybridInputText.toLowerCase())
   )
 
   return (
@@ -45,13 +48,13 @@ export const FormProvider = ({ children }: { children: React.ReactNode }) => {
       value={{
         form,
         customers,
-        inputValue,
+        hybridInputText,
         pickedCustomer,
         filteredOptions,
-        currentCustomer,
-        setCurrentCustomer,
+        hybridInputSelect,
+        setHybridInputSelect,
         setNewCustomerSelect,
-        setInputValue,
+        sethybridInputText,
       }}
     >
       {children}

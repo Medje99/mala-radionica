@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Modal } from 'antd'
+import { Button, Modal } from 'antd'
 import CreateProgress from '../create-task-progress/CreateTaskProgress'
 import CreateTaskFormPt2 from '../create-task-form-parts/CreateTaskFormPt2'
 import { useFormContext } from '../../contexts/FormContextProvider'
@@ -9,7 +9,7 @@ import ContactService from '@/service/ContactsService'
 import { useModal } from '../../contexts/ModalContextProvider'
 
 export const CreateTaskForm = () => {
-  const { newCustomer, form } = useFormContext()
+  const { pickedCustomer, form } = useFormContext()
   const { modalIsOpen, setCurrentPage, currentPage, setModalIsOpen } =
     useModal()
 
@@ -41,19 +41,6 @@ export const CreateTaskForm = () => {
       })
   }
 
-  const handleXButtonClick = () => {
-    // Custom logic for the "X" button
-    setModalIsOpen(false) // Close the modal
-  }
-
-  const handleNazadButtonClick = () => {
-    if (currentPage > 0) {
-      setCurrentPage(currentPage - 1) // Go back to the previous page
-    } else {
-      alert('nema nazad')
-    }
-  }
-
   return (
     <Modal
       title={
@@ -63,23 +50,39 @@ export const CreateTaskForm = () => {
       }
       centered
       open={modalIsOpen}
-      onOk={
-        newCustomer
-          ? () => onHandleSubmit(event)
-          : () => setCurrentPage(currentPage + 1)
-      }
-      onCancel={handleXButtonClick} // Handle the "X" button functionality
-      okText={newCustomer ? 'Dodaj' : 'Dalje'}
+      okText={!pickedCustomer ? 'Dodaj' : 'Dalje'}
       width={'30%'}
-      okButtonProps={{
-        type: 'primary',
-        className: 'float-left',
-      }}
-      cancelButtonProps={{
-        type: 'default',
-        onClick: handleNazadButtonClick, // Handle the "Nazad" button functionality
-      }}
-      cancelText={'Nazad'}
+      onCancel={() => setModalIsOpen(false)}
+      footer={[
+        !pickedCustomer && (
+          <Button
+            key="custom"
+            onClick={() => {
+              onHandleSubmit(event)
+              setModalIsOpen(false)
+            }}
+            style={{ float: 'left' }}
+          >
+            Dodaj kontakt i zatvori
+          </Button>
+        ),
+        currentPage !== 0 && (
+          <Button key="custom" onClick={() => setCurrentPage(currentPage + -1)}>
+            Nazad
+          </Button>
+        ),
+        <Button
+          key="submit"
+          type="primary"
+          onClick={
+            !pickedCustomer
+              ? () => onHandleSubmit(event)
+              : () => setCurrentPage(currentPage + 1)
+          }
+        >
+          {!pickedCustomer ? 'Dodaj i dalje' : 'Dalje'}
+        </Button>,
+      ]}
     >
       {currentPage === 0 ? <CreateTaskFromPt1 /> : <CreateTaskFormPt2 />}
       <CreateProgress currentPage={currentPage} />

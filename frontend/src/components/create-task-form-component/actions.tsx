@@ -49,19 +49,10 @@ const createTaskFormActions = () => {
     setInputValue('')
   }
 
-  // Handles input changes
-  const handleInputChange = (
-    inputValue: string,
-    setInputValue: React.Dispatch<React.SetStateAction<string>>
-  ) => {
-    setInputValue(inputValue)
-  }
-
   return {
     setCustomerSelectOptions,
     setCustomerFormValues,
     handleSelectChange,
-    handleInputChange,
   }
 }
 
