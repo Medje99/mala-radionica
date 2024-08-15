@@ -26,6 +26,12 @@ const Header = () => {
           Lista proizvoda
         </Link>
         <Link
+          to="/ContactsList"
+          className="text-sm font-medium hover:underline underline-offset-4"
+        >
+          Lista Kontakta
+        </Link>
+        <Link
           to="/Tasks"
           className="text-sm font-medium hover:underline underline-offset-4"
         >

@@ -10,9 +10,20 @@ const getAllCustomers = async () => {
 const createContactCustomer = async (data: any) => {
   return await axios.post<IContacts[]>(baseUrl + '/contacts', data)
 }
+
+const updateContactCustomer = async (data: any) => {
+  return await axios.put<IContacts[]>(baseUrl + '/contacts/' + data.id, data)
+}
+
+const deleteContactCustomer = async (id: number) => {
+  return await axios.delete<IContacts[]>(baseUrl + '/contacts/' + id)
+}
+
 const ContactService = {
   getAllCustomers,
   createContactCustomer,
+  updateContactCustomer,
+  deleteContactCustomer,
 }
 
 export default ContactService

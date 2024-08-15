@@ -40,7 +40,6 @@ const CreateTaskFromPt1 = () => {
       name="musterija-form"
       layout="vertical"
       className="bg-white p-5 rounded-lg"
-      initialValues={form.getFieldsValue}
     >
       <Form.Item label="Musterija" required className="mb-4 mr-10 ml-10">
         <Space.Compact

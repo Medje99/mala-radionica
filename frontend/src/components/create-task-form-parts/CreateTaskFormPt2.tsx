@@ -5,7 +5,8 @@ import { Form, Input, DatePicker } from 'antd'
 const CreateTaskFormPt2 = () => {
   const [form2] = Form.useForm()
   const { form } = useFormContext()
-  console.log(form.getFieldsValue())
+  form2.setFieldValue('firstName', form.getFieldValue('firstName'))
+
   return (
     <Form
       form={form2}
@@ -14,6 +15,14 @@ const CreateTaskFormPt2 = () => {
       className="bg-white p-5 rounded-lg"
     >
       {/* Job Name */}
+      <Form.Item
+        label="firstName"
+        name="firstName"
+        rules={[{ required: true, message: 'Please input the job name!' }]}
+      >
+        <Input disabled={true} />
+      </Form.Item>
+
       <Form.Item
         label="Job Name"
         name="job_name"

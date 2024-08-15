@@ -15,7 +15,7 @@ const useGetAllContacts = () => {
       })
   }, [])
 
-  return { customers }
+  return { customers, setCustomers }
 }
 
 export default useGetAllContacts
