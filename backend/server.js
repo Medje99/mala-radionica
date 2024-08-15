@@ -171,7 +171,7 @@ app.put("/Products/:id", (req, res) => {
     }
   );
 });
-
+console.log('we')
 app.delete("/Products/:id", (req, res) => {
   const productId = req.params.id;
 
