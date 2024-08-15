@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Form, Input, Select, Space } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
-import { useFormContext } from '../../contexts/FormContextProvider'
 
 import createTaskFormActions from '../create-task-form-component/actions'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import useGetAllContacts from '@/CustomHooks/useGetAllContants'
+import { IContacts } from '@/model/response/IContactResponse'
+import { concateFullName } from '@/Utilities/setFullName'
+import { CustomerSelect } from '../create-task-form-component/types'
+import { FormContext } from '../create-task-form-component/CreateTaskForm'
 
 const { Option } = Select
 
@@ -12,19 +16,36 @@ const { setCustomerSelectOptions, setCustomerFormValues, handleSelectChange } =
   createTaskFormActions()
 
 const CreateTaskFromPt1 = () => {
+  const { setCustomerContact } = useContext<any>(FormContext)
+
   const [newCustomer, setNewCustomer] = useState(false)
 
-  const {
-    form,
-    customers,
-    hybridInputText,
-    pickedCustomer,
-    filteredOptions,
-    hybridInputSelect,
-    setHybridInputSelect,
-    setNewCustomerSelect,
-    sethybridInputText,
-  } = useFormContext()
+  const { customers } = useGetAllContacts()
+  const [form] = Form.useForm<IContacts>()
+  const [hybridInputSelect, setHybridInputSelect] = useState<
+    string | undefined
+  >('')
+  const [hybridInputText, sethybridInputText] = useState<string>(
+    hybridInputSelect as string
+  )
+
+  const [newCustomerSelect, setNewCustomerSelect] = useState<CustomerSelect[]>()
+
+  const pickedCustomer = customers.find(
+    (item) =>
+      concateFullName(item.firstName, item.lastName) === hybridInputSelect
+  )
+
+  const filteredOptions = newCustomerSelect?.filter((option: any) =>
+    option.label.toLowerCase().includes(hybridInputText.toLowerCase())
+  )
+
+  useEffect(() => {
+    const fullName = pickedCustomer
+      ? concateFullName(pickedCustomer.firstName, pickedCustomer.lastName)
+      : ''
+    setCustomerContact(pickedCustomer)
+  }, [pickedCustomer])
 
   useEffect(() => {
     setCustomerSelectOptions(customers, setNewCustomerSelect)

@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useFormContext } from '@/contexts/FormContextProvider'
 import { Form, Input, DatePicker } from 'antd'
+import { useContext } from 'react'
+import { FormContext } from '../create-task-form-component/CreateTaskForm'
 
 const CreateTaskFormPt2 = () => {
-  const [form2] = Form.useForm()
-  const { form } = useFormContext()
-  form2.setFieldValue('firstName', form.getFieldValue('firstName'))
+  const { customerContact } = useContext(FormContext)
 
+  const [form2] = Form.useForm()
+  console.log(customerContact, 'IN  TASK FORM 2')
   return (
     <Form
       form={form2}
