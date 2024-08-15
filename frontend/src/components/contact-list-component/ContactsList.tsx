@@ -16,7 +16,7 @@ import useGetAllContacts from '@/CustomHooks/useGetAllContants'
 import ContactService from '@/service/ContactsService'
 
 const ContactsList: React.FC = () => {
-  const { customers: contacts, setCustomers: setContacts } = useGetAllContacts()
+  const { customers: contacts } = useGetAllContacts()
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredContacts, setFilteredContacts] = useState<IContacts[]>([])
   const [editingContact, setEditingContact] = useState<IContacts>(
@@ -45,7 +45,6 @@ const ContactsList: React.FC = () => {
   }
 
   const handleDelete = (id: number) => {
-    setContacts(contacts.filter((contact) => contact.id !== id))
     message.success('Contact deleted successfully')
     ContactService.deleteContactCustomer(id)
     setFilteredContacts(filteredContacts.filter((contact) => contact.id !== id))
@@ -58,7 +57,6 @@ const ContactsList: React.FC = () => {
     const updatedContacts = filteredContacts.map((contact) =>
       contact.id === editingContact.id ? { ...contact, ...values } : contact
     )
-    setContacts(updatedContacts)
     setFilteredContacts(updatedContacts)
     setIsModalOpen(false)
 

@@ -141,6 +141,39 @@ app.post("/ProductInput", (req, res) => {
   );
 });
 
+app.put("/Contacts/:id", (req, res) => {
+  const contactId = req.params.id;
+  const { firstName, lastName, phoneNumber, city, address, other } = req.body;
+
+  if (!firstName || !lastName || !phoneNumber || !city || !address) {
+    return res.status(400).send("All required fields must be provided.");
+  }
+
+  const query = `
+    UPDATE contacts 
+    SET firstName = ?, lastName = ?, phoneNumber = ?, city = ?, address = ?, other = ?
+    WHERE id = ?
+  `;
+
+  db.query(
+    query,
+    [firstName, lastName, phoneNumber, city, address, other, contactId],
+    (err, results) => {
+      if (err) {
+        console.error("Error updating contact:", err);
+        res.status(500).send("Error updating contact");
+      } else if (results.affectedRows === 0) {
+        res.status(404).send("Contact not found");
+      } else {
+        console.log("Contact updated successfully:", results);
+        res.send("Contact updated successfully");
+      }
+    }
+  );
+});
+
+
+
 app.put("/Products/:id", (req, res) => {
   const productId = req.params.id;
   const { name, manufacturer, model, price, quantity } = req.body;
@@ -171,7 +204,7 @@ app.put("/Products/:id", (req, res) => {
     }
   );
 });
-console.log('we')
+
 app.delete("/Products/:id", (req, res) => {
   const productId = req.params.id;
 
