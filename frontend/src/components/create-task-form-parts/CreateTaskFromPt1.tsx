@@ -71,6 +71,7 @@ const CreateTaskFromPt1 = () => {
     pickedCustomer //if existing customer just continue
       ? setCurrentPage(currentPage + 1) //else validate form , try adding
       : form
+
           .validateFields()
           .then((values: any) => {
             const { firstName } = values
@@ -82,6 +83,7 @@ const CreateTaskFromPt1 = () => {
             }
             ContactService.createContactCustomer(formatedData)
               .then((createdContact) => {
+                setCurrentPage(currentPage + 1)
                 console.log('Contact created:', createdContact)
               })
               .catch((error) => {
@@ -155,7 +157,7 @@ const CreateTaskFromPt1 = () => {
         ]}
         className="mb-4 mr-10 ml-10"
       >
-        <Input disabled={pickedCustomer ? true : false} />
+        <Input disabled={!newCustomer} />
       </Form.Item>
 
       <Form.Item
@@ -164,7 +166,7 @@ const CreateTaskFromPt1 = () => {
         rules={[{ required: true, message: 'Unesite mesto' }]}
         className="mb-4 mr-10 ml-10"
       >
-        <Input disabled={pickedCustomer ? true : false} />
+        <Input disabled={!newCustomer} />
       </Form.Item>
       <Form.Item
         label="Adresa"
@@ -172,15 +174,15 @@ const CreateTaskFromPt1 = () => {
         rules={[{ required: true, message: 'Unesite adresu' }]}
         className="mb-4 mr-10 ml-10"
       >
-        <Input disabled={pickedCustomer ? true : false} />
+        <Input disabled={!newCustomer} />
       </Form.Item>
       <Form.Item label="Ostalo" name="other" className="mb-4 mr-10 ml-10">
-        <TextArea disabled={pickedCustomer ? true : false} />
+        <TextArea disabled={!newCustomer} />
       </Form.Item>
 
       <ActionButton
         onClickHandler={onClickHandler}
-        title={pickedCustomer ? 'Nastavi' : 'Dodaj i nastavi'}
+        title={!newCustomer ? 'Nastavi' : 'Dodaj i nastavi'}
       />
     </Form>
   )
