@@ -1,9 +1,9 @@
 import { Button } from 'antd'
 import { CreateTaskForm } from '../create-task-form-component/CreateTaskForm'
-import { useModal } from '../../contexts/ModalContextProvider'
+import { useModalContext } from '../../contexts/ModalContextProvider'
 
 const CreateTaskModalComponent = () => {
-  const { setModalIsOpen, modalIsOpen } = useModal()
+  const { setModalIsOpen, modalIsOpen } = useModalContext()
 
   return (
     <div className="mt-6">

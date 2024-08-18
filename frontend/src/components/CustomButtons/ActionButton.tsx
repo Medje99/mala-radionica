@@ -2,19 +2,19 @@
 import { Button } from 'antd'
 import { CSSProperties } from 'react'
 
-interface NextButtonProps {
+interface ActionButton {
   onClickHandler: () => void
   title: string
   className?: string
   style?: CSSProperties
 }
 
-const NextButton = ({
+const ActionButton = ({
   onClickHandler,
   title,
   className,
   style,
-}: NextButtonProps) => {
+}: ActionButton) => {
   return (
     <Button onClick={onClickHandler} className={className} style={style}>
       {title}
@@ -22,4 +22,4 @@ const NextButton = ({
   )
 }
 
-export default NextButton
+export default ActionButton

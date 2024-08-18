@@ -1,18 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Form, Input, Select, Space } from 'antd'
+import { Form, Input, Select, Space } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 
 import createTaskFormActions from '../create-task-form-component/actions'
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import useGetAllContacts from '@/CustomHooks/useGetAllContants'
 import { IContacts } from '@/model/response/IContactResponse'
 import { concateFullName } from '@/Utilities/setFullName'
 import { CustomerSelect } from '../create-task-form-component/types'
-import { FormContext } from '../create-task-form-component/CreateTaskForm'
-import { useModal } from '@/contexts/ModalContextProvider'
-import NextButton from '../CustomButtons/NextButton'
 import { separateFullName } from '@/Utilities/getSeparatedFullName'
 import ContactService from '@/service/ContactsService'
+import ActionButton from '../CustomButtons/ActionButton'
+import { useModalContext } from '@/contexts/ModalContextProvider'
 
 const { Option } = Select
 
@@ -20,9 +19,9 @@ const { setCustomerSelectOptions, setCustomerFormValues, handleSelectChange } =
   createTaskFormActions()
 
 const CreateTaskFromPt1 = () => {
-  const { currentPage, setCurrentPage } = useModal()
-  const { setCustomerContact, setModalTitle } = useContext<any>(FormContext)
-  const [newCustomer, setNewCustomer] = useState(false)
+  const { setCustomerContact, setModalTitle, setCurrentPage, currentPage } =
+    useModalContext()
+  const [newCustomer, setNewCustomer] = useState(false) // definined boolean
 
   const { customers } = useGetAllContacts()
   const [form] = Form.useForm<IContacts>()
@@ -69,8 +68,8 @@ const CreateTaskFromPt1 = () => {
   }, [])
 
   const onClickHandler = () => {
-    pickedCustomer
-      ? setCurrentPage(currentPage + 1)
+    pickedCustomer //if existing customer just continue
+      ? setCurrentPage(currentPage + 1) //else validate form , try adding
       : form
           .validateFields()
           .then((values: any) => {
@@ -83,11 +82,10 @@ const CreateTaskFromPt1 = () => {
             }
             ContactService.createContactCustomer(formatedData)
               .then((createdContact) => {
-                setCurrentPage(currentPage + 1)
                 console.log('Contact created:', createdContact)
               })
               .catch((error) => {
-                console.error('Error:', error)
+                console.error('Error creating contact:', error)
               })
           })
           .catch((errorInfo: any) => {
@@ -157,7 +155,7 @@ const CreateTaskFromPt1 = () => {
         ]}
         className="mb-4 mr-10 ml-10"
       >
-        <Input disabled={!newCustomer} />
+        <Input disabled={pickedCustomer ? true : false} />
       </Form.Item>
 
       <Form.Item
@@ -166,7 +164,7 @@ const CreateTaskFromPt1 = () => {
         rules={[{ required: true, message: 'Unesite mesto' }]}
         className="mb-4 mr-10 ml-10"
       >
-        <Input disabled={!newCustomer} />
+        <Input disabled={pickedCustomer ? true : false} />
       </Form.Item>
       <Form.Item
         label="Adresa"
@@ -174,15 +172,16 @@ const CreateTaskFromPt1 = () => {
         rules={[{ required: true, message: 'Unesite adresu' }]}
         className="mb-4 mr-10 ml-10"
       >
-        <Input disabled={!newCustomer} />
+        <Input disabled={pickedCustomer ? true : false} />
       </Form.Item>
       <Form.Item label="Ostalo" name="other" className="mb-4 mr-10 ml-10">
-        <TextArea disabled={!newCustomer} />
+        <TextArea disabled={pickedCustomer ? true : false} />
       </Form.Item>
-      <Form.Item label="Ostalo" name="other" className="mb-4 mr-10 ml-10">
-        <Button onClick={() => setCurrentPage(currentPage + 1)}>Create</Button>
-      </Form.Item>
-      <NextButton onClickHandler={onClickHandler} title="Dalje" />
+
+      <ActionButton
+        onClickHandler={onClickHandler}
+        title={pickedCustomer ? 'Nastavi' : 'Dodaj i nastavi'}
+      />
     </Form>
   )
 }

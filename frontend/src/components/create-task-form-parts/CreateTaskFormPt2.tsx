@@ -1,12 +1,11 @@
 import { Form, Input, DatePicker, Switch } from 'antd'
-import { useContext, useEffect, useState } from 'react'
-import { FormContext } from '../create-task-form-component/CreateTaskForm'
-import NextButton from '../CustomButtons/NextButton'
-import { useModal } from '@/contexts/ModalContextProvider'
+import { useEffect, useState } from 'react'
+import ActionButton from '../CustomButtons/ActionButton'
+import { useModalContext } from '@/contexts/ModalContextProvider'
 
 const CreateTaskFormPt2 = () => {
-  const { customerContact, setModalTitle } = useContext(FormContext)
-  const { currentPage, setCurrentPage } = useModal()
+  const { currentPage, setCurrentPage, customerContact, setModalTitle } =
+    useModalContext()
 
   useEffect(() => {
     setModalTitle('Forma 2')
@@ -75,6 +74,7 @@ const CreateTaskFormPt2 = () => {
             onChange={() => setIsFinished(!isFinished)}
             className="mr-10"
           />
+          {/**/}
         </Form.Item>
         {isFinished && (
           <Form.Item
@@ -92,11 +92,11 @@ const CreateTaskFormPt2 = () => {
         )}
       </div>
       <div className="flex flex-row justify-between mt-5">
-        <NextButton
+        <ActionButton
           onClickHandler={() => setCurrentPage(currentPage - 1)}
           title="Nazad"
         />
-        <NextButton
+        <ActionButton
           onClickHandler={onClickHandler}
           title={isFinished ? 'Naplata' : 'Dodaj na listu poslova'}
           className={`transition-all duration-500 transform ${
