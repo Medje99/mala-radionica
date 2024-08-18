@@ -1,27 +1,42 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Form, Input, DatePicker } from 'antd'
-import { useContext } from 'react'
+import { Form, Input, DatePicker, Switch } from 'antd'
+import { useContext, useEffect, useState } from 'react'
 import { FormContext } from '../create-task-form-component/CreateTaskForm'
+import NextButton from '../CustomButtons/NextButton'
+import { useModal } from '@/contexts/ModalContextProvider'
 
 const CreateTaskFormPt2 = () => {
-  const { customerContact } = useContext(FormContext)
+  const { customerContact, setModalTitle } = useContext(FormContext)
+  const { currentPage, setCurrentPage } = useModal()
 
-  const [form2] = Form.useForm()
-  console.log(customerContact, 'IN  TASK FORM 2')
+  useEffect(() => {
+    setModalTitle('Forma 2')
+  }, [])
+
+  const [form] = Form.useForm()
+  const [isFinished, setIsFinished] = useState(false)
+  const [animating, setAnimating] = useState(false)
+
+  useEffect(() => {
+    setAnimating(true)
+    const timer = setTimeout(() => setAnimating(false), 300)
+    return () => clearTimeout(timer)
+  }, [isFinished])
+
+  const onClickHandler = () => {
+    console.log(form.getFieldsValue())
+    console.log(form.getFieldValue('creation_date').format('DD/MM/YYYY'))
+  }
+
   return (
     <Form
-      form={form2}
+      form={form}
       name="job-form"
       layout="vertical"
       className="bg-white p-5 rounded-lg"
     >
       {/* Job Name */}
-      <Form.Item
-        label="firstName"
-        name="firstName"
-        rules={[{ required: true, message: 'Please input the job name!' }]}
-      >
-        <Input disabled={true} />
+      <Form.Item label="Selected Customer:">
+        <Input disabled={true} placeholder={customerContact?.fullName} />
       </Form.Item>
 
       <Form.Item
@@ -43,34 +58,52 @@ const CreateTaskFormPt2 = () => {
         <Input.TextArea />
       </Form.Item>
 
-      {/* Contact ID */}
-      <Form.Item
-        label="Contact ID"
-        name="contact_id"
-        rules={[{ required: true, message: 'Please input the contact ID!' }]}
-      >
-        <Input type="number" />
-      </Form.Item>
-
       {/* Creation Date */}
-      <Form.Item
-        label="Creation Date"
-        name="creation_date"
-        rules={[
-          { required: true, message: 'Please select the creation date!' },
-        ]}
-      >
-        <DatePicker style={{ width: '100%' }} />
-      </Form.Item>
-
-      {/* Finish Date */}
-      <Form.Item
-        label="Finish Date"
-        name="finish_date"
-        rules={[{ required: false, message: 'Please select the finish date!' }]}
-      >
-        <DatePicker style={{ width: '100%' }} />
-      </Form.Item>
+      <div className="flex flex-row">
+        <Form.Item
+          label="Creation Date"
+          name="creation_date"
+          rules={[
+            { required: true, message: 'Please select the creation date!' },
+          ]}
+        >
+          <DatePicker showNow format="DD/MM/YYYY" className="mr-10" />
+        </Form.Item>
+        <Form.Item label="End Date">
+          <Switch
+            checked={isFinished}
+            onChange={() => setIsFinished(!isFinished)}
+            className="mr-10"
+          />
+        </Form.Item>
+        {isFinished && (
+          <Form.Item
+            label="Finish Date"
+            name="finish_date"
+            rules={[
+              { required: true, message: 'Please select the creation date!' },
+            ]}
+            className={`transition-all duration-500 transform ${
+              animating ? 'opacity-0 rotate-45' : 'opacity-100 rotate-0'
+            }`}
+          >
+            <DatePicker showNow format="DD/MM/YYYY" />
+          </Form.Item>
+        )}
+      </div>
+      <div className="flex flex-row justify-between mt-5">
+        <NextButton
+          onClickHandler={() => setCurrentPage(currentPage - 1)}
+          title="Nazad"
+        />
+        <NextButton
+          onClickHandler={onClickHandler}
+          title={isFinished ? 'Naplata' : 'Dodaj na listu poslova'}
+          className={`transition-all duration-500 transform ${
+            animating ? 'opacity-0 rotate-45' : 'opacity-100 rotate-0'
+          }`}
+        />
+      </div>
     </Form>
   )
 }

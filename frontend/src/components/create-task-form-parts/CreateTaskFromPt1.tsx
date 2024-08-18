@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Form, Input, Select, Space } from 'antd'
+import { Button, Form, Input, Select, Space } from 'antd'
 import TextArea from 'antd/es/input/TextArea'
 
 import createTaskFormActions from '../create-task-form-component/actions'
@@ -9,6 +9,10 @@ import { IContacts } from '@/model/response/IContactResponse'
 import { concateFullName } from '@/Utilities/setFullName'
 import { CustomerSelect } from '../create-task-form-component/types'
 import { FormContext } from '../create-task-form-component/CreateTaskForm'
+import { useModal } from '@/contexts/ModalContextProvider'
+import NextButton from '../CustomButtons/NextButton'
+import { separateFullName } from '@/Utilities/getSeparatedFullName'
+import ContactService from '@/service/ContactsService'
 
 const { Option } = Select
 
@@ -16,8 +20,8 @@ const { setCustomerSelectOptions, setCustomerFormValues, handleSelectChange } =
   createTaskFormActions()
 
 const CreateTaskFromPt1 = () => {
-  const { setCustomerContact } = useContext<any>(FormContext)
-
+  const { currentPage, setCurrentPage } = useModal()
+  const { setCustomerContact, setModalTitle } = useContext<any>(FormContext)
   const [newCustomer, setNewCustomer] = useState(false)
 
   const { customers } = useGetAllContacts()
@@ -41,11 +45,16 @@ const CreateTaskFromPt1 = () => {
   )
 
   useEffect(() => {
-    const fullName = pickedCustomer
-      ? concateFullName(pickedCustomer.firstName, pickedCustomer.lastName)
-      : ''
-    setCustomerContact(pickedCustomer)
-  }, [pickedCustomer])
+    if (pickedCustomer) {
+      setCustomerContact({
+        id: pickedCustomer.id,
+        fullName: concateFullName(
+          pickedCustomer.firstName,
+          pickedCustomer.lastName
+        ),
+      })
+    }
+  }, [pickedCustomer, hybridInputText, form])
 
   useEffect(() => {
     setCustomerSelectOptions(customers, setNewCustomerSelect)
@@ -53,7 +62,38 @@ const CreateTaskFromPt1 = () => {
 
   useEffect(() => {
     setCustomerFormValues(pickedCustomer, form, setNewCustomer)
-  }, [pickedCustomer, form])
+  }, [pickedCustomer])
+
+  useEffect(() => {
+    setModalTitle('Forma 1')
+  }, [])
+
+  const onClickHandler = () => {
+    pickedCustomer
+      ? setCurrentPage(currentPage + 1)
+      : form
+          .validateFields()
+          .then((values: any) => {
+            const { firstName } = values
+            const separatedName = separateFullName(firstName)
+            const formatedData = {
+              ...values,
+              firstName: separatedName.firstName,
+              lastName: separatedName.lastName,
+            }
+            ContactService.createContactCustomer(formatedData)
+              .then((createdContact) => {
+                setCurrentPage(currentPage + 1)
+                console.log('Contact created:', createdContact)
+              })
+              .catch((error) => {
+                console.error('Error:', error)
+              })
+          })
+          .catch((errorInfo: any) => {
+            console.error('Validation failed:', errorInfo)
+          })
+  }
 
   return (
     <Form
@@ -139,6 +179,10 @@ const CreateTaskFromPt1 = () => {
       <Form.Item label="Ostalo" name="other" className="mb-4 mr-10 ml-10">
         <TextArea disabled={!newCustomer} />
       </Form.Item>
+      <Form.Item label="Ostalo" name="other" className="mb-4 mr-10 ml-10">
+        <Button onClick={() => setCurrentPage(currentPage + 1)}>Create</Button>
+      </Form.Item>
+      <NextButton onClickHandler={onClickHandler} title="Dalje" />
     </Form>
   )
 }
