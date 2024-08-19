@@ -226,6 +226,144 @@ app.delete("/Products/:id", (req, res) => {
   });
 });
 
+app.get("/tasks", (req, res) => {
+  console.log("GET /tasks called");
+
+  const selectQuery = "SELECT * FROM tasks";
+
+  db.query(selectQuery, (err, results) => {
+    if (err) {
+      console.error("Error retrieving tasks:", err);
+      res.status(500).json({ error: "Error retrieving tasks" });
+    } else {
+      console.log("Retrieved tasks:", results);
+      res.json(results);
+    }
+  });
+});
+
+
+// Tasks route POST Handler Express
+app.post("/task", (req, res) => {
+  console.log("POST /task called");
+  const { id, contact_id, job_name, job_description, creation_date,} = req.body;
+  console.log("Received data:", req.body);
+
+  const insertQuery = 
+    "INSERT INTO `tasks` (`id`, `contact_id`, `job_name`, `job_description`,  `creation_date`) VALUES (?, ?, ?, ?,  ?);";
+  
+  db.query(
+    insertQuery,
+    [id, contact_id, job_name, job_description,  creation_date],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting task:", err);
+        res
+          .status(500)
+          .json({ error: `Error inserting task: ${err.message}` });
+      } else {
+        const selectQuery = "SELECT * FROM tasks WHERE id = ?";
+        db.query(selectQuery, [result.insertId], (err, newTask) => {
+          if (err) {
+            console.error("Error retrieving new task:", err);
+            res
+              .status(500)
+              .json({ error: `Error retrieving new task: ${err.message}` });
+          } else {
+            console.log("Newly added task:", newTask[0]);
+            res.json(newTask[0]);
+          }
+        });
+      }
+    }
+  );
+});
+
+app.get("/tasks/:id", (req, res) => {
+  console.log("GET /tasks/:id called");
+
+  const taskId = req.params.id;
+
+  const selectQuery = "SELECT * FROM tasks WHERE id = ?";
+
+  db.query(selectQuery, [taskId], (err, results) => {
+    if (err) {
+      console.error("Error retrieving task:", err);
+      res.status(500).json({ error: "Error retrieving task" });
+    } else if (results.length === 0) {
+      res.status(404).json({ error: `Task with id ${taskId} not found` });
+    } else {
+      console.log("Retrieved task:", results[0]);
+      res.json(results[0]);
+    }
+  });
+});
+
+
+// Tasks route PUT Handler Express
+// Tasks route PUT Handler Express
+app.put("/task/:id", (req, res) => {
+  console.log("PUT /task called");
+  const { id } = req.params;
+  const { contact_id, job_name, job_description, bill_id, creation_date } = req.body;
+  console.log("Received data for update:", req.body);
+
+  const updateQuery = 
+    "UPDATE `tasks` SET `contact_id` = ?, `job_name` = ?, `job_description` = ?, `bill_id` = ?, `creation_date` = ? WHERE `id` = ?;";
+  
+  db.query(
+    updateQuery,
+    [contact_id, job_name, job_description, bill_id, creation_date, id],
+    (err, result) => {
+      if (err) {
+        console.error("Error updating task:", err);
+        res
+          .status(500)
+          .json({ error: `Error updating task: ${err.message}` });
+      } else if (result.affectedRows === 0) {
+        res
+          .status(404)
+          .json({ error: `Task with id ${id} not found` });
+      } else {
+        const selectQuery = "SELECT * FROM tasks WHERE id = ?";
+        db.query(selectQuery, [id], (err, updatedTask) => {
+          if (err) {
+            console.error("Error retrieving updated task:", err);
+            res
+              .status(500)
+              .json({ error: `Error retrieving updated task: ${err.message}` });
+          } else {
+            console.log("Updated task:", updatedTask[0]);
+            res.json(updatedTask[0]);
+          }
+        });
+      }
+    }
+  );
+});
+
+// Tasks route DELETE Handler Express
+app.delete("/task/:id", (req, res) => {
+  console.log("DELETE /task called");
+  const { id } = req.params;
+
+  const deleteQuery = "DELETE FROM `tasks` WHERE `id` = ?";
+
+  db.query(deleteQuery, [id], (err, result) => {
+    if (err) {
+      console.error("Error deleting task:", err);
+      res.status(500).json({ error: `Error deleting task: ${err.message}` });
+    } else if (result.affectedRows === 0) {
+      res.status(404).json({ error: `Task with id ${id} not found` });
+    } else {
+      console.log(`Task with id ${id} deleted successfully`);
+      res.json({ message: `Task with id ${id} deleted successfully` });
+    }
+  });
+});
+
+
+
 
 
 
