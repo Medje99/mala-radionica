@@ -11,10 +11,18 @@ interface ModalStateType {
   setCustomerContact: React.Dispatch<
     React.SetStateAction<ICustomerContact | undefined>
   >
+  job: IJob
+  setJob: React.Dispatch<React.SetStateAction<IJob>>
 }
+
 interface ICustomerContact {
   id: number | undefined
   fullName: string
+}
+
+interface IJob {
+  end_date: Date | null
+  job_id?: number
 }
 
 const ModalContext = createContext<ModalStateType | null>(null)
@@ -32,6 +40,7 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
   const [currentPage, setCurrentPage] = useState(0)
   const [modalTitle, setModalTitle] = useState('')
   const [customerContact, setCustomerContact] = useState<ICustomerContact>()
+  const [job, setJob] = useState<IJob>({} as IJob)
 
   return (
     <ModalContext.Provider
@@ -44,6 +53,8 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
         setModalTitle,
         customerContact,
         setCustomerContact,
+        job,
+        setJob,
       }}
     >
       {children}

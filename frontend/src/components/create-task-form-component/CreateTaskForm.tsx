@@ -1,23 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Modal } from 'antd'
-import CreateProgress from '../create-task-progress/CreateTaskProgress'
-import CreateTaskFormPt2 from '../create-task-form-parts/CreateTaskFormPt2'
-import CreateTaskFromPt1 from '../create-task-form-parts/CreateTaskFromPt1'
-import CreateTaskFormPt3 from '../create-task-form-parts/CreateTaskFormPt3'
+import CreateContactForm from '../modal-form-parts/CreateContactForm'
 import { useModalContext } from '../../contexts/ModalContextProvider'
+import CreateTaskForm from '../modal-form-parts/CreateTaskForm'
+import CreateBillForm from '../modal-form-parts/CreateBillForm'
 
-export const CreateTaskForm = () => {
+export const CreateTaskModal = () => {
   const { modalIsOpen, currentPage, setModalIsOpen, modalTitle } =
     useModalContext()
 
   const renderFormPart = () => {
     switch (currentPage) {
       case 0:
-        return <CreateTaskFromPt1 />
+        return <CreateContactForm />
       case 1:
-        return <CreateTaskFormPt2 />
+        return <CreateTaskForm />
       case 2:
-        return <CreateTaskFormPt3 />
+        return <CreateBillForm />
       default:
         return null
     }
@@ -35,7 +34,7 @@ export const CreateTaskForm = () => {
       footer={null}
     >
       {renderFormPart()}
-      <CreateProgress currentPage={currentPage} />
+      {/* <CreateProgress currentPage={currentPage} /> */}
     </Modal>
   )
 }

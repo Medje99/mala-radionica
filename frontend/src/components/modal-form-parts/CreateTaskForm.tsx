@@ -2,16 +2,24 @@ import { Form, Input, DatePicker, Switch } from 'antd'
 import { useEffect, useState } from 'react'
 import ActionButton from '../CustomButtons/ActionButton'
 import { useModalContext } from '@/contexts/ModalContextProvider'
+import TaskService from '@/service/TaskService'
+import { ITaskResponse } from '@/model/response/ITaskResponse'
 
-const CreateTaskFormPt2 = () => {
-  const { currentPage, setCurrentPage, customerContact, setModalTitle } =
-    useModalContext()
+const CreateTaskForm = () => {
+  const {
+    currentPage,
+    setCurrentPage,
+    customerContact,
+    setModalTitle,
+    setJob,
+    setModalIsOpen,
+  } = useModalContext()
 
   useEffect(() => {
     setModalTitle('Forma 2')
   }, [])
 
-  const [form] = Form.useForm()
+  const [form] = Form.useForm<ITaskResponse>()
   const [isFinished, setIsFinished] = useState(false)
   const [animating, setAnimating] = useState(false)
 
@@ -22,9 +30,19 @@ const CreateTaskFormPt2 = () => {
   }, [isFinished])
 
   const onClickHandler = () => {
-    console.log(form.getFieldValue('creation_date').format('DD/MM/YYYY'))
     form.validateFields().then((values) => {
-      console.log('Vrednosti iz forme 2 ', values)
+      const fullData = {
+        ...values,
+        contact_id: customerContact?.id ?? 0,
+      }
+      TaskService.createTask(fullData).then((response) => {
+        setJob({
+          end_date: form.getFieldValue('end_date'),
+          job_id: response.data.id,
+        })
+      })
+
+      isFinished ? setCurrentPage(currentPage + 1) : setModalIsOpen(false)
     })
   }
 
@@ -81,7 +99,7 @@ const CreateTaskFormPt2 = () => {
         {isFinished && (
           <Form.Item
             label="Finish Date"
-            name="finish_date"
+            name="end_date"
             rules={[
               { required: true, message: 'Please select the creation date!' },
             ]}
@@ -110,4 +128,4 @@ const CreateTaskFormPt2 = () => {
   )
 }
 
-export default CreateTaskFormPt2
+export default CreateTaskForm

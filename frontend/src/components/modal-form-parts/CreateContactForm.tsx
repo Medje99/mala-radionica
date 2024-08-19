@@ -18,14 +18,9 @@ const { Option } = Select
 const { setCustomerSelectOptions, setCustomerFormValues, handleSelectChange } =
   createTaskFormActions()
 
-const CreateTaskFromPt1 = () => {
-  const {
-    customerContact,
-    setCustomerContact,
-    setModalTitle,
-    setCurrentPage,
-    currentPage,
-  } = useModalContext()
+const CreateContactForm = () => {
+  const { setCustomerContact, setModalTitle, setCurrentPage, currentPage } =
+    useModalContext()
   const [newCustomer, setNewCustomer] = useState(false) // definined boolean
 
   const { customers } = useGetAllContacts()
@@ -202,4 +197,4 @@ const CreateTaskFromPt1 = () => {
   )
 }
 
-export default CreateTaskFromPt1
+export default CreateContactForm

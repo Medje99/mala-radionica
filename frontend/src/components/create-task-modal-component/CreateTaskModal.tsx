@@ -1,6 +1,6 @@
 import { Button } from 'antd'
-import { CreateTaskForm } from '../create-task-form-component/CreateTaskForm'
 import { useModalContext } from '../../contexts/ModalContextProvider'
+import { CreateTaskModal } from '../create-task-form-component/CreateTaskForm'
 
 const CreateTaskModalComponent = () => {
   const { setModalIsOpen, modalIsOpen } = useModalContext()
@@ -14,7 +14,7 @@ const CreateTaskModalComponent = () => {
       >
         Dodaj
       </Button>
-      {modalIsOpen && <CreateTaskForm />}
+      {modalIsOpen && <CreateTaskModal />}
     </div>
   )
 }
