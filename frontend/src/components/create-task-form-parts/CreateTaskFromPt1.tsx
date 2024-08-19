@@ -19,8 +19,13 @@ const { setCustomerSelectOptions, setCustomerFormValues, handleSelectChange } =
   createTaskFormActions()
 
 const CreateTaskFromPt1 = () => {
-  const { setCustomerContact, setModalTitle, setCurrentPage, currentPage } =
-    useModalContext()
+  const {
+    customerContact,
+    setCustomerContact,
+    setModalTitle,
+    setCurrentPage,
+    currentPage,
+  } = useModalContext()
   const [newCustomer, setNewCustomer] = useState(false) // definined boolean
 
   const { customers } = useGetAllContacts()
@@ -81,10 +86,19 @@ const CreateTaskFromPt1 = () => {
               firstName: separatedName.firstName,
               lastName: separatedName.lastName,
             }
+
             ContactService.createContactCustomer(formatedData)
-              .then((createdContact) => {
+              .then((response) => {
+                const customer = response.data
                 setCurrentPage(currentPage + 1)
-                console.log('Contact created:', createdContact)
+                setCustomerContact({
+                  id: customer.id,
+                  fullName: concateFullName(
+                    customer.firstName,
+                    customer.lastName
+                  ),
+                })
+                console.log('Pushed to context need to refine:', customer)
               })
               .catch((error) => {
                 console.error('Error creating contact:', error)

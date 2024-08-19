@@ -22,8 +22,10 @@ const CreateTaskFormPt2 = () => {
   }, [isFinished])
 
   const onClickHandler = () => {
-    console.log(form.getFieldsValue())
     console.log(form.getFieldValue('creation_date').format('DD/MM/YYYY'))
+    form.validateFields().then((values) => {
+      console.log('Vrednosti iz forme 2 ', values)
+    })
   }
 
   return (

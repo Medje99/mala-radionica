@@ -7,16 +7,16 @@ const getAllCustomers = async () => {
   return await axios.get<IContacts[]>(baseUrl + '/contacts')
 }
 
-const createContactCustomer = async (data: any) => {
-  return await axios.post<IContacts[]>(baseUrl + '/contacts', data)
+const createContactCustomer = async (data: IContacts) => {
+  return await axios.post<IContacts>(baseUrl + '/contacts', data)
 }
 
-const updateContactCustomer = async (data: any) => {
-  return await axios.put<IContacts[]>(baseUrl + '/contacts/' + data.id, data)
+const updateContactCustomer = async (data: IContacts) => {
+  return await axios.put<IContacts>(baseUrl + '/contacts/' + data.id, data)
 }
 
 const deleteContactCustomer = async (id: number) => {
-  return await axios.delete<IContacts[]>(baseUrl + '/contacts/' + id)
+  return await axios.delete<IContacts>(baseUrl + '/contacts/' + id)
 }
 
 const ContactService = {
