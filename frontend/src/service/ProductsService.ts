@@ -18,11 +18,22 @@ const deleteProduct = async (id: number) => {
   return await axios.delete<IProducts[]>(baseUrl + '/Products/' + id)
 }
 
+const getProductById = async (id: string | number) => {
+  try {
+    const response = await axios.get<IProducts>(`${baseUrl}/Products/${id}`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching product:', error)
+    throw error // You can handle the error as needed
+  }
+}
+
 const ProductsService = {
   getAllProducts,
   createProductEntry,
   updateProduct,
   deleteProduct,
+  getProductById,
 }
 
 export default ProductsService

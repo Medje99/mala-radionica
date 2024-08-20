@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Form, Input, DatePicker, Switch, InputNumber } from 'antd'
 import { useEffect, useState } from 'react'
 import ActionButton from '../CustomButtons/ActionButton'
 import { useModalContext } from '@/contexts/ModalContextProvider'
 import TaskService from '@/service/TaskService'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
+import Hybrid from './test/hybrid'
+import ProductsService from '@/service/ProductsService'
 
 const CreateTaskForm = () => {
   const {
@@ -35,14 +38,15 @@ const CreateTaskForm = () => {
         ...values,
         contact_id: customerContact?.id ?? 0,
       }
-      TaskService.createTask(fullData).then((response) => {
-        setJob({
-          end_date: form.getFieldValue('finished_date'),
-          job_id: response.data.id,
-        })
-      })
+      console.log(fullData)
+      //   TaskService.createTask(fullData).then((response) => {
+      //     setJob({
+      //       end_date: form.getFieldValue('finished_date'),
+      //       job_id: response.data.id,
+      //     })
+      //   })
 
-      isPaid ? setCurrentPage(currentPage + 1) : setModalIsOpen(false)
+      //   isPaid ? setCurrentPage(currentPage + 1) : setModalIsOpen(false)
     })
   }
 
@@ -52,6 +56,7 @@ const CreateTaskForm = () => {
       name="task-form"
       layout="vertical"
       className="bg-white p-5 rounded-lg"
+      onFinish={onClickHandler}
     >
       {/* Full Name */}
       <Form.Item label="Selected Customer:">
@@ -83,14 +88,7 @@ const CreateTaskForm = () => {
         <Switch checked={isPaid} onChange={() => setIsPaid(!isPaid)} />
       </Form.Item>
 
-      {/* Products Used */}
-      <Form.Item
-        label="Products Used"
-        name="products_used"
-        rules={[{ required: true, message: 'Please list the products used!' }]}
-      >
-        <Input.TextArea />
-      </Form.Item>
+      <Hybrid />
 
       <div className="flex flex-row justify-between mt-5">
         <ActionButton

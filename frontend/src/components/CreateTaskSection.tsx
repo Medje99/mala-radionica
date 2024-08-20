@@ -1,5 +1,5 @@
 import { ModalProvider } from '../contexts/ModalContextProvider'
-import CreateTaskModalComponent from './create-task-modal-component/CreateTaskModal'
+import ModalBody from './create-task-modal-component/ModalBody'
 
 const CreateTaskSection = () => {
   return (
@@ -12,7 +12,7 @@ const CreateTaskSection = () => {
                 <h1 className="lg:leading-tighter text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl xl:text-[3.4rem] 2xl:text-[3.75rem]">
                   Dodaj novi posao
                 </h1>
-                <CreateTaskModalComponent />
+                <ModalBody />
               </div>
             </div>
           </div>

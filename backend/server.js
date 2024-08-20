@@ -205,6 +205,27 @@ app.put("/Products/:id", (req, res) => {
   );
 });
 
+app.get("/Products/:id", (req, res) => {
+  const productId = req.params.id;
+
+  const query = `
+    SELECT * FROM product WHERE id = ?
+  `;
+
+  db.query(query, [productId], (err, results) => {
+    if (err) {
+      console.error("Error retrieving product:", err);
+      res.status(500).send("Error retrieving product");
+    } else if (results.length === 0) {
+      res.status(404).send("Product not found");
+    } else {
+      console.log("Product retrieved successfully:", results[0]);
+      res.json(results[0]);
+    }
+  });
+});
+
+
 app.delete("/Products/:id", (req, res) => {
   const productId = req.params.id;
 

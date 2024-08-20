@@ -5,7 +5,7 @@ import { useModalContext } from '../../contexts/ModalContextProvider'
 import CreateTaskForm from '../modal-form-parts/CreateTaskForm'
 import CreateBillForm from '../modal-form-parts/CreateBillForm'
 
-export const CreateTaskModal = () => {
+export const ModalBody = () => {
   const { modalIsOpen, currentPage, setModalIsOpen, modalTitle } =
     useModalContext()
 
