@@ -29,10 +29,10 @@ const ContactsList: React.FC = () => {
     const filtered = contacts.filter((contact) => {
       const searchText = searchTerm.toLowerCase()
       return (
-        contact.firstName.toLowerCase().includes(searchText) ||
-        contact.lastName.toLowerCase().includes(searchText) ||
-        contact.city.toLowerCase().includes(searchText) ||
-        contact.phoneNumber.toLowerCase().includes(searchText)
+        contact.firstName?.toLowerCase().includes(searchText) ||
+        contact.lastName?.toLowerCase().includes(searchText) ||
+        contact.city?.toLowerCase().includes(searchText) ||
+        contact.phoneNumber?.toLowerCase().includes(searchText)
       )
     })
     setFilteredContacts(filtered)

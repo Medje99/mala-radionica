@@ -7,16 +7,10 @@ import TaskService from '@/service/TaskService'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
 import Hybrid from './test/hybrid'
 import ProductsService from '@/service/ProductsService'
+import useGetAllProducts from '../../CustomHooks/useGetAllProducts'
 
 const CreateTaskForm = () => {
-  const {
-    currentPage,
-    setCurrentPage,
-    customerContact,
-    setModalTitle,
-    setJob,
-    setModalIsOpen,
-  } = useModalContext()
+  const { currentPage, setCurrentPage, customerContact, setModalTitle, setJob, setModalIsOpen } = useModalContext()
 
   useEffect(() => {
     setModalTitle('Task Form - Part 2')
@@ -25,6 +19,7 @@ const CreateTaskForm = () => {
   const [form] = Form.useForm<ITaskResponse>()
   const [isPaid, setIsPaid] = useState(false)
   const [animating, setAnimating] = useState(false)
+  const { allProducts } = useGetAllProducts()
 
   useEffect(() => {
     setAnimating(true)
@@ -34,11 +29,23 @@ const CreateTaskForm = () => {
 
   const onClickHandler = () => {
     form.validateFields().then((values) => {
-      const fullData = {
+      const updatedProductsUsed = values.products_used.map((item) => {
+        const productName = allProducts.find((p) => p.id === item.product)?.name || ''
+        return {
+          ...item,
+          name: productName,
+        }
+      })
+
+      const updatedValues = {
         ...values,
+        products_used: updatedProductsUsed,
         contact_id: customerContact?.id ?? 0,
       }
-      console.log(fullData)
+
+      console.log(updatedValues)
+
+      // This will now log the product name correctly
       //   TaskService.createTask(fullData).then((response) => {
       //     setJob({
       //       end_date: form.getFieldValue('finished_date'),
@@ -51,13 +58,7 @@ const CreateTaskForm = () => {
   }
 
   return (
-    <Form
-      form={form}
-      name="task-form"
-      layout="vertical"
-      className="bg-white p-5 rounded-lg"
-      onFinish={onClickHandler}
-    >
+    <Form form={form} name="task-form" layout="vertical" className="bg-white p-5 rounded-lg" onFinish={onClickHandler}>
       {/* Full Name */}
       <Form.Item label="Selected Customer:">
         <Input disabled={true} placeholder={customerContact?.fullName} />
@@ -67,9 +68,7 @@ const CreateTaskForm = () => {
       <Form.Item
         label="Finished Date"
         name="finished_date"
-        rules={[
-          { required: true, message: 'Please select the finished date!' },
-        ]}
+        rules={[{ required: true, message: 'Please select the finished date!' }]}
       >
         <DatePicker showNow format="DD/MM/YYYY" />
       </Form.Item>
