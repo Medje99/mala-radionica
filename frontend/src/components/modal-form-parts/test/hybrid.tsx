@@ -48,7 +48,6 @@ const Hybrid = () => {
               }}
               style={{ width: 'calc(100% - 32px)' }}
               onChange={(value) => {
-                console.log(value)
                 handleProductChange(index, value)
               }}
             >

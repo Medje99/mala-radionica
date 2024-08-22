@@ -28,13 +28,17 @@ const CreateTaskForm = () => {
 
   const onClickHandler = () => {
     form.validateFields().then((values) => {
+      const { end_date, ...restValues } = values
+
       const fullData = {
-        ...values,
+        ...restValues,
         contact_id: customerContact?.id ?? 0,
       }
 
       TaskService.createTask(fullData).then((response) => {
-        console.log('clg forma 2 posle setJob : job.end_date ' + job.end_date)
+        setJob({
+          job_id: response.data.id,
+        })
       })
 
       isFinished ? setCurrentPage(currentPage + 1) : setModalIsOpen(false)

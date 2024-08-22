@@ -269,16 +269,16 @@ app.get("/tasks", (req, res) => {
 // Tasks route POST Handler Express
 app.post("/task", (req, res) => {
   console.log("POST /task called");
-  const { id, contact_id, job_name, job_description, creation_date, end_date } =
+  const { id, contact_id, job_name, job_description, creation_date } =
     req.body;
   console.log("Received data:", req.body);
 
   const insertQuery =
-    "INSERT INTO `tasks` (`id`, `contact_id`, `job_name`, `job_description`,  `creation_date`,`end_date`) VALUES (?, ?, ?, ?,?,?);";
+    "INSERT INTO `tasks` (`id`, `contact_id`, `job_name`, `job_description`,  `creation_date`) VALUES (?, ?, ?, ?,?);";
 
   db.query(
     insertQuery,
-    [id, contact_id, job_name, job_description, creation_date, end_date],
+    [id, contact_id, job_name, job_description, creation_date ],
     (err, result) => {
       if (err) {
         console.error("Error inserting task:", err);
@@ -359,6 +359,64 @@ app.put("/task/:id", (req, res) => {
     }
   );
 });
+
+app.post("/bill", (req, res) => {
+  console.log("POST /bill called");
+  const { contact_id, job_id, end_date, labor_cost, paid, parts_cost, products_used } = req.body;
+  console.log("Received data:", req.body);
+
+  // Convert products_used to a JSON string before inserting
+  const productsUsedJson = JSON.stringify(products_used);
+
+  const insertQuery =
+    "INSERT INTO `bills` (`contact_id`, `job_id`, `end_date`, `labor_cost`, `paid`, `parts_cost`, `products_used`) VALUES (?, ?, ?, ?, ?, ?, ?);";
+  db.query(
+    insertQuery,
+    [contact_id, job_id, end_date, labor_cost, paid, parts_cost, productsUsedJson],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting bill:", err);
+        res.status(500).json({ error: `Error inserting bill: ${err.message}` });
+      } else {
+        const selectQuery = "SELECT * FROM bills WHERE bill_id = ?";
+        db.query(selectQuery, [result.insertId], (err, newBill) => {
+          if (err) {
+            console.error("Error retrieving new bill:", err);
+            res
+              .status(500)
+              .json({ error: `Error retrieving new bill: ${err.message}` });
+          } else {
+            console.log("Newly added bill:", newBill[0]);
+            res.json(newBill[0]);
+          }
+        });
+      }
+    }
+  );
+});
+
+// GET /bills Handler - Get all bills with products_used as an array of objects
+app.get("/bills", (req, res) => {
+  console.log("GET /bills called");
+
+  const selectQuery = "SELECT * FROM bills;";
+  db.query(selectQuery, (err, bills) => {
+    if (err) {
+      console.error("Error retrieving bills:", err);
+      res.status(500).json({ error: `Error retrieving bills: ${err.message}` });
+    } else {
+      // Parse products_used from JSON string to an array of objects
+      const billsWithParsedProducts = bills.map(bill => ({
+        ...bill,
+        products_used: JSON.parse(bill.products_used) // Parse products_used field
+      }));
+
+      console.log("Retrieved bills with parsed products_used:", billsWithParsedProducts);
+      res.json(billsWithParsedProducts);
+    }
+  });
+});
+
 
 // Tasks route DELETE Handler Express
 app.delete("/task/:id", (req, res) => {

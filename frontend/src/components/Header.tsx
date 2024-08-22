@@ -7,40 +7,25 @@ const Header = () => {
         <span className="sr-only">/</span>
       </Link>
       <nav className="ml-auto flex gap-4 sm:gap-6">
-        <Link
-          to="/"
-          className="text-sm font-medium hover:underline underline-offset-4"
-        >
+        <Link to="/" className="text-sm font-medium hover:underline underline-offset-4">
           Pocetna
         </Link>
-        <Link
-          to="/ProductCreate"
-          className="text-sm font-medium hover:underline underline-offset-4"
-        >
+        <Link to="/ProductCreate" className="text-sm font-medium hover:underline underline-offset-4">
           Kreiraj proizvod
         </Link>
-        <Link
-          to="/ProductList"
-          className="text-sm font-medium hover:underline underline-offset-4"
-        >
+        <Link to="/ProductList" className="text-sm font-medium hover:underline underline-offset-4">
           Lista proizvoda
         </Link>
-        <Link
-          to="/ContactsList"
-          className="text-sm font-medium hover:underline underline-offset-4"
-        >
+        <Link to="/ContactsList" className="text-sm font-medium hover:underline underline-offset-4">
           Lista Kontakta
         </Link>
-        <Link
-          to="/Tasks"
-          className="text-sm font-medium hover:underline underline-offset-4"
-        >
+        <Link to="/Tasks" className="text-sm font-medium hover:underline underline-offset-4">
           Poslovi
         </Link>
-        <Link
-          to="/Bills"
-          className="text-sm font-medium hover:underline underline-offset-4"
-        >
+        <Link to="/Bills" className="text-sm font-medium hover:underline underline-offset-4">
+          Racuni
+        </Link>
+        <Link to="/Bills" className="text-sm font-medium hover:underline underline-offset-4">
           Finansije
         </Link>
       </nav>

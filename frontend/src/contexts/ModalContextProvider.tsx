@@ -8,9 +8,7 @@ interface ModalStateType {
   modalTitle: string
   setModalTitle: React.Dispatch<React.SetStateAction<string>>
   customerContact: ICustomerContact | undefined
-  setCustomerContact: React.Dispatch<
-    React.SetStateAction<ICustomerContact | undefined>
-  >
+  setCustomerContact: React.Dispatch<React.SetStateAction<ICustomerContact | undefined>>
   job: IJob
   setJob: React.Dispatch<React.SetStateAction<IJob>>
 }
@@ -21,7 +19,7 @@ interface ICustomerContact {
 }
 
 interface IJob {
-  end_date: Date | null
+  end_date?: Date | null
   job_id?: number
 }
 

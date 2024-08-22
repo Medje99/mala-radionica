@@ -8,7 +8,8 @@ import { ITaskResponse } from '@/model/response/ITaskResponse'
 import Hybrid from './test/hybrid'
 import ProductsService from '@/service/ProductsService'
 import useGetAllProducts from '../../CustomHooks/useGetAllProducts'
-import { end_date } from '../task-list-component/constants'
+import { end_date, laborCost } from '../task-list-component/constants'
+import BillService, { IBillResponse } from '@/service/BillService'
 
 const CreateTaskForm = () => {
   const { customerContact, setModalTitle, setJob, job } = useModalContext()
@@ -18,7 +19,7 @@ const CreateTaskForm = () => {
     console.log('form pt3 clg' + job.end_date)
   }, [])
 
-  const [form] = Form.useForm<ITaskResponse>()
+  const [form] = Form.useForm<IBillResponse>()
   const [isPaid, setIsPaid] = useState(false)
   const [animating, setAnimating] = useState(false)
   const { allProducts } = useGetAllProducts()
@@ -42,19 +43,14 @@ const CreateTaskForm = () => {
 
       const updatedValues = {
         ...values,
+        paid: isPaid,
+        job_id: job.job_id ?? 0,
         products_used: updatedProductsUsed,
         contact_id: customerContact?.id ?? 0,
+        parts_cost: values.labor_cost + 1000,
       }
 
-      //prob should be in useEffect bcs it's async
-      // This will now log the product name correctly
-      TaskService.createTask(updatedValues).then((response) => {
-        // this first
-        setJob({
-          end_date: form.getFieldValue('end_date'),
-          job_id: response.data.id,
-        })
-      })
+      BillService.createBill(updatedValues)
     })
   }
   // onClick Handler closed
