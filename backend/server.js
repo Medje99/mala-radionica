@@ -172,13 +172,17 @@ app.put("/Contacts/:id", (req, res) => {
   );
 });
 
-
-
 app.put("/Products/:id", (req, res) => {
   const productId = req.params.id;
   const { name, manufacturer, model, price, quantity } = req.body;
 
-  if (!name || !manufacturer || !model || price === undefined || quantity === undefined) {
+  if (
+    !name ||
+    !manufacturer ||
+    !model ||
+    price === undefined ||
+    quantity === undefined
+  ) {
     return res.status(400).send("All fields must be provided.");
   }
 
@@ -225,7 +229,6 @@ app.get("/Products/:id", (req, res) => {
   });
 });
 
-
 app.delete("/Products/:id", (req, res) => {
   const productId = req.params.id;
 
@@ -263,25 +266,23 @@ app.get("/tasks", (req, res) => {
   });
 });
 
-
 // Tasks route POST Handler Express
 app.post("/task", (req, res) => {
   console.log("POST /task called");
-  const { id, contact_id, job_name, job_description, creation_date,} = req.body;
+  const { id, contact_id, job_name, job_description, creation_date, end_date } =
+    req.body;
   console.log("Received data:", req.body);
 
-  const insertQuery = 
-    "INSERT INTO `tasks` (`id`, `contact_id`, `job_name`, `job_description`,  `creation_date`) VALUES (?, ?, ?, ?,  ?);";
-  
+  const insertQuery =
+    "INSERT INTO `tasks` (`id`, `contact_id`, `job_name`, `job_description`,  `creation_date`,`end_date`) VALUES (?, ?, ?, ?,?,?);";
+
   db.query(
     insertQuery,
-    [id, contact_id, job_name, job_description,  creation_date],
+    [id, contact_id, job_name, job_description, creation_date, end_date],
     (err, result) => {
       if (err) {
         console.error("Error inserting task:", err);
-        res
-          .status(500)
-          .json({ error: `Error inserting task: ${err.message}` });
+        res.status(500).json({ error: `Error inserting task: ${err.message}` });
       } else {
         const selectQuery = "SELECT * FROM tasks WHERE id = ?";
         db.query(selectQuery, [result.insertId], (err, newTask) => {
@@ -320,31 +321,27 @@ app.get("/tasks/:id", (req, res) => {
   });
 });
 
-
 // Tasks route PUT Handler Express
 // Tasks route PUT Handler Express
 app.put("/task/:id", (req, res) => {
   console.log("PUT /task called");
   const { id } = req.params;
-  const { contact_id, job_name, job_description, bill_id, creation_date } = req.body;
+  const { contact_id, job_name, job_description, bill_id, creation_date } =
+    req.body;
   console.log("Received data for update:", req.body);
 
-  const updateQuery = 
+  const updateQuery =
     "UPDATE `tasks` SET `contact_id` = ?, `job_name` = ?, `job_description` = ?, `bill_id` = ?, `creation_date` = ? WHERE `id` = ?;";
-  
+
   db.query(
     updateQuery,
     [contact_id, job_name, job_description, bill_id, creation_date, id],
     (err, result) => {
       if (err) {
         console.error("Error updating task:", err);
-        res
-          .status(500)
-          .json({ error: `Error updating task: ${err.message}` });
+        res.status(500).json({ error: `Error updating task: ${err.message}` });
       } else if (result.affectedRows === 0) {
-        res
-          .status(404)
-          .json({ error: `Task with id ${id} not found` });
+        res.status(404).json({ error: `Task with id ${id} not found` });
       } else {
         const selectQuery = "SELECT * FROM tasks WHERE id = ?";
         db.query(selectQuery, [id], (err, updatedTask) => {
@@ -382,11 +379,6 @@ app.delete("/task/:id", (req, res) => {
     }
   });
 });
-
-
-
-
-
 
 app.use((req, res) => {
   console.log(`Undefined route accessed: ${req.method} ${req.url}`);

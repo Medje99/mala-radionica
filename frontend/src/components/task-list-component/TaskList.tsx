@@ -14,13 +14,7 @@ import {
   DatePicker,
   Switch,
 } from 'antd'
-import {
-  taskName,
-  taskDescription,
-  laborCost,
-  paid,
-  finishedDate,
-} from './constants'
+import { taskName, taskDescription, laborCost, paid, end_date } from './constants'
 import { Link } from 'react-router-dom'
 import useGetAllTasks from '@/CustomHooks/useGetAllTasks'
 import TasksAdvancedActions from './actions'
@@ -30,9 +24,7 @@ const TasksList: React.FC = () => {
   const { handleEdit, handleDelete, handleSave } = TasksAdvancedActions()
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredTasks, setFilteredTasks] = useState<ITaskResponse[]>([])
-  const [editingTask, setEditingTask] = useState<ITaskResponse>(
-    {} as ITaskResponse
-  )
+  const [editingTask, setEditingTask] = useState<ITaskResponse>({} as ITaskResponse)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [form] = Form.useForm<ITaskResponse>()
 
@@ -41,8 +33,7 @@ const TasksList: React.FC = () => {
       const filtered = allTasks.filter((task) => {
         const searchText = searchTerm.toLowerCase()
         return (
-          task.job_name.toLowerCase().includes(searchText) ||
-          task.job_description.toLowerCase().includes(searchText)
+          task.job_name?.toLowerCase().includes(searchText) || task.job_description?.toLowerCase().includes(searchText)
         )
       })
       setFilteredTasks(filtered)
@@ -54,26 +45,18 @@ const TasksList: React.FC = () => {
     taskDescription,
     laborCost,
     paid,
-    finishedDate,
+    end_date,
     {
       title: 'Actions',
       key: 'action',
       render: (record: ITaskResponse) => (
         <Space size="middle">
-          <Button
-            type="primary"
-            ghost
-            onClick={() =>
-              handleEdit(record, setEditingTask, form, setIsModalOpen)
-            }
-          >
+          <Button type="primary" ghost onClick={() => handleEdit(record, setEditingTask, form, setIsModalOpen)}>
             Edit
           </Button>
           <Popconfirm
             title="Are you sure to delete this task?"
-            onConfirm={() =>
-              handleDelete(record.id, filteredTasks, setFilteredTasks)
-            }
+            onConfirm={() => handleDelete(record.id, filteredTasks, setFilteredTasks)}
             onCancel={() => message.error('Delete canceled')}
             okText="Yes"
             cancelText="No"
@@ -99,25 +82,12 @@ const TasksList: React.FC = () => {
         style={{ marginBottom: 20 }}
       />
 
-      <Table
-        columns={columns}
-        dataSource={filteredTasks}
-        pagination={{ pageSize: 7 }}
-        rowKey="id"
-      />
+      <Table columns={columns} dataSource={filteredTasks} pagination={{ pageSize: 7 }} rowKey="id" />
 
       <Modal
         title="Edit Task"
         open={isModalOpen}
-        onOk={() =>
-          handleSave(
-            form,
-            editingTask,
-            filteredTasks,
-            setFilteredTasks,
-            setIsModalOpen
-          )
-        }
+        onOk={() => handleSave(form, editingTask, filteredTasks, setFilteredTasks, setIsModalOpen)}
         onCancel={() => setIsModalOpen(false)}
       >
         <Form form={form} layout="vertical">
@@ -131,9 +101,7 @@ const TasksList: React.FC = () => {
           <Form.Item
             label="Job Description"
             name="job_description"
-            rules={[
-              { required: true, message: 'Please enter the job description' },
-            ]}
+            rules={[{ required: true, message: 'Please enter the job description' }]}
           >
             <Input.TextArea />
           </Form.Item>
@@ -142,22 +110,15 @@ const TasksList: React.FC = () => {
             name="labor_cost"
             rules={[{ required: true, message: 'Please enter the labor cost' }]}
           >
-            <InputNumber
-              prefix="$"
-              style={{ width: '100%' }}
-              min={0}
-              step={0.01}
-            />
+            <InputNumber prefix="$" style={{ width: '100%' }} min={0} step={0.01} />
           </Form.Item>
           <Form.Item label="Paid" name="paid" valuePropName="checked">
             <Switch />
           </Form.Item>
           <Form.Item
-            label="Finished Date"
-            name="finished_date"
-            rules={[
-              { required: true, message: 'Please select the finished date' },
-            ]}
+            label="End Date"
+            name="end_date"
+            rules={[{ required: true, message: 'Please select the end date' }]}
           >
             <DatePicker format="DD/MM/YYYY" style={{ width: '100%' }} />
           </Form.Item>

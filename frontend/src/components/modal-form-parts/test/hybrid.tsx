@@ -6,22 +6,18 @@ import useGetAllProducts from '@/CustomHooks/useGetAllProducts'
 const { Option } = Select
 
 const Hybrid = () => {
-  const [rows, setRows] = useState<
-    { id: number; maxQuantity: number; name: string }[]
-  >([{ id: 0, maxQuantity: 10, name: '' }]) // Start with one row with a default maxQuantity
+  const [rows, setRows] = useState<{ id: number; inventoryQ: number; name: string }[]>([
+    { id: 0, inventoryQ: 0, name: '' },
+  ]) // Start with one row with a default maxQuantity
   const { allProducts } = useGetAllProducts()
 
   const handleProductChange = (rowIndex: number, productId: number) => {
-    const selectedProduct = allProducts.find(
-      (product) => product.id === productId
-    )
+    const selectedProduct = allProducts.find((product) => product.id === productId)
     const maxQuantity = selectedProduct ? selectedProduct.quantity : 10
 
     const name = selectedProduct?.name ?? ''
 
-    const updatedRows = rows.map((row, index) =>
-      index === rowIndex ? { ...row, maxQuantity, name } : row
-    )
+    const updatedRows = rows.map((row, index) => (index === rowIndex ? { ...row, inventoryQ: maxQuantity, name } : row))
     setRows(updatedRows)
   }
 
@@ -33,7 +29,7 @@ const Hybrid = () => {
         <Col span={11}>
           <Form.Item
             name={['products_used', row.id, 'product']}
-            label={`Product ${index + 1}`}
+            label={`Proizvod  ${index + 1}`}
             rules={[
               {
                 required: true,
@@ -44,13 +40,13 @@ const Hybrid = () => {
             <Select
               showSearch
               placeholder="Select a product"
+              allowClear
               optionFilterProp="children"
               filterOption={(input, option) => {
                 const optionText = option?.children as unknown as string
                 return optionText.toLowerCase().includes(input.toLowerCase())
               }}
               style={{ width: 'calc(100% - 32px)' }}
-              allowClear
               onChange={(value) => {
                 console.log(value)
                 handleProductChange(index, value)
@@ -67,7 +63,7 @@ const Hybrid = () => {
         <Col span={11}>
           <Form.Item
             name={['products_used', row.id, 'quantity']}
-            label={`Quantity ${index + 1}`}
+            label={`Kolicina: ${index + 1}`}
             rules={[
               {
                 required: true,
@@ -75,16 +71,10 @@ const Hybrid = () => {
               },
               {
                 validator: (_, value) => {
-                  if (value > row.maxQuantity) {
-                    return Promise.reject(
-                      new Error(
-                        `Quantity cannot be more than ${row.maxQuantity}!`
-                      )
-                    )
+                  if (value > row.inventoryQ) {
+                    return Promise.reject(new Error(`Items left in inventory: ${row.inventoryQ}!`))
                   } else if (value < 1) {
-                    return Promise.reject(
-                      new Error('Quantity must be at least 1!')
-                    )
+                    return Promise.reject(new Error('Select at least one item!'))
                   }
                   return Promise.resolve()
                 },
@@ -92,10 +82,11 @@ const Hybrid = () => {
             ]}
           >
             <Input
+              allowClear
               placeholder="Enter quantity"
               type="number"
               style={{ width: 'calc(100% - 32px)' }}
-              max={row.maxQuantity}
+              max={row.inventoryQ}
             />
           </Form.Item>
         </Col>
@@ -104,11 +95,11 @@ const Hybrid = () => {
   }
 
   const addRow = () => {
-    setRows([...rows, { id: rows.length, maxQuantity: 0, name: '' }]) // Add new row with default maxQuantity
+    setRows([...rows, { id: rows.length, inventoryQ: 0, name: '' }]) // Add new row with default maxQuantity
   }
 
   const removeRow = () => {
-    if (rows.length > 1) {
+    if (rows.length > 0) {
       setRows(rows.slice(0, -1)) // Remove the newest row
     }
   }
@@ -119,10 +110,10 @@ const Hybrid = () => {
       <Form.Item>
         <Space>
           <Button type="dashed" onClick={addRow} icon={<PlusOutlined />}>
-            Add Row
+            Dodaj proizvod
           </Button>
           <Button type="dashed" onClick={removeRow} icon={<MinusOutlined />}>
-            Remove Last Row
+            Ukloni proizvod
           </Button>
         </Space>
       </Form.Item>

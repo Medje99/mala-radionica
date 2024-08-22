@@ -12,45 +12,34 @@ import { separateFullName } from '@/Utilities/getSeparatedFullName'
 import ContactService from '@/service/ContactsService'
 import ActionButton from '../CustomButtons/ActionButton'
 import { useModalContext } from '@/contexts/ModalContextProvider'
+import moment from 'moment'
 
 const { Option } = Select
 
-const { setCustomerSelectOptions, setCustomerFormValues, handleSelectChange } =
-  createTaskFormActions()
+const { setCustomerSelectOptions, setCustomerFormValues, handleSelectChange } = createTaskFormActions()
 
 const CreateContactForm = () => {
-  const { setCustomerContact, setModalTitle, setCurrentPage, currentPage } =
-    useModalContext()
+  const { setCustomerContact, setModalTitle, setCurrentPage, currentPage } = useModalContext()
   const [newCustomer, setNewCustomer] = useState(false) // definined boolean
 
   const { customers } = useGetAllContacts()
   const [form] = Form.useForm<IContacts>()
-  const [hybridInputSelect, setHybridInputSelect] = useState<
-    string | undefined
-  >('')
-  const [hybridInputText, sethybridInputText] = useState<string>(
-    hybridInputSelect as string
-  )
+  const [hybridInputSelect, setHybridInputSelect] = useState<string | undefined>('')
+  const [hybridInputText, sethybridInputText] = useState<string>(hybridInputSelect as string)
 
   const [newCustomerSelect, setNewCustomerSelect] = useState<CustomerSelect[]>()
 
-  const pickedCustomer = customers.find(
-    (item) =>
-      concateFullName(item.firstName, item.lastName) === hybridInputSelect
-  )
+  const pickedCustomer = customers.find((item) => concateFullName(item.firstName, item.lastName) === hybridInputSelect)
 
   const filteredOptions = newCustomerSelect?.filter((option: any) =>
-    option.label.toLowerCase().includes(hybridInputText.toLowerCase())
+    option.label.toLowerCase().includes(hybridInputText.toLowerCase()),
   )
 
   useEffect(() => {
     if (pickedCustomer) {
       setCustomerContact({
         id: pickedCustomer.id,
-        fullName: concateFullName(
-          pickedCustomer.firstName,
-          pickedCustomer.lastName
-        ),
+        fullName: concateFullName(pickedCustomer.firstName, pickedCustomer.lastName),
       })
     }
   }, [pickedCustomer, hybridInputText, form])
@@ -88,10 +77,7 @@ const CreateContactForm = () => {
                 setCurrentPage(currentPage + 1)
                 setCustomerContact({
                   id: customer.id,
-                  fullName: concateFullName(
-                    customer.firstName,
-                    customer.lastName
-                  ),
+                  fullName: concateFullName(customer.firstName, customer.lastName),
                 })
                 console.log('Pushed to context need to refine:', customer)
               })
@@ -105,12 +91,7 @@ const CreateContactForm = () => {
   }
 
   return (
-    <Form
-      form={form}
-      name="musterija-form"
-      layout="vertical"
-      className="bg-white p-5 rounded-lg"
-    >
+    <Form form={form} name="musterija-form" layout="vertical" className="bg-white p-5 rounded-lg">
       <Form.Item label="Musterija" required className="mb-4 mr-10 ml-10">
         <Space.Compact
           style={{ width: '100%' }} // Ensure the Space.Compact wrapper takes full width
@@ -122,22 +103,13 @@ const CreateContactForm = () => {
             className="flex-1"
           >
             {newCustomer && pickedCustomer ? (
-              <Input
-                value={hybridInputText}
-                onChange={() => sethybridInputText(hybridInputText)}
-              />
+              <Input value={hybridInputText} onChange={() => sethybridInputText(hybridInputText)} />
             ) : (
               <Select
                 showSearch
                 placeholder="Izaberi ili dodaj"
                 value={hybridInputSelect as any}
-                onChange={(event: string) =>
-                  handleSelectChange(
-                    event,
-                    setHybridInputSelect,
-                    sethybridInputText
-                  )
-                }
+                onChange={(event: string) => handleSelectChange(event, setHybridInputSelect, sethybridInputText)}
                 style={{ width: '100%' }} // Ensure the Select input is 100% width
                 onSearch={sethybridInputText}
                 filterOption={false}
@@ -189,10 +161,7 @@ const CreateContactForm = () => {
         <TextArea disabled={!newCustomer} />
       </Form.Item>
 
-      <ActionButton
-        onClickHandler={onClickHandler}
-        title={!newCustomer ? 'Nastavi' : 'Dodaj i nastavi'}
-      />
+      <ActionButton onClickHandler={onClickHandler} title={!newCustomer ? 'Nastavi' : 'Dodaj i nastavi'} />
     </Form>
   )
 }
