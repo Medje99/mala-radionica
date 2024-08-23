@@ -19,7 +19,6 @@ const BillsList: React.FC = () => {
       return (
         bill.contact_id.toString().includes(searchText) ||
         bill.job_id.toString().includes(searchText) ||
-        bill.end_date?.toLowerCase().includes(searchText) ||
         bill.parts_cost?.toString().includes(searchText)
       )
     })

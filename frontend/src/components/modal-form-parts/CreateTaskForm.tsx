@@ -41,12 +41,17 @@ const CreateTaskForm = () => {
 
   const onClickHandler = () => {
     form.validateFields().then((values) => {
-      const { end_date, ...restValues } = values
-
       const fullData = {
-        ...restValues,
+        ...values,
         contact_id: customerContact?.id ?? 0,
       }
+
+      TaskService.createTask(fullData).then((response) => {
+        setJob({
+          task_id: response.data.id,
+          end_date: values.end_date,
+        })
+      })
 
       isFinished ? setCurrentPage(currentPage + 1) : setModalIsOpen(false)
     })

@@ -135,11 +135,11 @@ app.get("/bills", (req, res) => {
         products_used: JSON.parse(bill.products_used), // Parse products_used field
       }));
 
-      // console.log(
-      //   "Retrieved bills with parsed products_used:",
-      //   billsWithParsedProducts
-      // );
-      // res.json(billsWithParsedProducts);
+      console.log(
+        "Retrieved bills with parsed products_used:",
+        billsWithParsedProducts
+      );
+      res.json(billsWithParsedProducts);
     }
   });
 });
@@ -407,7 +407,7 @@ app.put("/task/:id", (req, res) => {
   console.log("Received data for update:", req.body);
 
   const updateQuery =
-    "UPDATE `tasks` SET `contact_id` = ?, `job_name` = ?, `job_description` = ?, `creation_date` = ? WHERE `id` = ?;";
+    "UPDATE `tasks` SET `contact_id` = ?, `job_name` = ?, `job_description` = ?, `bill_id` = ?, `creation_date` = ? WHERE `id` = ?;";
 
   db.query(
     updateQuery,

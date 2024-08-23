@@ -5,14 +5,14 @@ export interface IBillResponse {
   id: number // The unique identifier for the bill
   contact_id: number // The ID of the contact associated with the bill
   job_id: number // The ID of the job associated with the bill
-  end_date: string | null // The end date of the job/bill, can be null
+  end_date: Date // The end date of the job/bill, can be null
   labor_cost: number // The cost of labor associated with the bill
   paid: boolean // A flag indicating whether the bill has been paid
   parts_cost?: number // The total cost of the bill, including labor and products used
-  products_used: products[] // A string listing the products used (this could be an array or JSON if needed)
+  products_used: BillProducts[] // A string listing the products used (this could be an array or JSON if needed)
 }
 
-interface products {
+export interface BillProducts {
   product: number
   quantity: number
   name?: string

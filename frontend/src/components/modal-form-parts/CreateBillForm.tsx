@@ -3,9 +3,9 @@ import { Form, Input, Switch, InputNumber, Typography } from 'antd'
 import { useEffect, useState } from 'react'
 import ActionButton from '../CustomButtons/ActionButton'
 import { useModalContext } from '@/contexts/ModalContextProvider'
-import { ITaskResponse } from '@/model/response/ITaskResponse'
 import Hybrid from './test/hybrid'
 import useGetAllProducts from '../../CustomHooks/useGetAllProducts'
+import BillService, { IBillResponse } from '@/service/BillService'
 
 const CreateTaskForm = () => {
   const { customerContact, setModalTitle, job } = useModalContext()
@@ -14,7 +14,7 @@ const CreateTaskForm = () => {
     setModalTitle('Billing Form')
   }, [])
 
-  const [form] = Form.useForm<ITaskResponse>()
+  const [form] = Form.useForm<IBillResponse>()
   const [isPaid, setIsPaid] = useState(false)
   const [animating, setAnimating] = useState(false)
   const { allProducts } = useGetAllProducts()
@@ -28,7 +28,7 @@ const CreateTaskForm = () => {
   // products used from hybrid child component with name prop
   const onClickHandler = () => {
     form.validateFields().then((values) => {
-      const updatedProductsUsed = values.products_used?.map((item: { product: number }) => {
+      const updatedProductsUsed = values.products_used?.map((item) => {
         const productName = allProducts.find((p) => p.id === item.product)?.name
         return {
           ...item,
@@ -40,13 +40,27 @@ const CreateTaskForm = () => {
         ...values,
         products_used: updatedProductsUsed,
         contact_id: customerContact?.id ?? 0,
+        job_id: job.task_id ?? 0,
+        end_date: job.end_date ?? new Date(),
+        parts_cost: 20,
+        labor_cost: values.labor_cost,
+        total_cost: values.labor_cost + 20,
       }
+      BillService.createBill(updatedValues)
     })
   }
-  // onClick Handler closed
 
   return (
-    <Form form={form} name="task-form" layout="vertical" className="bg-white p-5 rounded-lg" onFinish={onClickHandler}>
+    <Form
+      form={form}
+      name="task-form"
+      layout="vertical"
+      className="bg-white p-5 rounded-lg"
+      onFinish={onClickHandler}
+      initialValues={{
+        paid: false,
+      }}
+    >
       {/* Full Name */}
       <Form.Item label="Izabrana musterija:">
         <Input disabled={true} placeholder={customerContact?.fullName} />

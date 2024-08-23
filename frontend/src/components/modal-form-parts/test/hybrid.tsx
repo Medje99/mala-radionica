@@ -21,8 +21,6 @@ const Hybrid = () => {
     setRows(updatedRows)
   }
 
-  console.log(rows)
-
   const getFields = () => {
     return rows.map((row, index) => (
       <Row gutter={24} key={index}>
