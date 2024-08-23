@@ -49,7 +49,7 @@ app.get("/contacts", (req, res) => {
       console.error("Error retrieving contacts:", err);
       res.status(500).send("Error retrieving contacts");
     } else {
-      console.log("Retrieved contacts:", results);
+      //console.log("Retrieved contacts:", results);
       res.json(results);
     }
   });
@@ -100,8 +100,46 @@ app.get("/Products", (req, res) => {
       console.error("Error retrieving products:", err);
       res.status(500).send("Error retrieving products");
     } else {
-      console.log("Retrieved products:", results);
+      //console.log("Retrieved products:", results);
       res.json(results);
+    }
+  });
+});
+//Products route GET Handler Express
+app.get("/bills", (req, res) => {
+  console.log("GET /bills called");
+
+  const selectQuery = `
+    SELECT 
+      b.*, 
+      c.firstName, 
+      c.lastName,
+      t.job_name,
+      t.job_description,
+      t.creation_date
+    FROM 
+      bills b 
+    JOIN 
+      contacts c ON b.contact_id = c.id
+    LEFT JOIN 
+      tasks t ON b.contact_id = t.contact_id;
+  `;
+  db.query(selectQuery, (err, bills) => {
+    if (err) {
+      console.error("Error retrieving bills:", err);
+      res.status(500).json({ error: `Error retrieving bills: ${err.message}` });
+    } else {
+      // Parse products_used from JSON string to an array of objects
+      const billsWithParsedProducts = bills.map((bill) => ({
+        ...bill,
+        products_used: JSON.parse(bill.products_used), // Parse products_used field
+      }));
+
+      // console.log(
+      //   "Retrieved bills with parsed products_used:",
+      //   billsWithParsedProducts
+      // );
+      // res.json(billsWithParsedProducts);
     }
   });
 });
@@ -253,7 +291,19 @@ app.delete("/Products/:id", (req, res) => {
 app.get("/tasks", (req, res) => {
   console.log("GET /tasks called");
 
-  const selectQuery = "SELECT * FROM tasks";
+  const selectQuery = `
+    SELECT 
+      t.*, 
+      c.firstName, 
+      c.lastName,
+      b.bill_id
+    FROM 
+      tasks t
+    LEFT JOIN 
+      contacts c ON t.contact_id = c.id
+    LEFT JOIN 
+      bills b ON t.id = b.job_id;
+  `;
 
   db.query(selectQuery, (err, results) => {
     if (err) {
@@ -268,22 +318,22 @@ app.get("/tasks", (req, res) => {
 
 // Tasks route POST Handler Express
 app.post("/task", (req, res) => {
-  console.log("POST /task called");
-  const { id, contact_id, job_name, job_description, creation_date } =
-    req.body;
-  console.log("Received data:", req.body);
+  console.log("POST /task called" + req.body);
+  const { id, contact_id, job_name, job_description, creation_date } = req.body;
+  console.log("/task .post from antd form Received data:", req.body);
 
   const insertQuery =
-    "INSERT INTO `tasks` (`id`, `contact_id`, `job_name`, `job_description`,  `creation_date`) VALUES (?, ?, ?, ?,?);";
+    "INSERT INTO `tasks` ( `contact_id`, `job_name`, `job_description`,  `creation_date`) VALUES ( ?, ?, ?,?);";
 
   db.query(
     insertQuery,
-    [id, contact_id, job_name, job_description, creation_date ],
+    [contact_id, job_name, job_description, creation_date],
     (err, result) => {
       if (err) {
         console.error("Error inserting task:", err);
         res.status(500).json({ error: `Error inserting task: ${err.message}` });
       } else {
+        console.log("sending time as ", creation_date);
         const selectQuery = "SELECT * FROM tasks WHERE id = ?";
         db.query(selectQuery, [result.insertId], (err, newTask) => {
           if (err) {
@@ -306,8 +356,26 @@ app.get("/tasks/:id", (req, res) => {
 
   const taskId = req.params.id;
 
-  const selectQuery = "SELECT * FROM tasks WHERE id = ?";
-
+  const selectQuery = `
+    SELECT 
+      t.*, 
+      b.bill_id, 
+      b.end_date, 
+      b.labor_cost, 
+      b.paid, 
+      b.parts_cost, 
+      b.products_used,
+      c.firstName,
+      c.lastName
+    FROM 
+      tasks t 
+    LEFT JOIN 
+      bills b ON t.id = b.job_id 
+    LEFT JOIN 
+      contacts c ON t.contact_id = c.id
+    WHERE 
+      t.id = ?;
+  `;
   db.query(selectQuery, [taskId], (err, results) => {
     if (err) {
       console.error("Error retrieving task:", err);
@@ -315,8 +383,16 @@ app.get("/tasks/:id", (req, res) => {
     } else if (results.length === 0) {
       res.status(404).json({ error: `Task with id ${taskId} not found` });
     } else {
-      console.log("Retrieved task:", results[0]);
-      res.json(results[0]);
+      // Parse products_used from JSON string to an array of objects
+      const taskWithBill = results.map((task) => ({
+        ...task,
+        products_used: task.products_used
+          ? JSON.parse(task.products_used)
+          : null, // Parse products_used field
+      }));
+
+      console.log("Retrieved task with bill:", taskWithBill[0]);
+      res.json(taskWithBill[0]);
     }
   });
 });
@@ -331,7 +407,7 @@ app.put("/task/:id", (req, res) => {
   console.log("Received data for update:", req.body);
 
   const updateQuery =
-    "UPDATE `tasks` SET `contact_id` = ?, `job_name` = ?, `job_description` = ?, `bill_id` = ?, `creation_date` = ? WHERE `id` = ?;";
+    "UPDATE `tasks` SET `contact_id` = ?, `job_name` = ?, `job_description` = ?, `creation_date` = ? WHERE `id` = ?;";
 
   db.query(
     updateQuery,
@@ -362,7 +438,15 @@ app.put("/task/:id", (req, res) => {
 
 app.post("/bill", (req, res) => {
   console.log("POST /bill called");
-  const { contact_id, job_id, end_date, labor_cost, paid, parts_cost, products_used } = req.body;
+  const {
+    contact_id,
+    job_id,
+    end_date,
+    labor_cost,
+    paid,
+    parts_cost,
+    products_used,
+  } = req.body;
   console.log("Received data:", req.body);
 
   // Convert products_used to a JSON string before inserting
@@ -372,7 +456,15 @@ app.post("/bill", (req, res) => {
     "INSERT INTO `bills` (`contact_id`, `job_id`, `end_date`, `labor_cost`, `paid`, `parts_cost`, `products_used`) VALUES (?, ?, ?, ?, ?, ?, ?);";
   db.query(
     insertQuery,
-    [contact_id, job_id, end_date, labor_cost, paid, parts_cost, productsUsedJson],
+    [
+      contact_id,
+      job_id,
+      end_date,
+      labor_cost,
+      paid,
+      parts_cost,
+      productsUsedJson,
+    ],
     (err, result) => {
       if (err) {
         console.error("Error inserting bill:", err);
@@ -394,29 +486,6 @@ app.post("/bill", (req, res) => {
     }
   );
 });
-
-// GET /bills Handler - Get all bills with products_used as an array of objects
-app.get("/bills", (req, res) => {
-  console.log("GET /bills called");
-
-  const selectQuery = "SELECT * FROM bills;";
-  db.query(selectQuery, (err, bills) => {
-    if (err) {
-      console.error("Error retrieving bills:", err);
-      res.status(500).json({ error: `Error retrieving bills: ${err.message}` });
-    } else {
-      // Parse products_used from JSON string to an array of objects
-      const billsWithParsedProducts = bills.map(bill => ({
-        ...bill,
-        products_used: JSON.parse(bill.products_used) // Parse products_used field
-      }));
-
-      console.log("Retrieved bills with parsed products_used:", billsWithParsedProducts);
-      res.json(billsWithParsedProducts);
-    }
-  });
-});
-
 
 // Tasks route DELETE Handler Express
 app.delete("/task/:id", (req, res) => {

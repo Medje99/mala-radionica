@@ -6,6 +6,11 @@ export interface IBill {
   laborCost: number
   paid: boolean
   productsUsed: ProductsUsed[]
+  firstName: string
+  lastName: string
+  job_name: string
+  job_description: string
+  creationDate: Date
 }
 
 export interface ProductsUsed {

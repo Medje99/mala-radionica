@@ -3,6 +3,7 @@ import { Table, Typography, Input, Popconfirm, message, Modal, Form, Space, Butt
 import { Link } from 'react-router-dom'
 import BillService, { IBillResponse } from '@/service/BillService'
 import useGetAllBills from '@/CustomHooks/useGetAllBills'
+import moment from 'moment'
 
 const BillsList: React.FC = () => {
   const { bills } = useGetAllBills()
@@ -11,6 +12,7 @@ const BillsList: React.FC = () => {
   const [editingBill, setEditingBill] = useState<IBillResponse>({} as IBillResponse)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [form] = Form.useForm<IBillResponse>()
+
   useEffect(() => {
     const filtered = bills.filter((bill) => {
       const searchText = searchTerm.toLowerCase()
@@ -49,24 +51,46 @@ const BillsList: React.FC = () => {
 
   const columns = [
     {
-      title: 'Contact ID',
-      dataIndex: 'contact_id',
-      key: 'contact_id',
+      title: 'Contact name',
+      dataIndex: 'firstName',
+      key: 'firstName',
     },
     {
-      title: 'Job ID',
-      dataIndex: 'job_id',
-      key: 'job_id',
+      title: 'Job name',
+      dataIndex: 'job_name',
+      key: 'job_name',
     },
     {
       title: 'End Date',
       dataIndex: 'end_date',
       key: 'end_date',
+      render: (endDate: string | null) => {
+        if (endDate) {
+          const formattedDate = moment(endDate).format('MMM Do YY') // Calculate time difference from endDate
+          return formattedDate
+        } else {
+          return 'N/A' // Return "N/A" if end_date is null
+        }
+      },
+    },
+
+    {
+      title: 'Parts and Labor Cost',
+      dataIndex: 'parts_cost',
+      key: 'parts_cost',
     },
     {
-      title: 'Total Cost',
-      dataIndex: 'total_cost',
-      key: 'total_cost',
+      title: 'Paid',
+      dataIndex: 'paid',
+      key: 'paid',
+
+      filters: [
+        { text: 'Placeni', value: 1 },
+        { text: 'Ne placeni', value: 0 },
+      ],
+      onFilter: (value: any, record: any) => {
+        return record.paid === parseInt(value, 10) // Parse value to number for comparison
+      },
     },
     {
       title: 'Actions',

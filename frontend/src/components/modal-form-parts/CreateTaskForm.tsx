@@ -1,4 +1,4 @@
-import { Form, Input, DatePicker, Switch } from 'antd'
+import { Form, Input, DatePicker, Switch, Space } from 'antd'
 import { useEffect, useState } from 'react'
 import ActionButton from '../CustomButtons/ActionButton'
 import { useModalContext } from '@/contexts/ModalContextProvider'
@@ -6,8 +6,12 @@ import TaskService from '@/service/TaskService'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
 import moment from 'moment'
 
+//Date/timepiceker logic
+
+//Date/timepicker logic
+
 const CreateTaskForm = () => {
-  const { currentPage, setCurrentPage, customerContact, setModalTitle, setJob, job, setModalIsOpen } = useModalContext()
+  const { currentPage, setCurrentPage, customerContact, setModalTitle, setJob, setModalIsOpen } = useModalContext()
 
   useEffect(() => {
     setModalTitle('Forma 2')
@@ -26,6 +30,15 @@ const CreateTaskForm = () => {
     return () => clearTimeout(timer)
   }, [isFinished])
 
+  useEffect(() => {
+    // Set initial values for creation_date and end_date in form state
+    console.log('creaton date and end date values set')
+    form.setFieldsValue({
+      creation_date: moment(),
+      end_date: moment(),
+    })
+  }, []) // Add form as a dependency
+
   const onClickHandler = () => {
     form.validateFields().then((values) => {
       const { end_date, ...restValues } = values
@@ -34,12 +47,6 @@ const CreateTaskForm = () => {
         ...restValues,
         contact_id: customerContact?.id ?? 0,
       }
-
-      TaskService.createTask(fullData).then((response) => {
-        setJob({
-          job_id: response.data.id,
-        })
-      })
 
       isFinished ? setCurrentPage(currentPage + 1) : setModalIsOpen(false)
     })
@@ -76,26 +83,39 @@ const CreateTaskForm = () => {
 
       {/* Creation Date */}
       <div className="flex flex-row">
-        <Form.Item label="Posao primljen:" name="creation_date">
-          <DatePicker showNow format="DD/MM/YYYY" className="mr-10" />
+        <Form.Item
+          label={`Posao primljen : ${form?.getFieldValue('creation_date')?.format('MMM-DD HH:mm')}`}
+          name="creation_date"
+        >
+          <div>
+            <Space direction="vertical">
+              <DatePicker
+                showTime={{ minuteStep: 15 }}
+                format="MMM-DD HH:mm"
+                onChange={(date) => form.setFieldsValue({ creation_date: date })}
+                value={form.getFieldValue('creation_date')}
+              />
+            </Space>
+          </div>
         </Form.Item>
-        <Form.Item label="End Date">
+        <Form.Item label="End Date" name="end_date">
           <Switch checked={isFinished} onChange={() => setIsFinished(!isFinished)} className="mr-10" />
-          {/**/}
         </Form.Item>
         {isFinished && (
-          <div>
-            <Form.Item
-              label="Datum zavrsetka:"
-              name="end_date"
-              className={`transition-all duration-500 transform ${
-                animating ? 'opacity-0 rotate-45' : 'opacity-100 rotate-0'
-              }`}
-              preserve // bcause not always loaded !
-            >
-              <DatePicker showNow format="DD/MM/YYYY" />
-            </Form.Item>
-          </div>
+          <Form.Item
+            label={`Zavrsetak posla : ${form.getFieldValue('creation_date')?.format('MMM-DD HH:mm')}`}
+            name="creation_date"
+          >
+            <div>
+              <Space direction="vertical">
+                <DatePicker
+                  showTime={{ minuteStep: 15 }}
+                  format="MMM-DD HH:mm"
+                  onChange={(date) => form.setFieldsValue({ creation_date: date })}
+                />
+              </Space>
+            </div>
+          </Form.Item>
         )}
       </div>
       <div className="flex flex-row justify-between mt-5">

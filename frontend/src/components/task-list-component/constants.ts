@@ -13,14 +13,6 @@ export const taskDescription = {
   editable: true,
 }
 
-export const laborCost = {
-  title: 'Cena izvrsene usluge',
-  dataIndex: 'labor_cost',
-  key: 'labor_cost',
-  editable: true,
-  render: (cost: number) => (cost ? `${cost} RSD` : ''),
-}
-
 export const paid = {
   title: 'Placeno',
   dataIndex: 'paid',
@@ -29,10 +21,24 @@ export const paid = {
   render: (paid: boolean) => (paid ? 'Yes' : 'No'),
 }
 
-export const end_date = {
-  title: 'Zavrsen datuma',
-  dataIndex: 'end_date',
-  key: 'end_date',
+export const creation_date = {
+  title: 'Kreirano',
+  dataIndex: 'creation_date',
+  key: 'creation_date',
   editable: true,
-  render: (date: string) => moment(date).format('DD/MM/YYYY'),
+  render: (date: string) => moment(date).fromNow(),
+}
+
+export const customer_firstName = {
+  title: 'Ime',
+  dataIndex: 'firstName',
+  key: 'firstName',
+  editable: true,
+}
+
+export const customer_lastName = {
+  title: 'Prezime',
+  dataIndex: 'lastName',
+  key: 'lastName',
+  editable: true,
 }

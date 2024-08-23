@@ -20,7 +20,7 @@ interface ICustomerContact {
 
 interface IJob {
   end_date?: Date | null
-  job_id?: number
+  task_id?: number
 }
 
 const ModalContext = createContext<ModalStateType | null>(null)

@@ -1,4 +1,5 @@
 export interface ITaskResponse {
+  products_used: any
   id: number
   contact_id: number
   job_name: string

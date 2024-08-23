@@ -1,25 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Form, Input, DatePicker, Switch, InputNumber, Typography } from 'antd'
+import { Form, Input, Switch, InputNumber, Typography } from 'antd'
 import { useEffect, useState } from 'react'
 import ActionButton from '../CustomButtons/ActionButton'
 import { useModalContext } from '@/contexts/ModalContextProvider'
-import TaskService from '@/service/TaskService'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
 import Hybrid from './test/hybrid'
-import ProductsService from '@/service/ProductsService'
 import useGetAllProducts from '../../CustomHooks/useGetAllProducts'
-import { end_date, laborCost } from '../task-list-component/constants'
-import BillService, { IBillResponse } from '@/service/BillService'
 
 const CreateTaskForm = () => {
-  const { customerContact, setModalTitle, setJob, job } = useModalContext()
+  const { customerContact, setModalTitle, job } = useModalContext()
 
   useEffect(() => {
     setModalTitle('Billing Form')
-    console.log('form pt3 clg' + job.end_date)
   }, [])
 
-  const [form] = Form.useForm<IBillResponse>()
+  const [form] = Form.useForm<ITaskResponse>()
   const [isPaid, setIsPaid] = useState(false)
   const [animating, setAnimating] = useState(false)
   const { allProducts } = useGetAllProducts()
@@ -33,7 +28,7 @@ const CreateTaskForm = () => {
   // products used from hybrid child component with name prop
   const onClickHandler = () => {
     form.validateFields().then((values) => {
-      const updatedProductsUsed = values.products_used?.map((item) => {
+      const updatedProductsUsed = values.products_used?.map((item: { product: number }) => {
         const productName = allProducts.find((p) => p.id === item.product)?.name
         return {
           ...item,
@@ -43,40 +38,18 @@ const CreateTaskForm = () => {
 
       const updatedValues = {
         ...values,
-        paid: isPaid,
-        job_id: job.job_id ?? 0,
         products_used: updatedProductsUsed,
         contact_id: customerContact?.id ?? 0,
-        parts_cost: values.labor_cost + 1000,
       }
-
-      BillService.createBill(updatedValues)
     })
   }
   // onClick Handler closed
 
   return (
-    <Form
-      form={form}
-      name="task-form"
-      layout="vertical"
-      className="bg-white p-5 rounded-lg"
-      onFinish={onClickHandler}
-      initialValues={{ end_date: job.end_date }}
-      // good
-    >
+    <Form form={form} name="task-form" layout="vertical" className="bg-white p-5 rounded-lg" onFinish={onClickHandler}>
       {/* Full Name */}
       <Form.Item label="Izabrana musterija:">
         <Input disabled={true} placeholder={customerContact?.fullName} />
-      </Form.Item>
-
-      {/* endDate */}
-      <Form.Item
-        label="Datum zavrsetka posla"
-        name="end_date"
-        rules={[{ required: true, message: 'Please select the end date!' }]}
-      >
-        <DatePicker showNow format="DD/MM/YYYY" />
       </Form.Item>
 
       {/* Labor Cost */}

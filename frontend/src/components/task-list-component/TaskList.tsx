@@ -1,20 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
-import {
-  Table,
-  Typography,
-  Input,
-  Popconfirm,
-  message,
-  Modal,
-  Form,
-  InputNumber,
-  Space,
-  Button,
-  DatePicker,
-  Switch,
-} from 'antd'
-import { taskName, taskDescription, laborCost, paid, end_date } from './constants'
+import { Table, Typography, Input, Popconfirm, message, Modal, Form, Space, Button, Switch } from 'antd'
+import { customer_firstName, customer_lastName, taskName, taskDescription, paid, creation_date } from './constants'
 import { Link } from 'react-router-dom'
 import useGetAllTasks from '@/CustomHooks/useGetAllTasks'
 import TasksAdvancedActions from './actions'
@@ -41,11 +28,12 @@ const TasksList: React.FC = () => {
   }, [searchTerm, allTasks])
 
   const columns = [
+    customer_firstName,
+    customer_lastName,
     taskName,
     taskDescription,
-    laborCost,
     paid,
-    end_date,
+    creation_date,
     {
       title: 'Actions',
       key: 'action',
@@ -105,22 +93,9 @@ const TasksList: React.FC = () => {
           >
             <Input.TextArea />
           </Form.Item>
-          <Form.Item
-            label="Labor Cost"
-            name="labor_cost"
-            rules={[{ required: true, message: 'Please enter the labor cost' }]}
-          >
-            <InputNumber prefix="$" style={{ width: '100%' }} min={0} step={0.01} />
-          </Form.Item>
+
           <Form.Item label="Paid" name="paid" valuePropName="checked">
             <Switch />
-          </Form.Item>
-          <Form.Item
-            label="End Date"
-            name="end_date"
-            rules={[{ required: true, message: 'Please select the end date' }]}
-          >
-            <DatePicker format="DD/MM/YYYY" style={{ width: '100%' }} />
           </Form.Item>
         </Form>
       </Modal>
