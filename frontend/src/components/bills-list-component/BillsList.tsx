@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Key } from 'react'
 import { Table, Typography, Input, Popconfirm, message, Modal, Form, Space, Button, DatePicker } from 'antd'
 import { Link } from 'react-router-dom'
 import BillService from '@/service/BillService'
@@ -102,8 +102,8 @@ const BillsList: React.FC = () => {
         { text: 'Placeni', value: 1 },
         { text: 'Ne placeni', value: 0 },
       ],
-      onFilter: (value: string, record: any) => {
-        return record.paid === parseInt(value, 10) // Parse value to number for comparison
+      onFilter: (value: boolean | Key, record: IBillResponse) => {
+        return record.paid === value // Parse value to number for comparison
       },
     },
     {
