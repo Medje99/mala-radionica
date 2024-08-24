@@ -5,12 +5,13 @@ import ActionButton from '../CustomButtons/ActionButton' // recives function , b
 import { useModalContext } from '@/contexts/ModalContextProvider'
 import ProductsComponent from './test/ProductsComponent'
 import useGetAllProducts from '../../CustomHooks/useGetAllProducts'
-import BillService, { IBillResponse } from '@/service/BillService'
+import BillService from '@/service/BillService'
+import { IBillResponse } from '@/model/response/IBillResponse'
 
 const CreateTaskForm = () => {
   const { customerContact, job } = useModalContext()
 
-  const [form] = Form.useForm<IBillResponse>()
+  const [FormBillCreate] = Form.useForm<IBillResponse>()
   const [isPaid, setIsPaid] = useState(false)
   const [animating, setAnimating] = useState(false)
   const { allProducts } = useGetAllProducts()
@@ -23,7 +24,7 @@ const CreateTaskForm = () => {
 
   // form submitAction()
   const submitLogic = () => {
-    form.validateFields().then((values) => {
+    FormBillCreate.validateFields().then((values) => {
       //validate ant form
       //addding back name property to item because return them from hybrid component
       const updatedProductsUsed = values.products_used?.map((item) => {
@@ -50,7 +51,7 @@ const CreateTaskForm = () => {
 
   return (
     <Form
-      form={form}
+      form={FormBillCreate}
       name="task-form"
       layout="vertical"
       className="bg-white p-5 rounded-lg"

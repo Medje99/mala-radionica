@@ -545,6 +545,27 @@ app.post("/bill", (req, res) => {
   );
 });
 
+app.delete("/bill/:id", (req, res) => {
+  const billId = req.params.id;
+
+  const query = `
+    DELETE FROM bills 
+    WHERE bill_id = ?
+  `;
+
+  db.query(query, [billId], (err, results) => {
+    if (err) {
+      console.error("Error deleting Bill:", err);
+      res.status(500).send("Error deleting Bill");
+    } else if (results.affectedRows === 0) {
+      res.status(404).send("Bill not found");
+    } else {
+      console.log("Bill deleted successfully:", results);
+      res.send("Bill deleted successfully");
+    }
+  });
+});
+
 // Tasks route DELETE Handler Express
 app.delete("/task/:id", (req, res) => {
   console.log("DELETE /task called");

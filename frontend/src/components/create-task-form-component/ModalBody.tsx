@@ -7,7 +7,7 @@ import CreateBillForm from '../modal-form-parts/CreateBillForm'
 import { useEffect } from 'react'
 
 export const ModalBody = () => {
-  const { modalIsOpen, currentPage, setModalIsOpen, modalTitle, setModalTitle } = useModalContext()
+  const { modalIsOpen, currentPage, setModalIsOpen, modalTitle, setModalTitle, setCurrentPage } = useModalContext()
 
   //must be separate inside of useEffect because it needs to load when currentPage is loaded
   useEffect(() => {
@@ -45,7 +45,10 @@ export const ModalBody = () => {
       centered
       open={modalIsOpen}
       width={'40%'}
-      onCancel={() => setModalIsOpen(false)}
+      onCancel={() => {
+        setCurrentPage(0)
+        setModalIsOpen(false)
+      }}
       footer={null}
     >
       {renderFormPart()}

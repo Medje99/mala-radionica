@@ -36,15 +36,15 @@ const CreateTaskForm = () => {
   const onClickHandler = () => {
     form.validateFields().then((values) => {
       // Convert creation_date to database format (YYYY-MM-DDTHH:mm:ss)
-      const creationDate = moment(values.creation_date).format('YYYY-MM-DDTHH:mm:ss')
 
       const fullData = {
         ...values,
-        creation_date: creationDate, // Use the converted date
         contact_id: customerContact?.id ?? 0,
       }
 
       TaskService.createTask(fullData).then((response) => {
+        console.log(fullData, 'data')
+        console.log(response, 'response')
         // Update the job object in the context
         setJob({
           task_id: response.data.id,
@@ -97,8 +97,9 @@ const CreateTaskForm = () => {
               showTime={{ minuteStep: 15 }}
               format="MMM-DD HH:mm"
               name="creation_date"
-              defaultOpenValue={dayjs(moment().toDate())}
-              defaultValue={dayjs(moment().toDate())}
+              defaultOpenValue={dayjs(form.getFieldValue('creation_date'))}
+              defaultValue={dayjs(form.getFieldValue('creation_date'))}
+              onChange={(date) => form.setFieldValue('creation_date', date)}
             />
           </Space>
         </Form.Item>
@@ -112,8 +113,9 @@ const CreateTaskForm = () => {
                 showTime={{ minuteStep: 15 }}
                 format="MMM-DD HH:mm"
                 name="end_date"
-                defaultOpenValue={dayjs(moment().toDate())}
-                defaultValue={dayjs(moment().toDate())}
+                defaultOpenValue={dayjs(form.getFieldValue('end_date'))}
+                defaultValue={dayjs(form.getFieldValue('end_date'))}
+                onChange={(date) => form.setFieldValue('end_date', date)}
               />
             </Space>
           </Form.Item>

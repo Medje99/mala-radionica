@@ -21,7 +21,7 @@ const CreateContactForm = () => {
   const { setCustomerContact, setCurrentPage, currentPage } = useModalContext() // context passing to form 2
   const [newCustomer, setNewCustomer] = useState(false) // definined default false
   const { customers } = useGetAllContacts() // getting customer full list via get request
-  const [form] = Form.useForm<IContacts>() // create form instance useState for all fields and elements abstracted
+  const [FormContactCreate] = Form.useForm<IContacts>() // create form instance useState for all fields and elements abstracted
   const [ContactSelect, setContactSelect] = useState<string | undefined>('') //contactSelect
   const [contactSerchCriteria, setContactSearchCriteria] = useState<string>(ContactSelect as string) //contact name,lastname input if no match
   const [ContactSelectionFull, setContactSelectionFull] = useState<CustomerSelect[]>() // if no match set true
@@ -38,22 +38,20 @@ const CreateContactForm = () => {
         fullName: concateFullName(selectedCustomer.firstName, selectedCustomer.lastName),
       })
     }
-  }, [selectedCustomer, contactSerchCriteria, form]) // if selected
+  }, [selectedCustomer, contactSerchCriteria, FormContactCreate]) // if selected
 
   useEffect(() => {
     setCustomerSelectOptions(customers, setContactSelectionFull)
   }, [customers, setContactSelectionFull])
 
   useEffect(() => {
-    setCustomerFormValues(selectedCustomer, form, setNewCustomer)
+    setCustomerFormValues(selectedCustomer, FormContactCreate, setNewCustomer)
   }, [selectedCustomer])
 
   const onClickHandler = () => {
     selectedCustomer //if existing contact advance to next form
       ? setCurrentPage(currentPage + 1) //else validate form , try adding
-      : form
-
-          .validateFields()
+      : FormContactCreate.validateFields()
           .then((values: any) => {
             const { firstName } = values
             const separatedName = separateFullName(firstName)
@@ -83,7 +81,7 @@ const CreateContactForm = () => {
   }
 
   return (
-    <Form form={form} name="musterija-form" layout="vertical" className="bg-white p-5 rounded-lg">
+    <Form form={FormContactCreate} name="musterija-form" layout="vertical" className="bg-white p-5 rounded-lg">
       <Form.Item label="Musterija" required className="mb-4 mr-10 ml-10">
         <Space.Compact
           style={{ width: '100%' }} // Ensure the Space.Compact wrapper takes full width
@@ -107,7 +105,7 @@ const CreateContactForm = () => {
                 filterOption={false}
                 allowClear
                 onKeyDown={(event: any) => {
-                  form.setFieldValue('firstName', event.target.value)
+                  FormContactCreate.setFieldValue('firstName', event.target.value)
                 }}
                 notFoundContent={null}
               >

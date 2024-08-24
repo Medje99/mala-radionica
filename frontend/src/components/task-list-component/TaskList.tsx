@@ -13,7 +13,7 @@ const TasksList: React.FC = () => {
   const [filteredTasks, setFilteredTasks] = useState<ITaskResponse[]>([])
   const [editingTask, setEditingTask] = useState<ITaskResponse>({} as ITaskResponse)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [form] = Form.useForm<ITaskResponse>()
+  const [FormTaskList] = Form.useForm<ITaskResponse>()
 
   useEffect(() => {
     if (allTasks) {
@@ -39,7 +39,7 @@ const TasksList: React.FC = () => {
       key: 'action',
       render: (record: ITaskResponse) => (
         <Space size="middle">
-          <Button type="primary" ghost onClick={() => handleEdit(record, setEditingTask, form, setIsModalOpen)}>
+          <Button type="primary" ghost onClick={() => handleEdit(record, setEditingTask, FormTaskList, setIsModalOpen)}>
             Edit
           </Button>
           <Popconfirm
@@ -75,10 +75,10 @@ const TasksList: React.FC = () => {
       <Modal
         title="Edit Task"
         open={isModalOpen}
-        onOk={() => handleSave(form, editingTask, filteredTasks, setFilteredTasks, setIsModalOpen)}
+        onOk={() => handleSave(FormTaskList, editingTask, filteredTasks, setFilteredTasks, setIsModalOpen)}
         onCancel={() => setIsModalOpen(false)}
       >
-        <Form form={form} layout="vertical">
+        <Form form={FormTaskList} layout="vertical">
           <Form.Item
             label="Job Name"
             name="job_name"

@@ -8,7 +8,7 @@ const TasksAdvancedActions = () => {
     record: ITaskResponse,
     setEditingTask: React.Dispatch<React.SetStateAction<ITaskResponse>>,
     form: FormInstance<ITaskResponse>,
-    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
   ) => {
     setEditingTask({ ...record })
     form.setFieldsValue({
@@ -20,9 +20,8 @@ const TasksAdvancedActions = () => {
   const handleDelete = (
     id: number,
     filteredTasks: ITaskResponse[],
-    setFilteredTasks: React.Dispatch<React.SetStateAction<ITaskResponse[]>>
+    setFilteredTasks: React.Dispatch<React.SetStateAction<ITaskResponse[]>>,
   ) => {
-    // Implement your delete logic here (e.g., call an API to delete the task)
     message.success('Task deleted successfully')
     TaskService.deleteTask(id)
     setFilteredTasks(filteredTasks.filter((task) => task.id !== id))
@@ -33,18 +32,14 @@ const TasksAdvancedActions = () => {
     editingTask: ITaskResponse | null,
     filteredTasks: ITaskResponse[],
     setFilteredTasks: React.Dispatch<React.SetStateAction<ITaskResponse[]>>,
-    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>
+    setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
   ) => {
     try {
       const values = await form.validateFields()
       const updatedTask = { ...editingTask, ...values } as ITaskResponse
       TaskService.updateTask(updatedTask)
       message.success('Task updated successfully')
-      setFilteredTasks(
-        filteredTasks.map((task) =>
-          task.id === updatedTask.id ? updatedTask : task
-        )
-      )
+      setFilteredTasks(filteredTasks.map((task) => (task.id === updatedTask.id ? updatedTask : task)))
       setIsModalOpen(false)
     } catch (error) {
       console.error('Validation failed:', error)

@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {
-  Table,
-  Typography,
-  Input,
-  Popconfirm,
-  message,
-  Modal,
-  Form,
-  Space,
-  Button,
-} from 'antd'
+import { Table, Typography, Input, Popconfirm, message, Modal, Form, Space, Button } from 'antd'
 import { Link } from 'react-router-dom'
 import { IContacts } from '@/model/response/IContactResponse'
 import useGetAllContacts from '@/CustomHooks/useGetAllContants'
@@ -19,11 +9,9 @@ const ContactsList: React.FC = () => {
   const { customers: contacts } = useGetAllContacts()
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredContacts, setFilteredContacts] = useState<IContacts[]>([])
-  const [editingContact, setEditingContact] = useState<IContacts>(
-    {} as IContacts
-  )
+  const [editingContact, setEditingContact] = useState<IContacts>({} as IContacts)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [form] = Form.useForm<IContacts>()
+  const [FormContactList] = Form.useForm<IContacts>()
 
   useEffect(() => {
     const filtered = contacts.filter((contact) => {
@@ -40,7 +28,7 @@ const ContactsList: React.FC = () => {
 
   const handleEdit = (record: IContacts) => {
     setEditingContact(record)
-    form.setFieldsValue(record)
+    FormContactList.setFieldsValue(record)
     setIsModalOpen(true)
   }
 
@@ -51,11 +39,11 @@ const ContactsList: React.FC = () => {
   }
 
   const handleSave = async () => {
-    const values = await form.validateFields()
+    const values = await FormContactList.validateFields()
     const updatedProduct = { ...editingContact, ...values } as IContacts
     ContactService.updateContactCustomer(updatedProduct)
     const updatedContacts = filteredContacts.map((contact) =>
-      contact.id === editingContact.id ? { ...contact, ...values } : contact
+      contact.id === editingContact.id ? { ...contact, ...values } : contact,
     )
     setFilteredContacts(updatedContacts)
     setIsModalOpen(false)
@@ -119,20 +107,10 @@ const ContactsList: React.FC = () => {
         style={{ marginBottom: 16 }}
       />
 
-      <Table
-        columns={columns}
-        dataSource={filteredContacts}
-        pagination={{ pageSize: 7 }}
-        rowKey="id"
-      />
+      <Table columns={columns} dataSource={filteredContacts} pagination={{ pageSize: 7 }} rowKey="id" />
 
-      <Modal
-        title="Edit Contact"
-        open={isModalOpen}
-        onOk={handleSave}
-        onCancel={() => setIsModalOpen(false)}
-      >
-        <Form form={form} layout="vertical">
+      <Modal title="Edit Contact" open={isModalOpen} onOk={handleSave} onCancel={() => setIsModalOpen(false)}>
+        <Form form={FormContactList} layout="vertical">
           <Form.Item
             label="First Name"
             name="firstName"
@@ -147,19 +125,13 @@ const ContactsList: React.FC = () => {
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            label="City"
-            name="city"
-            rules={[{ required: true, message: 'Please enter the city' }]}
-          >
+          <Form.Item label="City" name="city" rules={[{ required: true, message: 'Please enter the city' }]}>
             <Input />
           </Form.Item>
           <Form.Item
             label="Phone Number"
             name="phoneNumber"
-            rules={[
-              { required: true, message: 'Please enter the phone number' },
-            ]}
+            rules={[{ required: true, message: 'Please enter the phone number' }]}
           >
             <Input />
           </Form.Item>

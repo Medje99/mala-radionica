@@ -1,18 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import useGetAllProducts from '@/CustomHooks/useGetAllProducts'
 import { IProducts } from '@/model/response/IProductResponse'
-import {
-  Table,
-  Typography,
-  Input,
-  Popconfirm,
-  message,
-  Modal,
-  Form,
-  InputNumber,
-  Space,
-  Button,
-} from 'antd'
+import { Table, Typography, Input, Popconfirm, message, Modal, Form, InputNumber, Space, Button } from 'antd'
 import { proizvod, proizvodjac, model, cena, kolicina } from './constats'
 import ProductsAdvancedActions from './actions'
 import { Link } from 'react-router-dom'
@@ -23,11 +12,9 @@ const ProductsList: React.FC = () => {
   const { allProducts } = useGetAllProducts()
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredProducts, setFilteredProducts] = useState<IProducts[]>([])
-  const [editingProduct, setEditingProduct] = useState<IProducts>(
-    {} as IProducts
-  )
+  const [editingProduct, setEditingProduct] = useState<IProducts>({} as IProducts)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [form] = Form.useForm<IProducts>()
+  const [FormProductList] = Form.useForm<IProducts>()
 
   useEffect(() => {
     const filtered = allProducts.filter((product) => {
@@ -55,17 +42,13 @@ const ProductsList: React.FC = () => {
           <Button
             type="primary"
             ghost
-            onClick={() =>
-              handleEdit(record, setEditingProduct, form, setIsModalOpen)
-            }
+            onClick={() => handleEdit(record, setEditingProduct, FormProductList, setIsModalOpen)}
           >
             Izmeni
           </Button>
           <Popconfirm
             title="Are you sure to delete this product?"
-            onConfirm={() =>
-              handleDelete(record.id, filteredProducts, setFilteredProducts)
-            }
+            onConfirm={() => handleDelete(record.id, filteredProducts, setFilteredProducts)}
             onCancel={() => message.error('Delete canceled')}
           >
             <Button danger ghost>
@@ -100,60 +83,30 @@ const ProductsList: React.FC = () => {
       <Modal
         title="Edit Product"
         open={isModalOpen}
-        onOk={() =>
-          handleSave(
-            form,
-            editingProduct,
-            filteredProducts,
-            setFilteredProducts,
-            setIsModalOpen
-          )
-        }
+        onOk={() => handleSave(FormProductList, editingProduct, filteredProducts, setFilteredProducts, setIsModalOpen)}
         onCancel={() => setIsModalOpen(false)}
       >
-        <Form form={form} layout="vertical">
-          <Form.Item
-            label="Name"
-            name="name"
-            rules={[
-              { required: true, message: 'Please enter the product name' },
-            ]}
-          >
+        <Form form={FormProductList} layout="vertical">
+          <Form.Item label="Name" name="name" rules={[{ required: true, message: 'Please enter the product name' }]}>
             <Input />
           </Form.Item>
           <Form.Item
             label="Manufacturer"
             name="manufacturer"
-            rules={[
-              { required: true, message: 'Please enter the manufacturer name' },
-            ]}
+            rules={[{ required: true, message: 'Please enter the manufacturer name' }]}
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            label="Model"
-            name="model"
-            rules={[
-              { required: true, message: 'Please enter the product model' },
-            ]}
-          >
+          <Form.Item label="Model" name="model" rules={[{ required: true, message: 'Please enter the product model' }]}>
             <Input />
           </Form.Item>
-          <Form.Item
-            label="Price"
-            name="price"
-            rules={[
-              { required: true, message: 'Please enter the product price' },
-            ]}
-          >
+          <Form.Item label="Price" name="price" rules={[{ required: true, message: 'Please enter the product price' }]}>
             <InputNumber style={{ width: '100%' }} />
           </Form.Item>
           <Form.Item
             label="Quantity"
             name="quantity"
-            rules={[
-              { required: true, message: 'Please enter the product quantity' },
-            ]}
+            rules={[{ required: true, message: 'Please enter the product quantity' }]}
           >
             <InputNumber style={{ width: '100%' }} />
           </Form.Item>

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Table, Typography, Input, Popconfirm, message, Modal, Form, Space, Button } from 'antd'
+import { Table, Typography, Input, Popconfirm, message, Modal, Form, Space, Button, DatePicker } from 'antd'
 import { Link } from 'react-router-dom'
 import BillService from '@/service/BillService'
 import useGetAllBills from '@/CustomHooks/useGetAllBills'
 import moment from 'moment'
 import { IBillResponse } from '@/model/response/IBillResponse'
+import dayjs from 'dayjs'
 
 const BillsList: React.FC = () => {
   const { bills } = useGetAllBills()
@@ -12,8 +13,7 @@ const BillsList: React.FC = () => {
   const [filteredBills, setFilteredBills] = useState<IBillResponse[]>([])
   const [editingBill, setEditingBill] = useState<IBillResponse>({} as IBillResponse)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [form] = Form.useForm<IBillResponse>()
-
+  const [FormBillList] = Form.useForm<IBillResponse>()
   useEffect(() => {
     setFilteredBills(bills)
     const filtered = bills.filter((bill) => {
@@ -29,7 +29,7 @@ const BillsList: React.FC = () => {
 
   const handleEdit = (record: IBillResponse) => {
     setEditingBill(record)
-    form.setFieldsValue(record)
+    FormBillList.setFieldsValue(record)
     setIsModalOpen(true)
   }
 
@@ -40,7 +40,7 @@ const BillsList: React.FC = () => {
   }
 
   const handleSave = async () => {
-    const values = await form.validateFields()
+    const values = await FormBillList.validateFields()
     const updatedBill = { ...editingBill, ...values } as IBillResponse
     BillService.updateBill(updatedBill)
     const updatedBills = filteredBills.map((bill) =>
@@ -87,12 +87,22 @@ const BillsList: React.FC = () => {
       title: 'Paid',
       dataIndex: 'paid',
       key: 'paid',
+      render: (paid: number) => {
+        return paid ? (
+          'PLACENO'
+        ) : (
+          <div className="flex items-center">
+            <p className="mr-2">Nije placeno</p>
+            <Button>Naplata</Button>
+          </div>
+        )
+      },
 
       filters: [
         { text: 'Placeni', value: 1 },
         { text: 'Ne placeni', value: 0 },
       ],
-      onFilter: (value: any, record: any) => {
+      onFilter: (value: string, record: any) => {
         return record.paid === parseInt(value, 10) // Parse value to number for comparison
       },
     },
@@ -135,23 +145,28 @@ const BillsList: React.FC = () => {
       <Table columns={columns} dataSource={filteredBills} pagination={{ pageSize: 7 }} rowKey="bill_id" />
 
       <Modal title="Edit Bill" open={isModalOpen} onOk={handleSave} onCancel={() => setIsModalOpen(false)}>
-        <Form form={form} layout="vertical">
-          <Form.Item
-            label="Contact ID"
-            name="contact_id"
-            rules={[{ required: true, message: 'Please enter the contact ID' }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item label="Job ID" name="job_id" rules={[{ required: true, message: 'Please enter the job ID' }]}>
-            <Input />
-          </Form.Item>
+        <Form
+          form={FormBillList}
+          layout="vertical"
+          initialValues={{
+            end_date: FormBillList.getFieldValue('end_date'),
+          }}
+        >
           <Form.Item
             label="End Date"
             name="end_date"
             rules={[{ required: true, message: 'Please enter the end date' }]}
           >
-            <Input />
+            <Space direction="vertical">
+              <DatePicker
+                showTime={{ minuteStep: 15 }}
+                format="MMM-DD HH:mm"
+                name="end_date"
+                defaultOpenValue={dayjs(FormBillList.getFieldValue('end_date'))}
+                defaultValue={dayjs(FormBillList.getFieldValue('end_date'))}
+                onChange={(date) => FormBillList.setFieldValue('end_date', date)}
+              />
+            </Space>
           </Form.Item>
           <Form.Item
             label="Labor Cost"
