@@ -144,6 +144,64 @@ app.get("/bills", (req, res) => {
   });
 });
 
+app.put("/bill/:bill_id", (req, res) => {
+  const billId = req.params.bill_id;
+  const {
+    contact_id,
+    job_id,
+    end_date,
+    labor_cost,
+    paid,
+    parts_cost,
+    products_used,
+  } = req.body;
+
+  // Validate required fields
+  if (
+    !contact_id ||
+    !job_id ||
+    !end_date ||
+    labor_cost === undefined ||
+    parts_cost === undefined
+  ) {
+    return res.status(400).send("All required fields must be provided.");
+  }
+
+  // Convert products_used to JSON string
+  const productsUsedJson = JSON.stringify(products_used);
+
+  const query = `
+    UPDATE bills 
+    SET contact_id = ?, job_id = ?, end_date = ?, labor_cost = ?, paid = ?, parts_cost = ?, products_used = ?
+    WHERE bill_id = ?
+  `;
+
+  db.query(
+    query,
+    [
+      contact_id,
+      job_id,
+      end_date,
+      labor_cost,
+      paid,
+      parts_cost,
+      productsUsedJson,
+      billId,
+    ],
+    (err, results) => {
+      if (err) {
+        console.error("Error updating bill:", err);
+        res.status(500).send("Error updating bill");
+      } else if (results.affectedRows === 0) {
+        res.status(404).send("Bill not found");
+      } else {
+        console.log("Bill updated successfully:", results);
+        res.send("Bill updated successfully");
+      }
+    }
+  );
+});
+
 //Products route POST Handler Express
 app.post("/ProductInput", (req, res) => {
   console.log("POST /ProductInput called");

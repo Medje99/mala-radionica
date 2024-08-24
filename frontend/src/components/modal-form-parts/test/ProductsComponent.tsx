@@ -5,10 +5,8 @@ import useGetAllProducts from '@/CustomHooks/useGetAllProducts'
 
 const { Option } = Select
 
-const Hybrid = () => {
-  const [rows, setRows] = useState<{ id: number; inventoryQ: number; name: string }[]>([
-    { id: 0, inventoryQ: 0, name: '' },
-  ]) // Start with one row with a default maxQuantity
+const ProductsComponent = () => {
+  const [rows, setRows] = useState<{ id: number; inventoryQ: number; name: string }[]>([]) // Start with one row with a default maxQuantity
   const { allProducts } = useGetAllProducts()
 
   const handleProductChange = (rowIndex: number, productId: number) => {
@@ -118,4 +116,4 @@ const Hybrid = () => {
   )
 }
 
-export default Hybrid
+export default ProductsComponent

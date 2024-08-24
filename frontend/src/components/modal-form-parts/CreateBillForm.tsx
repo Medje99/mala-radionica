@@ -3,7 +3,7 @@ import { Form, Input, Switch, InputNumber, Typography } from 'antd'
 import { useEffect, useState } from 'react'
 import ActionButton from '../CustomButtons/ActionButton' // recives function , button title, button class , and aditional styles
 import { useModalContext } from '@/contexts/ModalContextProvider'
-import Hybrid from './test/hybrid'
+import ProductsComponent from './test/ProductsComponent'
 import useGetAllProducts from '../../CustomHooks/useGetAllProducts'
 import BillService, { IBillResponse } from '@/service/BillService'
 
@@ -79,7 +79,7 @@ const CreateTaskForm = () => {
         <Switch checked={isPaid} onChange={() => setIsPaid(!isPaid)} />
       </Form.Item>
       <Typography>Iskoristeni proizvodi:</Typography>
-      <Hybrid />
+      <ProductsComponent />
 
       <div className="flex flex-row justify-between mt-5">
         <ActionButton

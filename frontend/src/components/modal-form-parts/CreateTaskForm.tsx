@@ -35,8 +35,12 @@ const CreateTaskForm = () => {
 
   const onClickHandler = () => {
     form.validateFields().then((values) => {
+      // Convert creation_date to database format (YYYY-MM-DDTHH:mm:ss)
+      const creationDate = moment(values.creation_date).format('YYYY-MM-DDTHH:mm:ss')
+
       const fullData = {
         ...values,
+        creation_date: creationDate, // Use the converted date
         contact_id: customerContact?.id ?? 0,
       }
 

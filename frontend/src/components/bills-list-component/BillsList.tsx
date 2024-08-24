@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Table, Typography, Input, Popconfirm, message, Modal, Form, Space, Button } from 'antd'
 import { Link } from 'react-router-dom'
-import BillService, { IBillResponse } from '@/service/BillService'
+import BillService from '@/service/BillService'
 import useGetAllBills from '@/CustomHooks/useGetAllBills'
 import moment from 'moment'
+import { IBillResponse } from '@/model/response/IBillResponse'
 
 const BillsList: React.FC = () => {
   const { bills } = useGetAllBills()
@@ -15,15 +16,15 @@ const BillsList: React.FC = () => {
 
   useEffect(() => {
     setFilteredBills(bills)
-    // const filtered = bills.filter((bill) => {
-    //   const searchText = searchTerm.toLowerCase()
-    //   return (
-    //     bill.contact_firstName?.toString().includes(searchText) ||
-    //     bill.job_name?.toString().includes(searchText) ||
-    //     bill.parts_cost?.toString().includes(searchText)
-    //   )
-    // })
-    // setFilteredBills(filtered)
+    const filtered = bills.filter((bill) => {
+      const searchText = searchTerm.toLowerCase()
+      return (
+        bill.firstName?.toString().includes(searchText) ||
+        bill.job_name?.toString().includes(searchText) ||
+        bill.labor_cost?.toString().includes(searchText)
+      )
+    })
+    setFilteredBills(filtered)
   }, [searchTerm, bills])
 
   const handleEdit = (record: IBillResponse) => {
@@ -51,6 +52,7 @@ const BillsList: React.FC = () => {
     message.success('Bill updated successfully')
   }
 
+  // table colums
   const columns = [
     {
       title: 'Contact name',
@@ -77,9 +79,9 @@ const BillsList: React.FC = () => {
     },
 
     {
-      title: 'Parts and Labor Cost',
-      dataIndex: 'parts_cost',
-      key: 'parts_cost',
+      title: 'Cena usluge',
+      dataIndex: 'labor_cost',
+      key: 'labor_cost',
     },
     {
       title: 'Paid',
@@ -161,7 +163,7 @@ const BillsList: React.FC = () => {
           <Form.Item
             label="Total Cost"
             name="total_cost"
-            rules={[{ required: true, message: 'Please enter the total cost' }]}
+            rules={[{ required: false, message: 'Please enter the total cost' }]}
           >
             <Input />
           </Form.Item>
