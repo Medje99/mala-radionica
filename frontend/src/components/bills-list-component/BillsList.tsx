@@ -52,6 +52,14 @@ const BillsList: React.FC = () => {
     message.success('Bill updated successfully')
   }
 
+  const markAsPaid = async (record: IBillResponse) => {
+    const updatedBill = { ...record, paid: true } as IBillResponse
+    BillService.updateBill(updatedBill)
+    const updatedBills = filteredBills.map((bill) => (bill.bill_id === record.bill_id ? { ...bill, paid: true } : bill))
+    setFilteredBills(updatedBills)
+    message.success('Bill marked as paid')
+  }
+
   // table colums
   const columns = [
     {
@@ -87,13 +95,20 @@ const BillsList: React.FC = () => {
       title: 'Paid',
       dataIndex: 'paid',
       key: 'paid',
-      render: (paid: number) => {
+      render: (paid: number, record: IBillResponse) => {
+        // Pass 'record' as an argument
         return paid ? (
           'PLACENO'
         ) : (
           <div className="flex items-center">
             <p className="mr-2">Nije placeno</p>
-            <Button>Naplata</Button>
+            <Popconfirm
+              title="Are you sure to mark this bill as paid?"
+              onConfirm={() => markAsPaid(record)}
+              onCancel={() => message.error('No changes made')}
+            >
+              <Button>Naplata</Button>
+            </Popconfirm>
           </div>
         )
       },
