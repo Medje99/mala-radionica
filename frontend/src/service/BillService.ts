@@ -25,7 +25,12 @@ const deleteBill = async (id: number) => {
   return await axios.delete(`${baseUrl}/bill/${id}`)
 }
 
+const markAsPaid = async (id: number) => {
+  return await axios.put(`${baseUrl}/bill/${id}`)
+}
+
 const BillService = {
+  markAsPaid,
   createBill,
   getAllBills,
   getBillById, // Added getBillById method
