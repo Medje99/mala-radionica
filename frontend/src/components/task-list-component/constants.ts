@@ -13,14 +13,6 @@ export const taskDescription = {
   editable: true,
 }
 
-export const paid = {
-  title: 'Placeno',
-  dataIndex: 'paid',
-  key: 'paid',
-  editable: true,
-  render: (paid: boolean) => (paid ? 'Yes' : 'No'),
-}
-
 export const creation_date = {
   title: 'Kreirano',
   dataIndex: 'creation_date',

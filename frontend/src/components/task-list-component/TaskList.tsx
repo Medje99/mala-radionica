@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
 import { Table, Typography, Input, Popconfirm, message, Modal, Form, Space, Button, Switch } from 'antd'
-import { customer_firstName, customer_lastName, taskName, taskDescription, paid, creation_date } from './constants'
+import { customer_firstName, customer_lastName, taskName, taskDescription, creation_date } from './constants'
 import { Link } from 'react-router-dom'
-import useGetAllTasks from '@/CustomHooks/useGetAllTasks'
+import useGetUnfinishedTasks from '@/CustomHooks/useGetUnfinishedTasks'
 import TasksAdvancedActions from './actions'
 
 const TasksList: React.FC = () => {
-  const { allTasks } = useGetAllTasks()
+  const { allTasks: UnfinishedOnes } = useGetUnfinishedTasks()
   const { handleEdit, handleDelete, handleSave } = TasksAdvancedActions()
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredTasks, setFilteredTasks] = useState<ITaskResponse[]>([])
@@ -16,23 +16,26 @@ const TasksList: React.FC = () => {
   const [FormTaskList] = Form.useForm<ITaskResponse>()
 
   useEffect(() => {
-    if (allTasks) {
-      const filtered = allTasks.filter((task) => {
+    if (UnfinishedOnes) {
+      const filtered = UnfinishedOnes.filter((task) => {
         const searchText = searchTerm.toLowerCase()
         return (
-          task.job_name?.toLowerCase().includes(searchText) || task.job_description?.toLowerCase().includes(searchText)
+          task.job_name?.toLowerCase().includes(searchText) ||
+          task.job_description?.toLowerCase().includes(searchText) ||
+          task.firstName?.toLowerCase().includes(searchText) ||
+          task.job_description?.toLowerCase().includes(searchText) ||
+          task.lastName?.toLowerCase().includes(searchText)
         )
       })
       setFilteredTasks(filtered)
     }
-  }, [searchTerm, allTasks])
+  }, [searchTerm, UnfinishedOnes])
 
   const columns = [
     customer_firstName,
     customer_lastName,
     taskName,
     taskDescription,
-    paid,
     creation_date,
     {
       title: 'Actions',
@@ -61,7 +64,7 @@ const TasksList: React.FC = () => {
   return (
     <div>
       <Typography.Title level={2} className="mb-4">
-        Task List
+        Aktivni Poslovi
       </Typography.Title>
 
       <Input.Search
@@ -70,7 +73,7 @@ const TasksList: React.FC = () => {
         style={{ marginBottom: 20 }}
       />
 
-      <Table columns={columns} dataSource={filteredTasks} pagination={{ pageSize: 7 }} rowKey="id" />
+      <Table columns={columns} dataSource={filteredTasks} pagination={{ pageSize: 100 }} rowKey="id" />
 
       <Modal
         title="Edit Task"
@@ -92,10 +95,6 @@ const TasksList: React.FC = () => {
             rules={[{ required: true, message: 'Please enter the job description' }]}
           >
             <Input.TextArea />
-          </Form.Item>
-
-          <Form.Item label="Paid" name="paid" valuePropName="checked">
-            <Switch />
           </Form.Item>
         </Form>
       </Modal>

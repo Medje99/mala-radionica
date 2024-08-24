@@ -40,6 +40,35 @@ db.connect((err) => {
   console.log("Connected to the mySQL database");
 });
 
+app.get("/unfinishedTasks", (req, res) => {
+  console.log("GET /unfinishedTasks called");
+
+  const selectQuery = `
+    SELECT 
+      t.*,
+      c.firstName,
+      c.lastName
+    FROM 
+      tasks t
+    LEFT JOIN 
+      contacts c ON t.contact_id = c.id
+    LEFT JOIN 
+      bills b ON t.id = b.job_id
+    WHERE 
+      b.job_id IS NULL;
+  `;
+
+  db.query(selectQuery, (err, results) => {
+    if (err) {
+      console.error("Error retrieving unfinished tasks:", err);
+      res.status(500).json({ error: "Error retrieving unfinished tasks" });
+    } else {
+      console.log("Retrieved unfinished tasks:", results);
+      res.json(results);
+    }
+  });
+});
+
 //Contacts route GET Handler Express
 
 app.get("/contacts", (req, res) => {
@@ -460,16 +489,15 @@ app.get("/tasks/:id", (req, res) => {
 app.put("/task/:id", (req, res) => {
   console.log("PUT /task called");
   const { id } = req.params;
-  const { contact_id, job_name, job_description, bill_id, creation_date } =
-    req.body;
+  const { contact_id, job_name, job_description, creation_date } = req.body;
   console.log("Received data for update:", req.body);
 
   const updateQuery =
-    "UPDATE `tasks` SET `contact_id` = ?, `job_name` = ?, `job_description` = ?, `bill_id` = ?, `creation_date` = ? WHERE `id` = ?;";
+    "UPDATE `tasks` SET `contact_id` = ?, `job_name` = ?, `job_description` = ?,  `creation_date` = ? WHERE `id` = ?;";
 
   db.query(
     updateQuery,
-    [contact_id, job_name, job_description, bill_id, creation_date, id],
+    [contact_id, job_name, job_description, creation_date, id],
     (err, result) => {
       if (err) {
         console.error("Error updating task:", err);

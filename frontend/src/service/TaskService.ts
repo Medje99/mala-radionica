@@ -10,6 +10,10 @@ const getAllTasks = async () => {
   return await axios.get<ITaskResponse[]>(baseUrl + '/tasks') // Adjusted endpoint to plural '/tasks'
 }
 
+const getUnfinishedTasks = async () => {
+  return await axios.get<ITaskResponse[]>(baseUrl + '/unfinishedTasks') // Adjusted endpoint to plural '/tasks'
+}
+
 const getTaskById = async (id: number) => {
   return await axios.get<ITaskResponse>(`${baseUrl}/tasks/${id}`) // Adjusted endpoint to plural '/tasks'
 }
@@ -23,8 +27,9 @@ const deleteTask = async (id: number) => {
 }
 
 const TaskService = {
-  createTask,
   getAllTasks,
+  getUnfinishedTasks,
+  createTask,
   getTaskById, // Added getTaskById method
   updateTask,
   deleteTask,

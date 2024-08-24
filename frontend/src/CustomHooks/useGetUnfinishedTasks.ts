@@ -2,20 +2,20 @@ import { useEffect, useState } from 'react'
 import TaskService from '@/service/TaskService'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
 
-const useGetAllTasks = () => {
-  const [allTasks, setAllTasks] = useState<ITaskResponse[]>([])
+const useGetUnfinishedTasks = () => {
+  const [unfinishedTasks, setUnfinishedTasks] = useState<ITaskResponse[]>([])
 
   useEffect(() => {
     TaskService.getUnfinishedTasks()
       .then((response) => {
-        setAllTasks(response.data)
+        setUnfinishedTasks(response.data)
       })
       .catch((error) => {
         console.error('Error fetching tasks:', error)
       })
   }, [])
 
-  return { allTasks }
+  return { allTasks: unfinishedTasks }
 }
 
-export default useGetAllTasks
+export default useGetUnfinishedTasks
