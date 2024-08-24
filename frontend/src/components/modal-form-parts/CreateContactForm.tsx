@@ -12,52 +12,44 @@ import { separateFullName } from '@/Utilities/getSeparatedFullName'
 import ContactService from '@/service/ContactsService'
 import ActionButton from '../CustomButtons/ActionButton'
 import { useModalContext } from '@/contexts/ModalContextProvider'
-import moment from 'moment'
 
-const { Option } = Select
+const { Option } = Select //redeclare before component body main function
+const { setCustomerSelectOptions, setCustomerFormValues, handleSelectChange } = createTaskFormActions() // createTaskFormActions
 
-const { setCustomerSelectOptions, setCustomerFormValues, handleSelectChange } = createTaskFormActions()
-
+// Component main function
 const CreateContactForm = () => {
-  const { setCustomerContact, setModalTitle, setCurrentPage, currentPage } = useModalContext()
-  const [newCustomer, setNewCustomer] = useState(false) // definined boolean
+  const { setCustomerContact, setCurrentPage, currentPage } = useModalContext() // context passing to form 2
+  const [newCustomer, setNewCustomer] = useState(false) // definined default false
+  const { customers } = useGetAllContacts() // getting customer full list via get request
+  const [form] = Form.useForm<IContacts>() // create form instance useState for all fields and elements abstracted
+  const [ContactSelect, setContactSelect] = useState<string | undefined>('') //contactSelect
+  const [contactSerchCriteria, setContactSearchCriteria] = useState<string>(ContactSelect as string) //contact name,lastname input if no match
+  const [ContactSelectionFull, setContactSelectionFull] = useState<CustomerSelect[]>() // if no match set true
+  const selectedCustomer = customers.find((item) => concateFullName(item.firstName, item.lastName) === ContactSelect)
 
-  const { customers } = useGetAllContacts()
-  const [form] = Form.useForm<IContacts>()
-  const [hybridInputSelect, setHybridInputSelect] = useState<string | undefined>('')
-  const [hybridInputText, sethybridInputText] = useState<string>(hybridInputSelect as string)
-
-  const [newCustomerSelect, setNewCustomerSelect] = useState<CustomerSelect[]>()
-
-  const pickedCustomer = customers.find((item) => concateFullName(item.firstName, item.lastName) === hybridInputSelect)
-
-  const filteredOptions = newCustomerSelect?.filter((option: any) =>
-    option.label.toLowerCase().includes(hybridInputText.toLowerCase()),
+  const filteredOptions = ContactSelectionFull?.filter((option: any) =>
+    option.label.toLowerCase().includes(contactSerchCriteria.toLowerCase()),
   )
 
   useEffect(() => {
-    if (pickedCustomer) {
+    if (selectedCustomer) {
       setCustomerContact({
-        id: pickedCustomer.id,
-        fullName: concateFullName(pickedCustomer.firstName, pickedCustomer.lastName),
+        id: selectedCustomer.id,
+        fullName: concateFullName(selectedCustomer.firstName, selectedCustomer.lastName),
       })
     }
-  }, [pickedCustomer, hybridInputText, form])
+  }, [selectedCustomer, contactSerchCriteria, form]) // if selected
 
   useEffect(() => {
-    setCustomerSelectOptions(customers, setNewCustomerSelect)
-  }, [customers, setNewCustomerSelect])
+    setCustomerSelectOptions(customers, setContactSelectionFull)
+  }, [customers, setContactSelectionFull])
 
   useEffect(() => {
-    setCustomerFormValues(pickedCustomer, form, setNewCustomer)
-  }, [pickedCustomer])
-
-  useEffect(() => {
-    setModalTitle('Forma 1')
-  }, [])
+    setCustomerFormValues(selectedCustomer, form, setNewCustomer)
+  }, [selectedCustomer])
 
   const onClickHandler = () => {
-    pickedCustomer //if existing customer just continue
+    selectedCustomer //if existing contact advance to next form
       ? setCurrentPage(currentPage + 1) //else validate form , try adding
       : form
 
@@ -102,16 +94,16 @@ const CreateContactForm = () => {
             rules={[{ required: true, message: 'Izaberi ili dodaj' }]}
             className="flex-1"
           >
-            {newCustomer && pickedCustomer ? (
-              <Input value={hybridInputText} onChange={() => sethybridInputText(hybridInputText)} />
+            {newCustomer && selectedCustomer ? (
+              <Input value={contactSerchCriteria} onChange={() => setContactSearchCriteria(contactSerchCriteria)} />
             ) : (
               <Select
                 showSearch
                 placeholder="Izaberi ili dodaj"
-                value={hybridInputSelect as any}
-                onChange={(event: string) => handleSelectChange(event, setHybridInputSelect, sethybridInputText)}
+                value={ContactSelect as any}
+                onChange={(event: string) => handleSelectChange(event, setContactSelect, setContactSearchCriteria)}
                 style={{ width: '100%' }} // Ensure the Select input is 100% width
-                onSearch={sethybridInputText}
+                onSearch={setContactSearchCriteria}
                 filterOption={false}
                 allowClear
                 onKeyDown={(event: any) => {

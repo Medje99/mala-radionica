@@ -5,19 +5,13 @@ import { useModalContext } from '@/contexts/ModalContextProvider'
 import TaskService from '@/service/TaskService'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
 import moment from 'moment'
-
-//Date/timepiceker logic
-
-//Date/timepicker logic
+import dayjs from 'dayjs'
 
 const CreateTaskForm = () => {
   const { currentPage, setCurrentPage, customerContact, setModalTitle, setJob, setModalIsOpen } = useModalContext()
 
   useEffect(() => {
     setModalTitle('Forma 2')
-    setJob({
-      end_date: form.getFieldValue('end_date'),
-    })
   }, [])
 
   const [form] = Form.useForm<ITaskResponse>()
@@ -30,14 +24,14 @@ const CreateTaskForm = () => {
     return () => clearTimeout(timer)
   }, [isFinished])
 
-  useEffect(() => {
-    // Set initial values for creation_date and end_date in form state
-    console.log('creaton date and end date values set')
-    form.setFieldsValue({
-      creation_date: moment(),
-      end_date: moment(),
-    })
-  }, []) // Add form as a dependency
+  // useEffect(() => {
+  //   // Set initial values for creation_date and end_date in form state
+  //   console.log('creaton date and end date values set')
+  //   form.setFieldsValue({
+  //     creation_date: dayjs(moment().toDate()),
+  //     end_date: dayjs(moment().toDate()),
+  //   })
+  // }, []) // Add form as a dependency
 
   const onClickHandler = () => {
     form.validateFields().then((values) => {
@@ -47,6 +41,7 @@ const CreateTaskForm = () => {
       }
 
       TaskService.createTask(fullData).then((response) => {
+        // Update the job object in the context
         setJob({
           task_id: response.data.id,
           end_date: values.end_date,
@@ -69,17 +64,21 @@ const CreateTaskForm = () => {
       }}
     >
       {/* Job Name */}
-      <Form.Item label="Selected Customer:">
+      <Form.Item label="Odabrana musterija:">
         <Input disabled={true} placeholder={customerContact?.fullName} />
       </Form.Item>
 
-      <Form.Item label="Job Name" name="job_name" rules={[{ required: true, message: 'Please input the job name!' }]}>
+      <Form.Item
+        label="Naslov posla:"
+        name="job_name"
+        rules={[{ required: true, message: 'Please input the job name!' }]}
+      >
         <Input />
       </Form.Item>
 
       {/* Job Description */}
       <Form.Item
-        label="Job Description"
+        label="Detalji posla:"
         name="job_description"
         rules={[{ required: false, message: 'Please input the job description!' }]}
       >
@@ -88,38 +87,31 @@ const CreateTaskForm = () => {
 
       {/* Creation Date */}
       <div className="flex flex-row">
-        <Form.Item
-          label={`Posao primljen : ${form?.getFieldValue('creation_date')?.format('MMM-DD HH:mm')}`}
-          name="creation_date"
-        >
-          <div>
+        <Form.Item label="Posao zapocet:" name="creation_date">
+          <Space direction="vertical">
+            <DatePicker
+              showTime={{ minuteStep: 15 }}
+              format="MMM-DD HH:mm"
+              name="creation_date"
+              defaultOpenValue={dayjs(moment().toDate())}
+              defaultValue={dayjs(moment().toDate())}
+            />
+          </Space>
+        </Form.Item>
+        <Form.Item label={!isFinished && 'Posao zavrsen:'} style={{ marginLeft: '30px' }}>
+          <Switch checked={isFinished} onChange={() => setIsFinished(!isFinished)} className="mr-10" />
+        </Form.Item>
+        {isFinished && (
+          <Form.Item label="Posao zavrsen:" name="end_date">
             <Space direction="vertical">
               <DatePicker
                 showTime={{ minuteStep: 15 }}
                 format="MMM-DD HH:mm"
-                onChange={(date) => form.setFieldsValue({ creation_date: date })}
-                value={form.getFieldValue('creation_date')}
+                name="end_date"
+                defaultOpenValue={dayjs(moment().toDate())}
+                defaultValue={dayjs(moment().toDate())}
               />
             </Space>
-          </div>
-        </Form.Item>
-        <Form.Item label="End Date" name="end_date">
-          <Switch checked={isFinished} onChange={() => setIsFinished(!isFinished)} className="mr-10" />
-        </Form.Item>
-        {isFinished && (
-          <Form.Item
-            label={`Zavrsetak posla : ${form.getFieldValue('creation_date')?.format('MMM-DD HH:mm')}`}
-            name="creation_date"
-          >
-            <div>
-              <Space direction="vertical">
-                <DatePicker
-                  showTime={{ minuteStep: 15 }}
-                  format="MMM-DD HH:mm"
-                  onChange={(date) => form.setFieldsValue({ creation_date: date })}
-                />
-              </Space>
-            </div>
           </Form.Item>
         )}
       </div>

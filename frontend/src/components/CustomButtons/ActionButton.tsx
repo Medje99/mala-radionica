@@ -9,12 +9,8 @@ interface ActionButton {
   style?: CSSProperties
 }
 
-const ActionButton = ({
-  onClickHandler,
-  title,
-  className,
-  style,
-}: ActionButton) => {
+// recives function , button title, button class , and aditional styles as prop
+const ActionButton = ({ onClickHandler, title, className, style }: ActionButton) => {
   return (
     <Button onClick={onClickHandler} className={className} style={style}>
       {title}

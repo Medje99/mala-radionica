@@ -14,15 +14,16 @@ const BillsList: React.FC = () => {
   const [form] = Form.useForm<IBillResponse>()
 
   useEffect(() => {
-    const filtered = bills.filter((bill) => {
-      const searchText = searchTerm.toLowerCase()
-      return (
-        bill.contact_id.toString().includes(searchText) ||
-        bill.job_id.toString().includes(searchText) ||
-        bill.parts_cost?.toString().includes(searchText)
-      )
-    })
-    setFilteredBills(filtered)
+    setFilteredBills(bills)
+    // const filtered = bills.filter((bill) => {
+    //   const searchText = searchTerm.toLowerCase()
+    //   return (
+    //     bill.contact_firstName?.toString().includes(searchText) ||
+    //     bill.job_name?.toString().includes(searchText) ||
+    //     bill.parts_cost?.toString().includes(searchText)
+    //   )
+    // })
+    // setFilteredBills(filtered)
   }, [searchTerm, bills])
 
   const handleEdit = (record: IBillResponse) => {
@@ -31,17 +32,19 @@ const BillsList: React.FC = () => {
     setIsModalOpen(true)
   }
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (bill_id: number) => {
     message.success('Bill deleted successfully')
-    BillService.deleteBill(id)
-    setFilteredBills(filteredBills.filter((bill) => bill.id !== id))
+    BillService.deleteBill(bill_id)
+    setFilteredBills(filteredBills.filter((bill) => bill.bill_id !== bill_id))
   }
 
   const handleSave = async () => {
     const values = await form.validateFields()
     const updatedBill = { ...editingBill, ...values } as IBillResponse
     BillService.updateBill(updatedBill)
-    const updatedBills = filteredBills.map((bill) => (bill.id === editingBill.id ? { ...bill, ...values } : bill))
+    const updatedBills = filteredBills.map((bill) =>
+      bill.bill_id === editingBill.bill_id ? { ...bill, ...values } : bill,
+    )
     setFilteredBills(updatedBills)
     setIsModalOpen(false)
 
@@ -65,7 +68,7 @@ const BillsList: React.FC = () => {
       key: 'end_date',
       render: (endDate: string | null) => {
         if (endDate) {
-          const formattedDate = moment(endDate).format('MMM Do YY') // Calculate time difference from endDate
+          const formattedDate = moment(endDate).format('DD/MM/YYYY/ HH:mm') // Calculate time difference from endDate
           return formattedDate
         } else {
           return 'N/A' // Return "N/A" if end_date is null
@@ -96,13 +99,14 @@ const BillsList: React.FC = () => {
       key: 'action',
       render: (record: IBillResponse) => (
         <Space size="large">
-          <Button type="primary" ghost onClick={() => handleEdit(record)}>
+          <Button type="primary" ghost onClick={() => handleEdit(record)} key={record.bill_id}>
             Edit
           </Button>
           <Popconfirm
             title="Are you sure to delete this bill?"
-            onConfirm={() => handleDelete(record.id)}
+            onConfirm={() => handleDelete(record.bill_id)} // Use bill_id here
             onCancel={() => message.error('Delete canceled')}
+            key={record.bill_id + 'delete'} // Add a unique key for the Popconfirm
           >
             <Button danger ghost>
               Delete

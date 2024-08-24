@@ -2,14 +2,18 @@ import { baseUrl } from '@/constants/Constants'
 import axios from 'axios'
 
 export interface IBillResponse {
+  bill_id: number
   id: number // The unique identifier for the bill
   contact_id: number // The ID of the contact associated with the bill
+  contact_firstName: string // The first name of the contact associated with the bill
+  contact_lastName: string | null // The last name of the contact associated with the bill
   job_id: number // The ID of the job associated with the bill
   end_date: Date // The end date of the job/bill, can be null
   labor_cost: number // The cost of labor associated with the bill
   paid: boolean // A flag indicating whether the bill has been paid
   parts_cost?: number // The total cost of the bill, including labor and products used
   products_used: BillProducts[] // A string listing the products used (this could be an array or JSON if needed)
+  job_name: string // The name of the job associated with the bill
 }
 
 export interface BillProducts {

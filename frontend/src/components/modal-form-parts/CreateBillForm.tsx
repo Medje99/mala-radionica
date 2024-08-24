@@ -1,18 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Form, Input, Switch, InputNumber, Typography } from 'antd'
 import { useEffect, useState } from 'react'
-import ActionButton from '../CustomButtons/ActionButton'
+import ActionButton from '../CustomButtons/ActionButton' // recives function , button title, button class , and aditional styles
 import { useModalContext } from '@/contexts/ModalContextProvider'
 import Hybrid from './test/hybrid'
 import useGetAllProducts from '../../CustomHooks/useGetAllProducts'
 import BillService, { IBillResponse } from '@/service/BillService'
 
 const CreateTaskForm = () => {
-  const { customerContact, setModalTitle, job } = useModalContext()
-
-  useEffect(() => {
-    setModalTitle('Billing Form')
-  }, [])
+  const { customerContact, job } = useModalContext()
 
   const [form] = Form.useForm<IBillResponse>()
   const [isPaid, setIsPaid] = useState(false)
@@ -25,9 +21,11 @@ const CreateTaskForm = () => {
     return () => clearTimeout(timer)
   }, [isPaid])
 
-  // products used from hybrid child component with name prop
-  const onClickHandler = () => {
+  // form submitAction()
+  const submitLogic = () => {
     form.validateFields().then((values) => {
+      //validate ant form
+      //addding back name property to item because return them from hybrid component
       const updatedProductsUsed = values.products_used?.map((item) => {
         const productName = allProducts.find((p) => p.id === item.product)?.name
         return {
@@ -56,7 +54,7 @@ const CreateTaskForm = () => {
       name="task-form"
       layout="vertical"
       className="bg-white p-5 rounded-lg"
-      onFinish={onClickHandler}
+      onFinish={submitLogic}
       initialValues={{
         paid: false,
       }}
@@ -85,7 +83,7 @@ const CreateTaskForm = () => {
 
       <div className="flex flex-row justify-between mt-5">
         <ActionButton
-          onClickHandler={onClickHandler}
+          onClickHandler={submitLogic}
           title={isPaid ? 'Naplata' : 'Dodaj na listu dugova'}
           className={`transition-all duration-500 transform ${
             animating ? 'opacity-0 rotate-45' : 'opacity-100 rotate-0'

@@ -121,8 +121,8 @@ app.get("/bills", (req, res) => {
       bills b 
     JOIN 
       contacts c ON b.contact_id = c.id
-    LEFT JOIN 
-      tasks t ON b.contact_id = t.contact_id;
+    LEFT JOIN tasks t ON b.job_id = t.id;
+
   `;
   db.query(selectQuery, (err, bills) => {
     if (err) {
