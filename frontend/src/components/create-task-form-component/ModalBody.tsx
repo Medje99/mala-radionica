@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Modal } from 'antd'
 import CreateContactForm from '../modal-form-parts/CreateContactForm'
-import { useGlobalContext } from '../../contexts/ModalContextProvider'
+import { useGlobalContext } from '../../contexts/GlobalContextProvider'
 import CreateTaskForm from '../modal-form-parts/CreateTaskForm'
 import CreateBillForm from '../modal-form-parts/CreateBillForm'
 import { useEffect } from 'react'

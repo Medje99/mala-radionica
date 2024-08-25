@@ -6,8 +6,13 @@ import useGetAllBills from '@/CustomHooks/useGetAllBills'
 import moment from 'moment'
 import { IBillResponse } from '@/model/response/IBillResponse'
 import dayjs from 'dayjs'
+import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 
 const BillsList: React.FC = () => {
+  const { setHeaderTitle } = useGlobalContext()
+  useEffect(() => {
+    setHeaderTitle('Lista racuna ')
+  }, [])
   const { bills } = useGetAllBills()
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredBills, setFilteredBills] = useState<IBillResponse[]>([])
@@ -148,16 +153,7 @@ const BillsList: React.FC = () => {
 
   return (
     <div>
-      <Typography.Title level={1} className="mb-2">
-        Bills:
-      </Typography.Title>
-      <hr />
-
-      <Input.Search
-        placeholder="Search bills"
-        onChange={(e) => setSearchTerm(e.target.value)}
-        style={{ marginBottom: 16 }}
-      />
+      <Input.Search placeholder="Pretrazi racune" onChange={(e) => setSearchTerm(e.target.value)} />
 
       <Table columns={columns} dataSource={filteredBills} pagination={{ pageSize: 7 }} rowKey="bill_id" />
 

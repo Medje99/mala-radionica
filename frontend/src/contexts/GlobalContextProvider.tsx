@@ -42,7 +42,7 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
   const [modalTitle, setModalTitle] = useState('')
   const [customerContact, setCustomerContact] = useState<ICustomerContact>()
   const [job, setJob] = useState<ITask>({} as ITask)
-  const [headerTitle, setHeaderTitle] = useState('')
+  const [headerTitle, setHeaderTitle] = useState('NOTHING YET')
 
   return (
     <GlobalContext.Provider

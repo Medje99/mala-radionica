@@ -1,22 +1,26 @@
 import React, { useState, useEffect } from 'react'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
-import { Table, Typography, Input, Popconfirm, message, Modal, Form, Space, Button, Switch } from 'antd'
+import { Table, Input, Popconfirm, message, Modal, Form, Space, Button } from 'antd'
 import { customer_firstName, customer_lastName, taskName, taskDescription, creation_date } from './constants'
 import { Link } from 'react-router-dom'
 import useGetUnfinishedTasks from '@/CustomHooks/useGetUnfinishedTasks'
 import TasksAdvancedActions from './actions'
 import CreateBillForm from '../modal-form-parts/CreateBillForm' // Import CreateBillForm
-import { ICustomerContact, useGlobalContext, ContextProvider } from '@/contexts/ModalContextProvider'
+import { ContextProvider, ICustomerContact, useGlobalContext } from '@/contexts/GlobalContextProvider'
 
 const TasksList: React.FC = () => {
-  const { setCustomerContact, setJob, modalTitle } = useGlobalContext()
-  const { allTasks: UnfinishedOnes } = useGetUnfinishedTasks()
+  const { setCustomerContact, setJob, modalTitle, setHeaderTitle } = useGlobalContext()
+  const { UnfinishedOnes } = useGetUnfinishedTasks()
   const { handleEdit, handleDelete, handleSave } = TasksAdvancedActions()
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredTasks, setFilteredTasks] = useState<ITaskResponse[]>([])
   const [editingTask, setEditingTask] = useState<ITaskResponse>({} as ITaskResponse)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isBillModalOpen, setIsBillModalOpen] = useState(false) // State for the bill modal
+
+  useEffect(() => {
+    setHeaderTitle('Aktivni poslovi')
+  }, [])
 
   const [FormTaskList] = Form.useForm<ITaskResponse>()
 
@@ -84,10 +88,6 @@ const TasksList: React.FC = () => {
 
   return (
     <div>
-      <Typography.Title level={2} className="mb-4" style={{ textAlign: 'center' }}>
-        Aktivni poslovi
-      </Typography.Title>
-
       <Input.Search
         placeholder="Search tasks"
         onChange={(e) => setSearchTerm(e.target.value)}
@@ -142,7 +142,6 @@ const TasksList: React.FC = () => {
     </div>
   )
 }
-
 export default () => (
   <ContextProvider>
     <TasksList />

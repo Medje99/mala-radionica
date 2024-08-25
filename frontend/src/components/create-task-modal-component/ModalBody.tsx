@@ -1,5 +1,5 @@
 import { Button } from 'antd'
-import { useGlobalContext } from '../../contexts/ModalContextProvider'
+import { useGlobalContext } from '../../contexts/GlobalContextProvider'
 import { ModalBody } from '../create-task-form-component/ModalBody'
 
 const CreateTaskModalComponent = () => {

@@ -11,7 +11,7 @@ import { CustomerSelect } from '../create-task-form-component/types'
 import { separateFullName } from '@/Utilities/getSeparatedFullName'
 import ContactService from '@/service/ContactsService'
 import ActionButton from '../CustomButtons/ActionButton'
-import { useGlobalContext } from '@/contexts/ModalContextProvider'
+import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 
 const { Option } = Select //redeclare before component body main function
 const { setCustomerSelectOptions, setCustomerFormValues, handleSelectChange } = createTaskFormActions() // createTaskFormActions

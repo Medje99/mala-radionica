@@ -4,8 +4,13 @@ import { Link } from 'react-router-dom'
 import { IContacts } from '@/model/response/IContactResponse'
 import useGetAllContacts from '@/CustomHooks/useGetAllContants'
 import ContactService from '@/service/ContactsService'
+import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 
 const ContactsList: React.FC = () => {
+  const { setHeaderTitle } = useGlobalContext()
+  useEffect(() => {
+    setHeaderTitle('Contacts')
+  }, [])
   const { customers: contacts } = useGetAllContacts()
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredContacts, setFilteredContacts] = useState<IContacts[]>([])
@@ -96,20 +101,11 @@ const ContactsList: React.FC = () => {
 
   return (
     <div>
-      <Typography.Title level={1} className="mb-2">
-        Contacts:
-      </Typography.Title>
-      <hr />
-
-      <Input.Search
-        placeholder="Search contacts"
-        onChange={(e) => setSearchTerm(e.target.value)}
-        style={{ marginBottom: 16 }}
-      />
+      <Input.Search placeholder="Pretrazi kontakte" onChange={(e) => setSearchTerm(e.target.value)} />
 
       <Table columns={columns} dataSource={filteredContacts} pagination={{ pageSize: 7 }} rowKey="id" />
 
-      <Modal title="Edit Contact" open={isModalOpen} onOk={handleSave} onCancel={() => setIsModalOpen(false)}>
+      <Modal title="Uredi kontakt" open={isModalOpen} onOk={handleSave} onCancel={() => setIsModalOpen(false)}>
         <Form form={FormContactList} layout="vertical">
           <Form.Item
             label="First Name"

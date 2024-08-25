@@ -1,4 +1,4 @@
-import { ContextProvider } from '../contexts/ModalContextProvider'
+import { ContextProvider } from '../contexts/GlobalContextProvider'
 import ModalBody from './create-task-modal-component/ModalBody'
 
 const CreateTaskSection = () => {

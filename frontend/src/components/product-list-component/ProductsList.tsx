@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import useGetAllProducts from '@/CustomHooks/useGetAllProducts'
 import { IProducts } from '@/model/response/IProductResponse'
-import { Table, Typography, Input, Popconfirm, message, Modal, Form, InputNumber, Space, Button } from 'antd'
+import { Table, Input, Popconfirm, message, Modal, Form, InputNumber, Space, Button } from 'antd'
 import { proizvod, proizvodjac, model, cena, kolicina } from './constats'
 import ProductsAdvancedActions from './actions'
 import { Link } from 'react-router-dom'
+import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 
 const { handleEdit, handleDelete, handleSave } = ProductsAdvancedActions()
 
 const ProductsList: React.FC = () => {
+  const { setHeaderTitle } = useGlobalContext()
+  useEffect(() => {
+    setHeaderTitle('Proizvodi')
+  }, [])
   const { allProducts } = useGetAllProducts()
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredProducts, setFilteredProducts] = useState<IProducts[]>([])
@@ -62,11 +67,6 @@ const ProductsList: React.FC = () => {
 
   return (
     <div>
-      <Typography.Title level={1} className="mb-2">
-        Proizvodi:
-      </Typography.Title>
-      <hr />
-
       <Input.Search
         placeholder="Pretraži proizvode"
         onChange={(e) => setSearchTerm(e.target.value)}

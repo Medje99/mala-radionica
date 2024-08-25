@@ -1,7 +1,7 @@
 import { Form, Input, DatePicker, Switch, Space } from 'antd'
 import { useEffect, useState } from 'react'
 import ActionButton from '../CustomButtons/ActionButton'
-import { useGlobalContext } from '@/contexts/ModalContextProvider'
+import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import TaskService from '@/service/TaskService'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
 import moment from 'moment'
