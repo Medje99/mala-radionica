@@ -1,4 +1,4 @@
-import { Form, Input, DatePicker, Switch, Space } from 'antd'
+import { Form, Input, DatePicker, Switch, Space, message } from 'antd'
 import { useEffect, useState } from 'react'
 import ActionButton from '../CustomButtons/ActionButton'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
@@ -24,35 +24,32 @@ const CreateTaskForm = () => {
     return () => clearTimeout(timer)
   }, [isFinished])
 
-  // useEffect(() => {
-  //   // Set initial values for creation_date and end_date in form state
-  //   console.log('creaton date and end date values set')
-  //   form.setFieldsValue({
-  //     creation_date: dayjs(moment().toDate()),
-  //     end_date: dayjs(moment().toDate()),
-  //   })
-  // }, []) // Add form as a dependency
-
   const onClickHandler = () => {
     form.validateFields().then((values) => {
-      // Convert creation_date to database format (YYYY-MM-DDTHH:mm:ss)
-
       const fullData = {
         ...values,
         contact_id: customerContact?.id ?? 0,
       }
 
-      TaskService.createTask(fullData).then((response) => {
-        console.log(fullData, 'data')
-        console.log(response, 'response')
-        // Update the job object in the context
-        setJob({
-          task_id: response.data.id,
-          end_date: values.end_date,
+      TaskService.createTask(fullData)
+        .then((response) => {
+          console.log(fullData, 'data')
+          console.log(response, 'response')
+          message.success('Kontakt uspesno kreiran!')
+          // Update the job object in the context
+          setJob({
+            task_id: response.data.id,
+            end_date: values.end_date,
+          })
         })
-      })
+        .then(() => {
+          isFinished ? setCurrentPage(currentPage + 1) : setModalIsOpen(false)
+        })
 
-      isFinished ? setCurrentPage(currentPage + 1) : setModalIsOpen(false)
+        .catch((error) => {
+          console.error('Error creating contact:', error)
+          message.error('Greška prilikom kreiranja unosa .Kontaktirajte administratora.') // Show error message
+        })
     })
   }
 

@@ -51,36 +51,32 @@ const CreateContactForm = () => {
   const onClickHandler = () => {
     selectedCustomer //if existing contact advance to next form
       ? setCurrentPage(currentPage + 1) //else validate form , try adding
-      : FormContactCreate.validateFields()
-          .then((values: any) => {
-            const { firstName } = values
-            const separatedName = separateFullName(firstName)
-            const formatedData = {
-              ...values,
-              firstName: separatedName.firstName,
-              lastName: separatedName.lastName,
-            }
+      : FormContactCreate.validateFields().then((values: any) => {
+          const { firstName } = values
+          const separatedName = separateFullName(firstName)
+          const formatedData = {
+            ...values,
+            firstName: separatedName.firstName,
+            lastName: separatedName.lastName,
+          }
 
-            ContactService.createContactCustomer(formatedData)
-              .then((response) => {
-                const customer = response.data
-                setCurrentPage(currentPage + 1)
-                setCustomerContact({
-                  id: customer.id,
-                  fullName: concateFullName(customer.firstName, customer.lastName),
-                })
-                console.log('Pushed to context', customer)
-                message.success('Kontakt uspesno kreiran!') // Show error message
+          ContactService.createContactCustomer(formatedData)
+            .then((response) => {
+              //responese as input
+              const customer = response.data
+              setCurrentPage(currentPage + 1)
+              setCustomerContact({
+                id: customer.id,
+                fullName: concateFullName(customer.firstName, customer.lastName),
               })
-              .catch((error) => {
-                console.error('Error creating contact:', error)
-                message.error('Greška prilikom kreiranja kontakta.Kontaktirajte administratora.') // Show error message
-              })
-          })
-          .catch((errorInfo: any) => {
-            console.error('Validation failed:', errorInfo)
-            message.error('Validacija nije uspela, popunite sva obavezna polja.') // Show validation error message
-          })
+              console.log('Pushed to context', customer)
+              message.success('Kontakt uspesno kreiran!') // Show error message
+            })
+            .catch((error) => {
+              console.error('Error creating contact:', error)
+              message.error('Greška prilikom kreiranja kontakta.Kontaktirajte administratora.') // Show error message
+            })
+        })
   }
 
   return (

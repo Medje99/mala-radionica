@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Form, Input, Switch, InputNumber, Typography } from 'antd'
+import { Form, Switch, InputNumber, Typography, message } from 'antd'
 import { useEffect, useState } from 'react'
 import ActionButton from '../CustomButtons/ActionButton' // recives function , button title, button class , and aditional styles
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
@@ -9,7 +9,7 @@ import BillService from '@/service/BillService'
 import { IBillResponse } from '@/model/response/IBillResponse'
 
 const CreateTaskForm = () => {
-  const { customerContact, job, setModalTitle } = useGlobalContext()
+  const { customerContact, job, setModalTitle, setModalIsOpen } = useGlobalContext()
   const [FormBillCreate] = Form.useForm<IBillResponse>()
   const [isPaid, setIsPaid] = useState(false)
   const [animating, setAnimating] = useState(false)
@@ -29,29 +29,35 @@ const CreateTaskForm = () => {
 
   // form submitAction()
   const submitLogic = () => {
-    FormBillCreate.validateFields().then((values) => {
-      //validate ant form
-      //addding back name property to item because return them from hybrid component
-      const updatedProductsUsed = values.products_used?.map((item) => {
-        const productName = allProducts.find((p) => p.id === item.product)?.name
-        return {
-          ...item,
-          name: productName,
-        }
-      })
+    FormBillCreate.validateFields()
+      .then((values) => {
+        //addding back name property to item because cant from ProductComponent
+        const updatedProductsUsed = values.products_used?.map((item) => {
+          const productName = allProducts.find((p) => p.id === item.product)?.name
+          return {
+            ...item,
+            name: productName,
+          }
+        })
 
-      const updatedValues = {
-        ...values,
-        products_used: updatedProductsUsed,
-        contact_id: customerContact?.id ?? 0,
-        job_id: job.task_id ?? 0,
-        end_date: job.end_date ?? new Date(),
-        parts_cost: 20,
-        labor_cost: values.labor_cost,
-        total_cost: values.labor_cost + 20,
-      }
-      BillService.createBill(updatedValues)
-    })
+        const updatedValues = {
+          ...values,
+          products_used: updatedProductsUsed,
+          contact_id: customerContact?.id ?? 0,
+          job_id: job.task_id ?? 0,
+          end_date: job.end_date ?? new Date(),
+          parts_cost: 20,
+          labor_cost: values.labor_cost,
+          total_cost: values.labor_cost + 20,
+        }
+        BillService.createBill(updatedValues)
+        message.success('Racun uspesno kreiran !') // Show error message
+        setModalIsOpen(false)
+      })
+      .catch((error) => {
+        console.error('Error creating bill:', error)
+        message.error('Greška prilikom kreiranja racuna! Kontaktirajte administratora.') // Show error message
+      })
   }
 
   return (
