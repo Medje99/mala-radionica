@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Form, Input, Select, Space } from 'antd'
+import { Form, Input, Select, message } from 'antd' // Import message from antd
 import TextArea from 'antd/es/input/TextArea'
 
 import createTaskFormActions from '../create-task-form-component/actions'
@@ -69,61 +69,60 @@ const CreateContactForm = () => {
                   id: customer.id,
                   fullName: concateFullName(customer.firstName, customer.lastName),
                 })
-                console.log('Pushed to context need to refine:', customer)
+                console.log('Pushed to context', customer)
+                message.success('Kontakt uspesno kreiran!') // Show error message
               })
               .catch((error) => {
                 console.error('Error creating contact:', error)
+                message.error('Greška prilikom kreiranja kontakta.Kontaktirajte administratora.') // Show error message
               })
           })
           .catch((errorInfo: any) => {
             console.error('Validation failed:', errorInfo)
+            message.error('Validacija nije uspela, popunite sva obavezna polja.') // Show validation error message
           })
   }
 
   return (
     <Form form={FormContactCreate} name="musterija-form" layout="vertical" className="bg-white p-5 rounded-lg">
       <Form.Item label="Musterija" required className="mb-4 mr-10 ml-10">
-        <Space.Compact
-          style={{ width: '100%' }} // Ensure the Space.Compact wrapper takes full width
+        <Form.Item
+          name="firstName"
+          noStyle
+          rules={[{ required: true, message: 'Izaberi ili dodaj' }]}
+          className="flex-1"
         >
-          <Form.Item
-            name="firstName"
-            noStyle
-            rules={[{ required: true, message: 'Izaberi ili dodaj' }]}
-            className="flex-1"
-          >
-            {newCustomer && selectedCustomer ? (
-              <Input value={contactSerchCriteria} onChange={() => setContactSearchCriteria(contactSerchCriteria)} />
-            ) : (
-              <Select
-                showSearch
-                placeholder="Izaberi ili dodaj"
-                value={ContactSelect as any}
-                onChange={(event: string) => handleSelectChange(event, setContactSelect, setContactSearchCriteria)}
-                style={{ width: '100%' }} // Ensure the Select input is 100% width
-                onSearch={setContactSearchCriteria}
-                filterOption={false}
-                allowClear
-                onKeyDown={(event: any) => {
-                  FormContactCreate.setFieldValue('firstName', event.target.value)
-                }}
-                notFoundContent={null}
-              >
-                {filteredOptions?.map((option: any) => (
-                  <Option key={option.value} value={option.value}>
-                    {option.label}
-                  </Option>
-                ))}
-              </Select>
-            )}
-          </Form.Item>
-        </Space.Compact>
+          {newCustomer && selectedCustomer ? (
+            <Input value={contactSerchCriteria} onChange={() => setContactSearchCriteria(contactSerchCriteria)} />
+          ) : (
+            <Select
+              showSearch
+              placeholder="Izaberi ili dodaj"
+              value={ContactSelect as any}
+              onChange={(event: string) => handleSelectChange(event, setContactSelect, setContactSearchCriteria)}
+              style={{ width: '100%' }} // Ensure the Select input is 100% width
+              onSearch={setContactSearchCriteria}
+              filterOption={false}
+              allowClear
+              onKeyDown={(event: any) => {
+                FormContactCreate.setFieldValue('firstName', event.target.value)
+              }}
+              notFoundContent={null}
+            >
+              {filteredOptions?.map((option: any) => (
+                <Option key={option.value} value={option.value}>
+                  {option.label}
+                </Option>
+              ))}
+            </Select>
+          )}
+        </Form.Item>
       </Form.Item>
       <Form.Item
         label="Broj telefona:"
         name="phoneNumber"
         rules={[
-          { required: true, message: 'Unesite broj telefona' },
+          { required: false, message: 'Unesite broj telefona' },
           { pattern: /^\d+$/, message: 'Samo brojevi!' },
         ]}
         className="mb-4 mr-10 ml-10"
@@ -134,7 +133,7 @@ const CreateContactForm = () => {
       <Form.Item
         label="Mesto"
         name="city"
-        rules={[{ required: true, message: 'Unesite mesto' }]}
+        rules={[{ required: false, message: 'Unesite mesto' }]}
         className="mb-4 mr-10 ml-10"
       >
         <Input disabled={!newCustomer} />
@@ -142,7 +141,7 @@ const CreateContactForm = () => {
       <Form.Item
         label="Adresa"
         name="address"
-        rules={[{ required: true, message: 'Unesite adresu' }]}
+        rules={[{ required: false, message: 'Unesite adresu' }]}
         className="mb-4 mr-10 ml-10"
       >
         <Input disabled={!newCustomer} />
@@ -150,8 +149,9 @@ const CreateContactForm = () => {
       <Form.Item label="Ostalo" name="other" className="mb-4 mr-10 ml-10">
         <TextArea disabled={!newCustomer} />
       </Form.Item>
-
-      <ActionButton onClickHandler={onClickHandler} title={!newCustomer ? 'Nastavi' : 'Dodaj i nastavi'} />
+      <div className="flex flex-row justify-between mt-5">
+        <ActionButton onClickHandler={onClickHandler} title={!newCustomer ? 'Nastavi' : 'Dodaj i nastavi'} />
+      </div>
     </Form>
   )
 }

@@ -117,17 +117,17 @@ const ContactsList: React.FC = () => {
           <Form.Item
             label="Last Name"
             name="lastName"
-            rules={[{ required: true, message: 'Please enter the last name' }]}
+            rules={[{ required: false, message: 'Please enter the last name' }]}
           >
             <Input />
           </Form.Item>
-          <Form.Item label="City" name="city" rules={[{ required: true, message: 'Please enter the city' }]}>
+          <Form.Item label="City" name="city" rules={[{ required: false, message: 'Please enter the city' }]}>
             <Input />
           </Form.Item>
           <Form.Item
             label="Phone Number"
             name="phoneNumber"
-            rules={[{ required: true, message: 'Please enter the phone number' }]}
+            rules={[{ required: false, message: 'Please enter the phone number' }]}
           >
             <Input />
           </Form.Item>

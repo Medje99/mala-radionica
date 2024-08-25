@@ -18,6 +18,8 @@ var color .ant-input-search {
 }
 
 .action-button {
+  margin: auto;
+  padding: 5px 30px 5px 30px;
   color: rgb(255, 255, 255);
 }
 
@@ -27,8 +29,10 @@ var color .ant-input-search {
 }
 
 .ant-form {
-  padding: 0;
+  padding: 20px 0px 50px 0px;
+  background-color: #dcecffa1;
 }
+
 .ant-input-search {
   padding: 16px;
   padding-block: 16px;
@@ -37,4 +41,21 @@ var color .ant-input-search {
 
 .ant-input-search-button {
   background: rgb(137, 181, 221);
+}
+
+.modal-title {
+  margin-top: 5px;
+  margin-bottom: 25px;
+  background-color: rgb(255, 255, 255);
+}
+
+.ant-select-selector {
+  /* Customize the appearance of the select dropdown */
+  width: 200px; /* Adjust the width as needed */
+  border: 1px solid #e01414; /* Add a border */
+  border-radius: 4px; /* Round the corners */
+  padding: 8px; /* Add some padding */
+  font-size: 16px; /* Adjust font size */
+  color: #333; /* Set text color */
+  background-color: #d62929; /* Set background color */
 }
