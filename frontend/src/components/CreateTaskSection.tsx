@@ -1,13 +1,7 @@
-import { useEffect } from 'react'
-import { ContextProvider, useGlobalContext } from '../contexts/GlobalContextProvider'
-import ModalBody from './create-task-modal-component/ModalBody'
+import { ContextProvider } from '../contexts/GlobalContextProvider'
+import { ModalBody } from './create-task-form-component/ModalBody'
 
 const CreateTaskSection = () => {
-  const { setHeaderTitle } = useGlobalContext()
-  useEffect(() => {
-    setHeaderTitle('Pocetna')
-  }, [])
-
   return (
     <ContextProvider>
       <main className="flex-1">
@@ -18,8 +12,8 @@ const CreateTaskSection = () => {
                 <h1 className="lg:leading-tighter text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl xl:text-[3.4rem] 2xl:text-[3.75rem]">
                   Dodaj novi posao
                 </h1>
-                <ModalBody />
               </div>
+              <ModalBody />
             </div>
           </div>
         </section>

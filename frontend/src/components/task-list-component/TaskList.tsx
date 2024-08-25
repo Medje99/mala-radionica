@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
 import { Table, Input, Popconfirm, message, Modal, Form, Space, Button } from 'antd'
 import { customer_firstName, customer_lastName, taskName, taskDescription, creation_date } from './constants'
-import { Link } from 'react-router-dom'
 import useGetUnfinishedTasks from '@/CustomHooks/useGetUnfinishedTasks'
 import TasksAdvancedActions from './actions'
 import CreateBillForm from '../modal-form-parts/CreateBillForm' // Import CreateBillForm
-import { ContextProvider, ICustomerContact, useGlobalContext } from '@/contexts/GlobalContextProvider'
+import { ICustomerContact, useGlobalContext,setModalIsOpen } from '@/contexts/GlobalContextProvider'
+import { ModalBody } from '../create-task-form-component/ModalBody'
 
-const TasksList: React.FC = () => {
+export const TasksList: React.FC = () => {
   const { setCustomerContact, setJob, modalTitle, setHeaderTitle } = useGlobalContext()
   const { UnfinishedOnes } = useGetUnfinishedTasks()
   const { handleEdit, handleDelete, handleSave } = TasksAdvancedActions()
@@ -129,16 +129,8 @@ const TasksList: React.FC = () => {
       >
         <CreateBillForm />
       </Modal>
-
-      {filteredTasks.length === 0 && (
-        <div className="text-center">
-          <Link to="/TaskCreate">
-            <Button type="primary" size="large">
-              Dodaj novi posao
-            </Button>
-          </Link>
-        </div>
-      )}
+      <ModalBody />
+      {filteredTasks.length === 0 && ()=>{setModalIsOpen(true})}
     </div>
   )
 }

@@ -35,7 +35,7 @@ const CreateTaskForm = () => {
         .then((response) => {
           console.log(fullData, 'data')
           console.log(response, 'response')
-          message.success('Kontakt uspesno kreiran!')
+          message.success('Posao uspesno kreiran!')
           // Update the job object in the context
           setJob({
             task_id: response.data.id,

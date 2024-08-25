@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Modal } from 'antd'
+import { Button, Modal } from 'antd'
 import CreateContactForm from '../modal-form-parts/CreateContactForm'
 import { useGlobalContext } from '../../contexts/GlobalContextProvider'
 import CreateTaskForm from '../modal-form-parts/CreateTaskForm'
@@ -39,7 +39,7 @@ export const ModalBody = () => {
     }
   }
 
-  return (
+  return modalIsOpen ? (
     <Modal
       title={<div className="modal-title">{modalTitle}</div>}
       centered
@@ -53,5 +53,11 @@ export const ModalBody = () => {
     >
       {renderFormPart()}
     </Modal>
+  ) : (
+    <>
+      <Button type="primary" size="large" onClick={() => setModalIsOpen(true)}>
+        Kreiraj novi posao
+      </Button>
+    </>
   )
 }
