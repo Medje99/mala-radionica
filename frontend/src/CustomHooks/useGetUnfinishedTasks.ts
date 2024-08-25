@@ -3,7 +3,7 @@ import TaskService from '@/service/TaskService'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
 
 const useGetUnfinishedTasks = () => {
-  const [unfinishedTasks, setUnfinishedTasks] = useState<ITaskResponse[]>([])
+  const [UnfinishedOnes, setUnfinishedTasks] = useState<ITaskResponse[]>([])
 
   useEffect(() => {
     TaskService.getUnfinishedTasks()
@@ -15,7 +15,7 @@ const useGetUnfinishedTasks = () => {
       })
   }, [])
 
-  return { allTasks: unfinishedTasks }
+  return { UnfinishedOnes }
 }
 
 export default useGetUnfinishedTasks

@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.ant-input-search {
+  padding: 16px;
+  padding-block: 16px;
+  background: rgb(69, 167, 212);
+}
