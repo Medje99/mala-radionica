@@ -11,14 +11,14 @@ import { CustomerSelect } from '../create-task-form-component/types'
 import { separateFullName } from '@/Utilities/getSeparatedFullName'
 import ContactService from '@/service/ContactsService'
 import ActionButton from '../CustomButtons/ActionButton'
-import { useModalContext } from '@/contexts/ModalContextProvider'
+import { useGlobalContext } from '@/contexts/ModalContextProvider'
 
 const { Option } = Select //redeclare before component body main function
 const { setCustomerSelectOptions, setCustomerFormValues, handleSelectChange } = createTaskFormActions() // createTaskFormActions
 
 // Component main function
 const CreateContactForm = () => {
-  const { setCustomerContact, setCurrentPage, currentPage } = useModalContext() // context passing to form 2
+  const { setCustomerContact, setCurrentPage, currentPage } = useGlobalContext() // context passing to form 2
   const [newCustomer, setNewCustomer] = useState(false) // definined default false
   const { customers } = useGetAllContacts() // getting customer full list via get request
   const [FormContactCreate] = Form.useForm<IContacts>() // create form instance useState for all fields and elements abstracted

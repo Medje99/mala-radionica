@@ -11,37 +11,41 @@ interface ModalStateType {
   setCustomerContact: React.Dispatch<React.SetStateAction<ICustomerContact | undefined>>
   job: ITask
   setJob: React.Dispatch<React.SetStateAction<ITask>>
+  setHeaderTitle: React.Dispatch<React.SetStateAction<string>>
+  headerTitle: string
 }
 
-interface ICustomerContact {
+export interface ICustomerContact {
   id: number | undefined
   fullName: string
 }
 
-interface ITask {
+export interface ITask {
   end_date?: Date | null
   task_id?: number
+  task_name?: string
 }
 
-const ModalContext = createContext<ModalStateType | null>(null)
+const GlobalContext = createContext<ModalStateType | null>(null)
 
-export const useModalContext = (): ModalStateType => {
-  const context = useContext(ModalContext)
+export const useGlobalContext = (): ModalStateType => {
+  const context = useContext(GlobalContext)
   if (!context) {
     throw new Error('useModalState must be used within a ModalStateProvider')
   }
   return context
 }
 
-export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
+export const ContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(0)
   const [modalTitle, setModalTitle] = useState('')
   const [customerContact, setCustomerContact] = useState<ICustomerContact>()
   const [job, setJob] = useState<ITask>({} as ITask)
+  const [headerTitle, setHeaderTitle] = useState('')
 
   return (
-    <ModalContext.Provider
+    <GlobalContext.Provider
       value={{
         modalIsOpen,
         setModalIsOpen,
@@ -53,9 +57,11 @@ export const ModalProvider = ({ children }: { children: React.ReactNode }) => {
         setCustomerContact,
         job,
         setJob,
+        headerTitle,
+        setHeaderTitle,
       }}
     >
       {children}
-    </ModalContext.Provider>
+    </GlobalContext.Provider>
   )
 }

@@ -5,14 +5,19 @@ import { customer_firstName, customer_lastName, taskName, taskDescription, creat
 import { Link } from 'react-router-dom'
 import useGetUnfinishedTasks from '@/CustomHooks/useGetUnfinishedTasks'
 import TasksAdvancedActions from './actions'
+import CreateBillForm from '../modal-form-parts/CreateBillForm' // Import CreateBillForm
+import { ICustomerContact, useGlobalContext, ContextProvider } from '@/contexts/ModalContextProvider'
 
 const TasksList: React.FC = () => {
+  const { setCustomerContact, setJob, modalTitle } = useGlobalContext()
   const { allTasks: UnfinishedOnes } = useGetUnfinishedTasks()
   const { handleEdit, handleDelete, handleSave } = TasksAdvancedActions()
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredTasks, setFilteredTasks] = useState<ITaskResponse[]>([])
   const [editingTask, setEditingTask] = useState<ITaskResponse>({} as ITaskResponse)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isBillModalOpen, setIsBillModalOpen] = useState(false) // State for the bill modal
+
   const [FormTaskList] = Form.useForm<ITaskResponse>()
 
   useEffect(() => {
@@ -43,19 +48,35 @@ const TasksList: React.FC = () => {
       render: (record: ITaskResponse) => (
         <Space size="middle">
           <Button type="primary" ghost onClick={() => handleEdit(record, setEditingTask, FormTaskList, setIsModalOpen)}>
-            Edit
+            Izmeni
           </Button>
           <Popconfirm
-            title="Are you sure to delete this task?"
+            title="Da li ste sigurni da zelite izbrisati ovaj posao?"
             onConfirm={() => handleDelete(record.id, filteredTasks, setFilteredTasks)}
             onCancel={() => message.error('Delete canceled')}
-            okText="Yes"
-            cancelText="No"
+            okText="Da"
+            cancelText="Joj ne!"
           >
             <Button danger ghost>
-              Delete
+              Izbrisi
             </Button>
           </Popconfirm>
+          <Button
+            type="primary"
+            ghost
+            onClick={() => {
+              setCustomerContact({
+                id: record.contact_id,
+                fullName: `${record.firstName} ${record.lastName}`,
+              } as ICustomerContact)
+              setJob({
+                task_id: record.id,
+              })
+              setIsBillModalOpen(true)
+            }}
+          >
+            Naplata
+          </Button>
         </Space>
       ),
     },
@@ -63,8 +84,8 @@ const TasksList: React.FC = () => {
 
   return (
     <div>
-      <Typography.Title level={2} className="mb-4">
-        Aktivni Poslovi
+      <Typography.Title level={2} className="mb-4" style={{ textAlign: 'center' }}>
+        Aktivni poslovi
       </Typography.Title>
 
       <Input.Search
@@ -76,7 +97,7 @@ const TasksList: React.FC = () => {
       <Table columns={columns} dataSource={filteredTasks} pagination={{ pageSize: 100 }} rowKey="id" />
 
       <Modal
-        title="Edit Task"
+        title={modalTitle}
         open={isModalOpen}
         onOk={() => handleSave(FormTaskList, editingTask, filteredTasks, setFilteredTasks, setIsModalOpen)}
         onCancel={() => setIsModalOpen(false)}
@@ -99,11 +120,21 @@ const TasksList: React.FC = () => {
         </Form>
       </Modal>
 
+      {/* Bill Modal */}
+      <Modal
+        title={modalTitle}
+        open={isBillModalOpen}
+        onCancel={() => setIsBillModalOpen(false)}
+        footer={null} // Remove default footer
+      >
+        <CreateBillForm />
+      </Modal>
+
       {filteredTasks.length === 0 && (
         <div className="text-center mt-10">
           <Link to="/TaskCreate">
             <Button type="primary" size="large">
-              Add Task
+              Dodaj novi posao
             </Button>
           </Link>
         </div>
@@ -112,4 +143,8 @@ const TasksList: React.FC = () => {
   )
 }
 
-export default TasksList
+export default () => (
+  <ContextProvider>
+    <TasksList />
+  </ContextProvider>
+)

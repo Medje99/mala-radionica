@@ -6,4 +6,5 @@ export interface ITaskResponse {
   firstName: string
   lastName: string
   creation_date: Date
+  end_date: Date
 }

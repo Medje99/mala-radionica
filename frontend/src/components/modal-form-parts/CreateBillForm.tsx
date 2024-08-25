@@ -2,15 +2,14 @@
 import { Form, Input, Switch, InputNumber, Typography } from 'antd'
 import { useEffect, useState } from 'react'
 import ActionButton from '../CustomButtons/ActionButton' // recives function , button title, button class , and aditional styles
-import { useModalContext } from '@/contexts/ModalContextProvider'
+import { useGlobalContext } from '@/contexts/ModalContextProvider'
 import ProductsComponent from './test/ProductsComponent'
 import useGetAllProducts from '../../CustomHooks/useGetAllProducts'
 import BillService from '@/service/BillService'
 import { IBillResponse } from '@/model/response/IBillResponse'
 
 const CreateTaskForm = () => {
-  const { customerContact, job } = useModalContext()
-
+  const { customerContact, job, setModalTitle, modalTitle } = useGlobalContext()
   const [FormBillCreate] = Form.useForm<IBillResponse>()
   const [isPaid, setIsPaid] = useState(false)
   const [animating, setAnimating] = useState(false)
@@ -21,6 +20,12 @@ const CreateTaskForm = () => {
     const timer = setTimeout(() => setAnimating(false), 300)
     return () => clearTimeout(timer)
   }, [isPaid])
+
+  useEffect(() => {
+    setModalTitle('Naplata: ' + customerContact?.fullName)
+    console.log(customerContact?.fullName)
+  }),
+    [FormBillCreate]
 
   // form submitAction()
   const submitLogic = () => {

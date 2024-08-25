@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Modal } from 'antd'
 import CreateContactForm from '../modal-form-parts/CreateContactForm'
-import { useModalContext } from '../../contexts/ModalContextProvider'
+import { useGlobalContext } from '../../contexts/ModalContextProvider'
 import CreateTaskForm from '../modal-form-parts/CreateTaskForm'
 import CreateBillForm from '../modal-form-parts/CreateBillForm'
 import { useEffect } from 'react'
 
 export const ModalBody = () => {
-  const { modalIsOpen, currentPage, setModalIsOpen, modalTitle, setModalTitle, setCurrentPage } = useModalContext()
+  const { modalIsOpen, currentPage, setModalIsOpen, modalTitle, setModalTitle, setCurrentPage } = useGlobalContext()
 
   //must be separate inside of useEffect because it needs to load when currentPage is loaded
   useEffect(() => {
@@ -52,7 +52,6 @@ export const ModalBody = () => {
       footer={null}
     >
       {renderFormPart()}
-      {/* <CreateProgress currentPage={currentPage} /> */}
     </Modal>
   )
 }

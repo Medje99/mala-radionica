@@ -1,14 +1,14 @@
 import { Form, Input, DatePicker, Switch, Space } from 'antd'
 import { useEffect, useState } from 'react'
 import ActionButton from '../CustomButtons/ActionButton'
-import { useModalContext } from '@/contexts/ModalContextProvider'
+import { useGlobalContext } from '@/contexts/ModalContextProvider'
 import TaskService from '@/service/TaskService'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
 import moment from 'moment'
 import dayjs from 'dayjs'
 
 const CreateTaskForm = () => {
-  const { currentPage, setCurrentPage, customerContact, setModalTitle, setJob, setModalIsOpen } = useModalContext()
+  const { currentPage, setCurrentPage, customerContact, setModalTitle, setJob, setModalIsOpen } = useGlobalContext()
 
   useEffect(() => {
     setModalTitle('Forma 2')

@@ -1,9 +1,9 @@
-import { ModalProvider } from '../contexts/ModalContextProvider'
+import { ContextProvider } from '../contexts/ModalContextProvider'
 import ModalBody from './create-task-modal-component/ModalBody'
 
 const CreateTaskSection = () => {
   return (
-    <ModalProvider>
+    <ContextProvider>
       <main className="flex-1">
         <section className="w-full pt-12 md:pt-24 lg:pt-32 border-y">
           <div className="container px-4 md:px-6 space-y-10 xl:space-y-16">
@@ -18,7 +18,7 @@ const CreateTaskSection = () => {
           </div>
         </section>
       </main>
-    </ModalProvider>
+    </ContextProvider>
   )
 }
 

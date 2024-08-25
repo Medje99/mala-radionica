@@ -63,17 +63,18 @@ const BillsList: React.FC = () => {
   // table colums
   const columns = [
     {
-      title: 'Contact name',
+      title: 'Musterija',
       dataIndex: 'firstName',
       key: 'firstName',
     },
+
     {
-      title: 'Job name',
+      title: 'Naslov posla',
       dataIndex: 'job_name',
       key: 'job_name',
     },
     {
-      title: 'End Date',
+      title: 'Datum zavrsetka',
       dataIndex: 'end_date',
       key: 'end_date',
       render: (endDate: string | null) => {
@@ -92,22 +93,23 @@ const BillsList: React.FC = () => {
       key: 'labor_cost',
     },
     {
-      title: 'Paid',
+      title: 'Placeno',
       dataIndex: 'paid',
       key: 'paid',
       render: (paid: number, record: IBillResponse) => {
         // Pass 'record' as an argument
         return paid ? (
-          'PLACENO'
+          <Button type="primary">Placeno</Button>
         ) : (
           <div className="flex items-center">
-            <p className="mr-2">Nije placeno</p>
             <Popconfirm
               title="Are you sure to mark this bill as paid?"
               onConfirm={() => markAsPaid(record)}
               onCancel={() => message.error('No changes made')}
             >
-              <Button>Naplata</Button>
+              <Button type="primary" danger>
+                Izmiri dug
+              </Button>
             </Popconfirm>
           </div>
         )
@@ -127,16 +129,16 @@ const BillsList: React.FC = () => {
       render: (record: IBillResponse) => (
         <Space size="large">
           <Button type="primary" ghost onClick={() => handleEdit(record)} key={record.bill_id}>
-            Edit
+            Izmeni
           </Button>
           <Popconfirm
-            title="Are you sure to delete this bill?"
+            title="Jeste li sigurni da zelite izbrisati ovaj racun?!"
             onConfirm={() => handleDelete(record.bill_id)} // Use bill_id here
-            onCancel={() => message.error('Delete canceled')}
+            onCancel={() => message.error('Racun izbrisan!')}
             key={record.bill_id + 'delete'} // Add a unique key for the Popconfirm
           >
             <Button danger ghost>
-              Delete
+              Izbrisi
             </Button>
           </Popconfirm>
         </Space>
