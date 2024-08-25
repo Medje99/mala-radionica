@@ -31,9 +31,9 @@ const Header = () => {
         <Link to="/Bills" className="text-sm font-medium hover:underline underline-offset-4">
           Racuni
         </Link>
-        <Link to="/Bills" className="text-sm font-medium hover:underline underline-offset-4">
+        {/* <Link to="/Bills" className="text-sm font-medium hover:underline underline-offset-4">
           Finansije
-        </Link>
+        </Link> */}
       </nav>
     </header>
   )

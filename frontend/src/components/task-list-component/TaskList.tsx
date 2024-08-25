@@ -142,8 +142,4 @@ const TasksList: React.FC = () => {
     </div>
   )
 }
-export default () => (
-  <ContextProvider>
-    <TasksList />
-  </ContextProvider>
-)
+export default TasksList

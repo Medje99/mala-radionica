@@ -13,7 +13,7 @@ import { useGlobalContext, ContextProvider } from './contexts/GlobalContextProvi
 function App() {
   const { setHeaderTitle } = useGlobalContext()
   useEffect(() => {
-    setHeaderTitle('Lista racuna ')
+    setHeaderTitle('Pocetna')
   }, [])
   return (
     <>
