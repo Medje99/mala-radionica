@@ -5,7 +5,7 @@ import { customer_firstName, customer_lastName, taskName, taskDescription, creat
 import useGetUnfinishedTasks from '@/CustomHooks/useGetUnfinishedTasks'
 import TasksAdvancedActions from './actions'
 import CreateBillForm from '../modal-form-parts/CreateBillForm' // Import CreateBillForm
-import { ICustomerContact, useGlobalContext,setModalIsOpen } from '@/contexts/GlobalContextProvider'
+import { ICustomerContact, useGlobalContext, setModalIsOpen } from '@/contexts/GlobalContextProvider'
 import { ModalBody } from '../create-task-form-component/ModalBody'
 
 export const TasksList: React.FC = () => {
@@ -129,8 +129,8 @@ export const TasksList: React.FC = () => {
       >
         <CreateBillForm />
       </Modal>
-      <ModalBody />
-      {filteredTasks.length === 0 && ()=>{setModalIsOpen(true})}
+
+      {filteredTasks.length === 0 && <ModalBody />}
     </div>
   )
 }
