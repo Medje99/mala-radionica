@@ -49,10 +49,10 @@ const ProductCreate = () => {
           <Input />
         </Form.Item>
         <Button type="primary" onClick={(e) => onHandleSubmit(e)}>
-          Submit
+          Potvrdi
         </Button>
         <Button type="default" onClick={(e) => e.preventDefault()}>
-          Cancel
+          Otkazi
         </Button>
       </Form>
     </div>

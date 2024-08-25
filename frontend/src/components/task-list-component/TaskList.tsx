@@ -5,7 +5,7 @@ import { customer_firstName, customer_lastName, taskName, taskDescription, creat
 import useGetUnfinishedTasks from '@/CustomHooks/useGetUnfinishedTasks'
 import TasksAdvancedActions from './actions'
 import CreateBillForm from '../modal-form-parts/CreateBillForm' // Import CreateBillForm
-import { ICustomerContact, useGlobalContext, setModalIsOpen } from '@/contexts/GlobalContextProvider'
+import { ICustomerContact, useGlobalContext } from '@/contexts/GlobalContextProvider'
 import { ModalBody } from '../create-task-form-component/ModalBody'
 
 export const TasksList: React.FC = () => {
@@ -47,7 +47,7 @@ export const TasksList: React.FC = () => {
     taskDescription,
     creation_date,
     {
-      title: 'Actions',
+      title: 'Radnje',
       key: 'action',
       render: (record: ITaskResponse) => (
         <Space size="middle">
@@ -103,17 +103,13 @@ export const TasksList: React.FC = () => {
         onCancel={() => setIsModalOpen(false)}
       >
         <Form form={FormTaskList} layout="vertical">
-          <Form.Item
-            label="Job Name"
-            name="job_name"
-            rules={[{ required: true, message: 'Please enter the job name' }]}
-          >
+          <Form.Item label="Naziv posla" name="job_name" rules={[{ required: true, message: 'Unesi naziv posla' }]}>
             <Input />
           </Form.Item>
           <Form.Item
-            label="Job Description"
+            label="Detalji posla"
             name="job_description"
-            rules={[{ required: true, message: 'Please enter the job description' }]}
+            rules={[{ required: true, message: 'Unesi detalje posla ' }]}
           >
             <Input.TextArea />
           </Form.Item>

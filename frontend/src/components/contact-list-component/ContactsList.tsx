@@ -58,40 +58,42 @@ const ContactsList: React.FC = () => {
 
   const columns = [
     {
-      title: 'First Name',
+      title: 'Ime',
       dataIndex: 'firstName',
       key: 'firstName',
     },
     {
-      title: 'Last Name',
+      title: 'Prezime',
       dataIndex: 'lastName',
       key: 'lastName',
     },
     {
-      title: 'City',
+      title: 'Mesto',
       dataIndex: 'city',
       key: 'city',
     },
     {
-      title: 'Phone Number',
+      title: 'Telefon',
       dataIndex: 'phoneNumber',
       key: 'phoneNumber',
     },
     {
-      title: 'Actions',
+      title: 'Radnje',
       key: 'action',
       render: (record: IContacts) => (
         <Space size="large">
           <Button type="primary" ghost onClick={() => handleEdit(record)}>
-            Edit
+            Izmeni
           </Button>
           <Popconfirm
-            title="Are you sure to delete this contact?"
+            title="Da li ste sigurni da zelite izbrisati ovaj kontakt?"
             onConfirm={() => handleDelete(record.id)}
-            onCancel={() => message.error('Delete canceled')}
+            onCancel={() => message.error('Brisanje otkazano')}
+            okText="Da"
+            cancelText="Ne"
           >
             <Button danger ghost>
-              Delete
+              Obrisi
             </Button>
           </Popconfirm>
         </Space>

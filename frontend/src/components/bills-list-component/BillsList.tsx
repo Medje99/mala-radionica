@@ -54,7 +54,7 @@ const BillsList: React.FC = () => {
     setFilteredBills(updatedBills)
     setIsModalOpen(false)
 
-    message.success('Bill updated successfully')
+    message.success('Racun izmenjen uspesno')
   }
 
   const markAsPaid = async (record: IBillResponse) => {
@@ -62,7 +62,7 @@ const BillsList: React.FC = () => {
     BillService.updateBill(updatedBill)
     const updatedBills = filteredBills.map((bill) => (bill.bill_id === record.bill_id ? { ...bill, paid: true } : bill))
     setFilteredBills(updatedBills)
-    message.success('Bill marked as paid')
+    message.success('Racun oznacen kao placen')
   }
 
   // table colums
@@ -108,9 +108,11 @@ const BillsList: React.FC = () => {
         ) : (
           <div className="flex items-center">
             <Popconfirm
-              title="Are you sure to mark this bill as paid?"
+              title="Da li ste sigurni da zelite oznaciti kao isplaceno?"
               onConfirm={() => markAsPaid(record)}
-              onCancel={() => message.error('No changes made')}
+              onCancel={() => message.error('Otkazano!')}
+              okText="Da"
+              cancelText="Ne"
             >
               <Button type="primary" danger>
                 Izmiri dug
@@ -165,11 +167,7 @@ const BillsList: React.FC = () => {
             end_date: FormBillList.getFieldValue('end_date'),
           }}
         >
-          <Form.Item
-            label="End Date"
-            name="end_date"
-            rules={[{ required: true, message: 'Please enter the end date' }]}
-          >
+          <Form.Item label="Završetak" name="end_date" rules={[{ required: false }]}>
             <Space direction="vertical">
               <DatePicker
                 showTime={{ minuteStep: 15 }}
@@ -182,24 +180,20 @@ const BillsList: React.FC = () => {
             </Space>
           </Form.Item>
           <Form.Item
-            label="Labor Cost"
+            label="Cena usluge"
             name="labor_cost"
-            rules={[{ required: true, message: 'Please enter the labor cost' }]}
+            rules={[{ required: true, message: 'Molimo unesite cenu usluge' }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
-            label="Total Cost"
+            label="Ukupna cena"
             name="total_cost"
             rules={[{ required: false, message: 'Please enter the total cost' }]}
           >
-            <Input />
+            <Input disabled />
           </Form.Item>
-          <Form.Item
-            label="Products Used"
-            name="products_used"
-            rules={[{ required: true, message: 'Please enter the products used' }]}
-          >
+          <Form.Item label="Uportrebljeni materijal" name="products_used" rules={[{ required: false }]}>
             <Input.TextArea />
           </Form.Item>
         </Form>
