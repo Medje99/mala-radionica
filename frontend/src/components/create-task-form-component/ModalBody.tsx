@@ -41,10 +41,10 @@ export const ModalBody = () => {
 
   return (
     <Modal
-      title={<div style={{ textAlign: 'center', width: '100%' }}>{modalTitle}</div>}
+      title={<div className="modal-title">{modalTitle}</div>}
       centered
       open={modalIsOpen}
-      width={'40%'}
+      width={'400px'}
       onCancel={() => {
         setCurrentPage(0)
         setModalIsOpen(false)

@@ -9,7 +9,7 @@ import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 const ContactsList: React.FC = () => {
   const { setHeaderTitle } = useGlobalContext()
   useEffect(() => {
-    setHeaderTitle('Contacts')
+    setHeaderTitle('Kontakti:')
   }, [])
   const { customers: contacts } = useGetAllContacts()
   const [searchTerm, setSearchTerm] = useState('')

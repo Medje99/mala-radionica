@@ -11,8 +11,10 @@ interface ActionButton {
 
 // recives function , button title, button class , and aditional styles as prop
 const ActionButton = ({ onClickHandler, title, className, style }: ActionButton) => {
+  const buttonClassName = className ? `action-button ${className}` : 'action-button'
+
   return (
-    <Button onClick={onClickHandler} className={className} style={style}>
+    <Button onClick={onClickHandler} className={buttonClassName} style={style}>
       {title}
     </Button>
   )

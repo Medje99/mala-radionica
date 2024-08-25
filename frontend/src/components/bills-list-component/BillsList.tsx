@@ -11,7 +11,7 @@ import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 const BillsList: React.FC = () => {
   const { setHeaderTitle } = useGlobalContext()
   useEffect(() => {
-    setHeaderTitle('Lista racuna ')
+    setHeaderTitle('Zavrseni poslovi')
   }, [])
   const { bills } = useGetAllBills()
   const [searchTerm, setSearchTerm] = useState('')

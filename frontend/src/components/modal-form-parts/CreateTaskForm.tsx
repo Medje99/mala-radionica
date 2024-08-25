@@ -11,7 +11,7 @@ const CreateTaskForm = () => {
   const { currentPage, setCurrentPage, customerContact, setModalTitle, setJob, setModalIsOpen } = useGlobalContext()
 
   useEffect(() => {
-    setModalTitle('Forma 2')
+    setModalTitle('Detalji posla')
   }, [])
 
   const [form] = Form.useForm<ITaskResponse>()
@@ -103,11 +103,11 @@ const CreateTaskForm = () => {
             />
           </Space>
         </Form.Item>
-        <Form.Item label={!isFinished && 'Posao zavrsen:'} style={{ marginLeft: '30px' }}>
+        <Form.Item label={!isFinished ? 'Posao aktivan' : 'Status posla:'} className="ml-7">
           <Switch checked={isFinished} onChange={() => setIsFinished(!isFinished)} className="mr-10" />
         </Form.Item>
         {isFinished && (
-          <Form.Item label="Posao zavrsen:" name="end_date">
+          <Form.Item label="Zavrsen" name="end_date">
             <Space direction="vertical">
               <DatePicker
                 showTime={{ minuteStep: 15 }}

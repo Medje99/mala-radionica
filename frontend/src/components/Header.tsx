@@ -11,7 +11,7 @@ const Header = () => {
       <Link to="/" className="flex items-center justify-center">
         <span className="sr-only">/</span>
       </Link>
-      <Typography className="ml-2 text-xl font-bold  text-white">{headerTitle}</Typography>
+      <Typography className="text-4xl font-medium font-bold header-title">{headerTitle}</Typography>
       <nav className="ml-auto flex gap-4 sm:gap-6">
         <Link to="/" className="text-sm font-medium hover:underline underline-offset-4">
           Pocetna
@@ -23,13 +23,13 @@ const Header = () => {
           Lista proizvoda
         </Link>
         <Link to="/ContactsList" className="text-sm font-medium hover:underline underline-offset-4">
-          Lista Kontakta
+          Lista Musterija
         </Link>
         <Link to="/Tasks" className="text-sm font-medium hover:underline underline-offset-4">
-          Poslovi
+          Aktivni Poslovi
         </Link>
         <Link to="/Bills" className="text-sm font-medium hover:underline underline-offset-4">
-          Racuni
+          Arhiva zavrsenih poslova
         </Link>
         {/* <Link to="/Bills" className="text-sm font-medium hover:underline underline-offset-4">
           Finansije

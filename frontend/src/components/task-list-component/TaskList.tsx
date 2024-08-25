@@ -89,7 +89,7 @@ const TasksList: React.FC = () => {
   return (
     <div>
       <Input.Search
-        placeholder="Search tasks"
+        placeholder="Pretrazi poslove"
         onChange={(e) => setSearchTerm(e.target.value)}
         style={{ marginBottom: 20 }}
       />
@@ -131,7 +131,7 @@ const TasksList: React.FC = () => {
       </Modal>
 
       {filteredTasks.length === 0 && (
-        <div className="text-center mt-10">
+        <div className="text-center">
           <Link to="/TaskCreate">
             <Button type="primary" size="large">
               Dodaj novi posao

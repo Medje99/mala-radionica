@@ -7,14 +7,9 @@ import ProductsList from './components/product-list-component/ProductsList'
 import ContactsList from './components/contact-list-component/ContactsList'
 import TaskList from './components/task-list-component/TaskList'
 import BillsList from './components/bills-list-component/BillsList'
-import { useEffect } from 'react'
-import { useGlobalContext, ContextProvider } from './contexts/GlobalContextProvider'
+import { ContextProvider } from './contexts/GlobalContextProvider'
 
 function App() {
-  const { setHeaderTitle } = useGlobalContext()
-  useEffect(() => {
-    setHeaderTitle('Pocetna')
-  }, [])
   return (
     <>
       <Header />

@@ -65,11 +65,6 @@ const CreateTaskForm = () => {
         paid: false,
       }}
     >
-      {/* Full Name */}
-      <Form.Item label="Izabrana musterija:">
-        <Input disabled={true} placeholder={customerContact?.fullName} />
-      </Form.Item>
-
       {/* Labor Cost */}
       <Form.Item
         label="Cena usluge"

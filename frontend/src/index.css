@@ -1,9 +1,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+var color .ant-input-search {
+  padding: 16px;
+  padding-block: 16px;
+  background: rgb(55, 139, 179);
+}
 
+.header-title {
+  color: rgb(120, 187, 221);
+}
+.ant-btn {
+  color: rgb(255, 255, 255);
+  background-color: #4283c9;
+  border: none;
+  font-size: 14px;
+}
+
+.action-button {
+  color: rgb(255, 255, 255);
+}
+
+.modal-title {
+  text-align: center;
+  color: #4283c9;
+}
+
+.ant-form {
+  padding: 0;
+}
 .ant-input-search {
   padding: 16px;
   padding-block: 16px;
-  background: rgb(69, 167, 212);
+  background: rgb(55, 139, 179);
+}
+
+.ant-input-search-button {
+  background: rgb(137, 181, 221);
 }
