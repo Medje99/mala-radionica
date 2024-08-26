@@ -1,35 +1,16 @@
 import { Button, Form, Input } from 'antd'
 import { IProducts } from '@/model/response/IProductResponse'
-import ProductsService from '@/service/ProductsService.ts'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import { useEffect } from 'react'
+import { onHandleSubmit } from './actions'
 
-const ProductCreate = () => {
+const InsertProductFormComponent = () => {
   const { setHeaderTitle } = useGlobalContext()
   useEffect(() => {
     setHeaderTitle('Unos proizvoda')
   }, [])
   const [form] = Form.useForm<IProducts>()
 
-  const onHandleSubmit = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
-    event.preventDefault()
-    form
-      .validateFields()
-      .then((values) => {
-        const formatedData = {
-          ...values,
-        }
-        ProductsService.createProductEntry(formatedData).then((createdProduct) => {
-          console.log('Product created:', createdProduct)
-          // Additional success handling, e.g., reset form, show success message
-        })
-      })
-
-      .catch((errorInfo) => {
-        console.error('Validation failed:', errorInfo)
-        // Provide user feedback on validation failure
-      })
-  }
   return (
     <div>
       <Form form={form} name="musterija-form" layout="vertical" className="bg-white p-5 rounded-lg">
@@ -43,15 +24,15 @@ const ProductCreate = () => {
           <Input />
         </Form.Item>
         <Form.Item className="mb-4 w-1/2" label="Cena" name="price">
-          <Input />
+          <Input type="number" />
         </Form.Item>
         <Form.Item className="mb-4 w-1/2" label="Kolicina" name="quantity">
-          <Input />
+          <Input type="number" />
         </Form.Item>
-        <Button type="primary" onClick={(e) => onHandleSubmit(e)}>
+        <Button type="primary" onClick={() => onHandleSubmit(form)}>
           Potvrdi
         </Button>
-        <Button type="default" onClick={(e) => e.preventDefault()}>
+        <Button type="default" onClick={() => form.resetFields()}>
           Otkazi
         </Button>
       </Form>
@@ -59,4 +40,4 @@ const ProductCreate = () => {
   )
 }
 
-export default ProductCreate
+export default InsertProductFormComponent
