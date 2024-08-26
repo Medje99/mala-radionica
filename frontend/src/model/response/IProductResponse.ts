@@ -5,4 +5,5 @@ export interface IProducts {
   model: string
   price: number
   quantity: number
+  SKU: string
 }

@@ -29,6 +29,9 @@ const InsertProductFormComponent = () => {
         <Form.Item className="mb-4 w-1/2" label="Kolicina" name="quantity">
           <Input type="number" />
         </Form.Item>
+        <Form.Item className="mb-4 w-1/2" label="SKU" name="SKU">
+          <Input />
+        </Form.Item>
         <Button type="primary" onClick={() => onHandleSubmit(form)}>
           Potvrdi
         </Button>

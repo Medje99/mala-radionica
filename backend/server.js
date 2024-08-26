@@ -134,7 +134,7 @@ app.get("/Products", (req, res) => {
     }
   });
 });
-//Products route GET Handler Express
+//Bills route GET Handler Express
 app.get("/bills", (req, res) => {
   console.log("GET /bills called");
 
@@ -230,42 +230,6 @@ app.put("/bill/:bill_id", (req, res) => {
     }
   );
 });
-
-//Products route POST Handler Express
-app.post("/ProductInput", (req, res) => {
-  console.log("POST /ProductInput called");
-  const { name, manufacturer, model, price, quantity } = req.body;
-  console.log("Received data:", req.body);
-
-  const insertQuery =
-    "INSERT INTO `product` ( `name`, `manufacturer`, `model`, `price`, `quantity`) VALUES ( ?, ?, ?, ?, ?);";
-  db.query(
-    insertQuery,
-    [name, manufacturer, model, price, quantity],
-    (err, result) => {
-      if (err) {
-        console.error("Error inserting product:", err);
-        res
-          .status(500)
-          .json({ error: `Error inserting product: ${err.message}` });
-      } else {
-        const selectQuery = "SELECT * FROM product WHERE id = ?";
-        db.query(selectQuery, [result.insertId], (err, newProduct) => {
-          if (err) {
-            console.error("Error retrieving new product:", err);
-            res
-              .status(500)
-              .json({ error: `Error retrieving new product: ${err.message}` });
-          } else {
-            console.log("Newly added product:", newProduct[0]);
-            res.json(newProduct[0]);
-          }
-        });
-      }
-    }
-  );
-});
-
 app.put("/Contacts/:id", (req, res) => {
   const contactId = req.params.id;
   const { firstName, lastName, phoneNumber, city, address, other } = req.body;
@@ -296,6 +260,40 @@ app.put("/Contacts/:id", (req, res) => {
     }
   );
 });
+//Products route POST Handler Express
+app.post("/ProductInput", (req, res) => {
+  console.log("POST /ProductInput called");
+  const { name, manufacturer, model, price, quantity, SKU } = req.body;
+  console.log("Received data:", req.body);
+
+  const insertQuery =
+    "INSERT INTO product (name, manufacturer, model, price, quantity, SKU) VALUES (?, ?, ?, ?, ?, ?)";
+
+  db.query(
+    insertQuery,
+    [name, manufacturer, model, price, quantity, SKU],
+    (err, result) => {
+      if (err) {
+        console.error("Error inserting product:", err);
+        res.status(400).json({ error: `Error inserting product: ${err}` });
+      } else {
+        // Get the newly inserted product by its ID
+        const selectQuery = "SELECT * FROM product WHERE id = ?";
+        db.query(selectQuery, [result.insertId], (err, newProduct) => {
+          if (err) {
+            console.error("Error retrieving new product:", err);
+            res
+              .status(500)
+              .json({ error: `Error retrieving new product: ${err.message}` });
+          } else {
+            console.log("Newly added product:", newProduct[0]);
+            res.json(newProduct[0]); // Send the new product as a response
+          }
+        });
+      }
+    }
+  );
+});
 
 app.put("/Products/:id", (req, res) => {
   const productId = req.params.id;
@@ -303,10 +301,9 @@ app.put("/Products/:id", (req, res) => {
 
   if (
     !name ||
-    !manufacturer ||
-    !model ||
     price === undefined ||
-    quantity === undefined
+    quantity === undefined ||
+    SKU === undefined
   ) {
     return res.status(400).send("All fields must be provided.");
   }
@@ -314,7 +311,7 @@ app.put("/Products/:id", (req, res) => {
   const query = `
     UPDATE product 
     SET name = ?, manufacturer = ?, model = ?, price = ?, quantity = ?
-    WHERE id = ?
+    WHERE id = ?,SKU = ?
   `;
 
   db.query(
@@ -323,7 +320,7 @@ app.put("/Products/:id", (req, res) => {
     (err, results) => {
       if (err) {
         console.error("Error updating product:", err);
-        res.status(500).send("Error updating product");
+        res.status(500).send(err);
       } else if (results.affectedRows === 0) {
         res.status(404).send("Product not found");
       } else {
