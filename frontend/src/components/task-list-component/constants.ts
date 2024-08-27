@@ -18,7 +18,7 @@ export const creation_date = {
   dataIndex: 'creation_date',
   key: 'creation_date',
   editable: true,
-  sorter: (a, b) => {
+  sorter: (a: { creation_date: string | number | Date; }, b: { creation_date: string | number | Date; }) => {
     if (a.creation_date && b.creation_date) {
       return new Date(b.creation_date).getTime() - new Date(a.creation_date).getTime();
     } else {
