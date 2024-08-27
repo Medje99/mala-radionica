@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Key } from 'react'
-import { Table,  Input, Popconfirm, message, Modal, Form, Space, Button, DatePicker } from 'antd'
+import { Table, Input, Popconfirm, message, Modal, Form, Space, Button, DatePicker } from 'antd'
 import { Link } from 'react-router-dom'
 import BillService from '@/service/BillService'
 import useGetAllBills from '@/CustomHooks/useGetAllBills'
@@ -8,11 +8,7 @@ import dayjs from 'dayjs'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import moment from 'moment'
 
-
-
-
 const BillsList: React.FC = () => {
-
   const { setHeaderTitle } = useGlobalContext()
   useEffect(() => {
     setHeaderTitle('Zavrseni poslovi')
@@ -88,12 +84,12 @@ const BillsList: React.FC = () => {
       key: 'end_date',
       sorter: (a, b) => {
         if (a.end_date && b.end_date) {
-          return new Date(b.end_date).getTime() - new Date(a.end_date).getTime();
+          return new Date(b.end_date).getTime() - new Date(a.end_date).getTime()
         } else {
-          return 0; // Handle cases where end_date is null or undefined
+          return 0 // Handle cases where end_date is null or undefined
         }
       },
-        defaultSortOrder: 'ascend', // Set default sort order to new first
+      defaultSortOrder: 'ascend', // Set default sort order to new first
 
       render: (endDate: string | null) => {
         if (endDate) {
@@ -104,7 +100,6 @@ const BillsList: React.FC = () => {
         }
       },
     },
-
 
     {
       title: 'Cena usluge',
