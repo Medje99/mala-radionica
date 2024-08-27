@@ -86,6 +86,15 @@ const BillsList: React.FC = () => {
       title: 'Datum zavrsetka',
       dataIndex: 'end_date',
       key: 'end_date',
+      sorter: (a, b) => {
+        if (a.end_date && b.end_date) {
+          return new Date(b.end_date).getTime() - new Date(a.end_date).getTime();
+        } else {
+          return 0; // Handle cases where end_date is null or undefined
+        }
+      },
+        defaultSortOrder: 'ascend', // Set default sort order to new first
+
       render: (endDate: string | null) => {
         if (endDate) {
           const formattedDate = moment(endDate).fromNow() // Calculate time difference from endDate
@@ -95,6 +104,7 @@ const BillsList: React.FC = () => {
         }
       },
     },
+
 
     {
       title: 'Cena usluge',
@@ -161,7 +171,7 @@ const BillsList: React.FC = () => {
     <div>
       <Input.Search placeholder="Pretrazi racune" onChange={(e) => setSearchTerm(e.target.value)} />
 
-      <Table columns={columns} dataSource={filteredBills} pagination={{ pageSize: 7 }} rowKey="bill_id" />
+      <Table columns={columns} dataSource={filteredBills} pagination={{ pageSize: 15 }} rowKey="bill_id" />
 
       <Modal title="Izmeni racun" open={isModalOpen} onOk={handleSave} onCancel={() => setIsModalOpen(false)}>
         <Form
