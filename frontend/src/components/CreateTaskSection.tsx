@@ -6,7 +6,7 @@ const CreateTaskSection = () => {
   const { setHeaderTitle } = useGlobalContext()
 
   useEffect(() => {
-    setHeaderTitle('Pocetak')
+    setHeaderTitle('Mala Radionica')
   }, [])
 
   return (

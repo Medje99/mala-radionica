@@ -1,14 +1,18 @@
 import React, { useState, useEffect, Key } from 'react'
-import { Table, Typography, Input, Popconfirm, message, Modal, Form, Space, Button, DatePicker } from 'antd'
+import { Table,  Input, Popconfirm, message, Modal, Form, Space, Button, DatePicker } from 'antd'
 import { Link } from 'react-router-dom'
 import BillService from '@/service/BillService'
 import useGetAllBills from '@/CustomHooks/useGetAllBills'
-import moment from 'moment'
 import { IBillResponse } from '@/model/response/IBillResponse'
 import dayjs from 'dayjs'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
+import moment from 'moment'
+
+
+
 
 const BillsList: React.FC = () => {
+
   const { setHeaderTitle } = useGlobalContext()
   useEffect(() => {
     setHeaderTitle('Zavrseni poslovi')
@@ -84,10 +88,10 @@ const BillsList: React.FC = () => {
       key: 'end_date',
       render: (endDate: string | null) => {
         if (endDate) {
-          const formattedDate = moment(endDate).format('DD/MM/YYYY/ HH:mm') // Calculate time difference from endDate
+          const formattedDate = moment(endDate).fromNow() // Calculate time difference from endDate
           return formattedDate
         } else {
-          return 'N/A' // Return "N/A" if end_date is null
+          return 'Nije definisano! ' // Return "N/A" if end_date is null
         }
       },
     },
@@ -159,7 +163,7 @@ const BillsList: React.FC = () => {
 
       <Table columns={columns} dataSource={filteredBills} pagination={{ pageSize: 7 }} rowKey="bill_id" />
 
-      <Modal title="Edit Bill" open={isModalOpen} onOk={handleSave} onCancel={() => setIsModalOpen(false)}>
+      <Modal title="Izmeni racun" open={isModalOpen} onOk={handleSave} onCancel={() => setIsModalOpen(false)}>
         <Form
           form={FormBillList}
           layout="vertical"

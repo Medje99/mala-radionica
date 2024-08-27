@@ -72,7 +72,7 @@ const CreateTaskForm = () => {
       <Form.Item
         label="Naslov posla:"
         name="job_name"
-        rules={[{ required: true, message: 'Please input the job name!' }]}
+        rules={[{ required: true, message: 'Popuni naziv posla!' }]}
       >
         <Input />
       </Form.Item>
@@ -81,7 +81,7 @@ const CreateTaskForm = () => {
       <Form.Item
         label="Detalji posla:"
         name="job_description"
-        rules={[{ required: false, message: 'Please input the job description!' }]}
+        rules={[{ required: false,  }]}
       >
         <Input.TextArea />
       </Form.Item>

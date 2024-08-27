@@ -13,6 +13,8 @@ interface ModalStateType {
   setJob: React.Dispatch<React.SetStateAction<ITask>>
   setHeaderTitle: React.Dispatch<React.SetStateAction<string>>
   headerTitle: string
+  end_date: ITask["end_date"]
+  setEndDate: React.Dispatch<React.SetStateAction<ITask["end_date"]>>
 }
 
 export interface ICustomerContact {
@@ -43,6 +45,9 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
   const [customerContact, setCustomerContact] = useState<ICustomerContact>()
   const [job, setJob] = useState<ITask>({} as ITask)
   const [headerTitle, setHeaderTitle] = useState('NOTHING YET')
+  const [end_date, setEndDate] = useState<ITask["end_date"]>()
+
+
 
   return (
     <GlobalContext.Provider
@@ -59,6 +64,8 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
         setJob,
         headerTitle,
         setHeaderTitle,
+        end_date,
+        setEndDate,
       }}
     >
       {children}

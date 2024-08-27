@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Form, Switch, InputNumber, Typography, message } from 'antd'
+import { Form, Switch, InputNumber, Typography, message, DatePicker } from 'antd'
 import { useEffect, useState } from 'react'
 import ActionButton from '../CustomButtons/ActionButton' // recives function , button title, button class , and aditional styles
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
@@ -7,6 +7,10 @@ import ProductsComponent from './test/ProductsComponent'
 import useGetAllProducts from '../../CustomHooks/useGetAllProducts'
 import BillService from '@/service/BillService'
 import { IBillResponse } from '@/model/response/IBillResponse'
+import dayjs from 'dayjs'
+import moment from 'moment'
+
+
 
 const CreateTaskForm = () => {
   const { customerContact, job, setModalTitle, setModalIsOpen } = useGlobalContext()
@@ -24,6 +28,7 @@ const CreateTaskForm = () => {
   useEffect(() => {
     setModalTitle('Naplata: ' + customerContact?.fullName)
     console.log(customerContact?.fullName)
+   
   }),
     [FormBillCreate]
 
@@ -45,10 +50,9 @@ const CreateTaskForm = () => {
           products_used: updatedProductsUsed,
           contact_id: customerContact?.id ?? 0,
           job_id: job.task_id ?? 0,
-          end_date: job.end_date ?? new Date(),
           parts_cost: 20,
           labor_cost: values.labor_cost,
-          total_cost: values.labor_cost + 20,
+          total_cost: values.labor_cost ,
         }
         BillService.createBill(updatedValues)
         message.success('Racun uspesno kreiran !') // Show error message
@@ -69,6 +73,7 @@ const CreateTaskForm = () => {
       onFinish={submitLogic}
       initialValues={{
         paid: false,
+        end_date: job.end_date ? dayjs(job.end_date) : dayjs(moment().toDate()),
       }}
     >
       {/* Labor Cost */}
@@ -87,6 +92,17 @@ const CreateTaskForm = () => {
       </Form.Item>
       <Typography>Iskoristeni proizvodi:</Typography>
       <ProductsComponent />
+   <Form.Item label="Datum placanja:" name="end_date">
+   <DatePicker
+                showTime={{ minuteStep: 15 }}
+                format="MMM-DD HH:mm"
+                name="end_date"
+                defaultOpenValue={dayjs(FormBillCreate.getFieldValue('end_date'))}
+               
+              defaultValue={job.end_date}
+                
+              />
+      </Form.Item>
 
       <div className="flex flex-row justify-between mt-5">
         <ActionButton
@@ -96,6 +112,7 @@ const CreateTaskForm = () => {
             animating ? 'opacity-0 rotate-45' : 'opacity-100 rotate-0'
           }`}
         />
+
       </div>
     </Form>
   )
