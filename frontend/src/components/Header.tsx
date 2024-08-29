@@ -4,11 +4,11 @@ import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 const Header = () => {
-  const { headerTitle, formTitleString } = useGlobalContext()
+  const { headerTitle, setHeaderTitle, formTitleString } = useGlobalContext()
 
   useEffect(() => {
-    console.log(formTitleString)
-  }, [formTitleString])
+    setHeaderTitle(formTitleString)
+  }, [formTitleString]) // removes lag
 
   return (
     <header className="px-4 lg:px-6 h-14 flex items-center bg-black text-white">

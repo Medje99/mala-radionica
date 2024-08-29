@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Form, Input, Select, message } from 'antd' // Import message from antd
 import TextArea from 'antd/es/input/TextArea'
-
 import createTaskFormActions from '../create-task-form-component/actions'
 import { useEffect, useState } from 'react'
 import useGetAllContacts from '@/CustomHooks/useGetAllContants'
@@ -18,7 +17,7 @@ const { setCustomerSelectOptions, setCustomerFormValues, handleSelectChange } = 
 
 // Component main function
 const CreateContactForm = () => {
-  const { setCustomerContact, setCurrentPage, currentPage, formTitleFormatted: formTitle } = useGlobalContext() // context passing to form 2
+  const { setCustomerContact, setCurrentPage, currentPage } = useGlobalContext() // context passing to form 2
   const [newCustomer, setNewCustomer] = useState(false) // definined default false
   const { customers } = useGetAllContacts() // getting customer full list via get request
   const [FormContactCreate] = Form.useForm<IContacts>() // create form instance useState for all fields and elements abstracted

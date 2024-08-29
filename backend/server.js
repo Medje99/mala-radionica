@@ -371,6 +371,26 @@ app.delete("/Products/:id", (req, res) => {
     }
   });
 });
+app.delete("/contacts/:id", (req, res) => {
+  const id = req.params.id;
+
+  const query = `
+    DELETE FROM contacts 
+    WHERE id = ?
+  `;
+
+  db.query(query, [id], (err, results) => {
+    if (err) {
+      console.error("Error deleting contact:", err);
+      res.status(500).send("Error deleting contact");
+    } else if (results.affectedRows === 0) {
+      res.status(404).send("Contact not found");
+    } else {
+      console.log("Contact deleted successfully:", results);
+      res.send("Contact deleted successfully");
+    }
+  });
+});
 
 app.get("/tasks", (req, res) => {
   console.log("GET /tasks called");
