@@ -10,10 +10,15 @@ import { IBillResponse } from '@/model/response/IBillResponse'
 import dayjs from 'dayjs'
 import moment from 'moment'
 
-
-
 const CreateTaskForm = () => {
-  const { customerContact, job, setModalTitle, setModalIsOpen } = useGlobalContext()
+  const {
+    customerContact,
+    job,
+    setFormTitle: setFormTitle,
+    setModalIsOpen,
+    formTitleFormatted: formTitle,
+    setCurrentPage,
+  } = useGlobalContext()
   const [FormBillCreate] = Form.useForm<IBillResponse>()
   const [isPaid, setIsPaid] = useState(false)
   const [animating, setAnimating] = useState(false)
@@ -26,9 +31,8 @@ const CreateTaskForm = () => {
   }, [isPaid])
 
   useEffect(() => {
-    setModalTitle('Naplata: ' + customerContact?.fullName)
+    setFormTitle('Naplata: ' + customerContact?.fullName)
     console.log(customerContact?.fullName)
-   
   }),
     [FormBillCreate]
 
@@ -52,11 +56,12 @@ const CreateTaskForm = () => {
           job_id: job.task_id ?? 0,
           parts_cost: 20,
           labor_cost: values.labor_cost,
-          total_cost: values.labor_cost ,
+          total_cost: values.labor_cost,
         }
         BillService.createBill(updatedValues)
         message.success('Racun uspesno kreiran !') // Show error message
         setModalIsOpen(false)
+        setCurrentPage(0)
       })
       .catch((error) => {
         console.error('Error creating bill:', error)
@@ -92,16 +97,14 @@ const CreateTaskForm = () => {
       </Form.Item>
       <Typography>Iskoristeni proizvodi:</Typography>
       <ProductsComponent />
-   <Form.Item label="Datum placanja:" name="end_date">
-   <DatePicker
-                showTime={{ minuteStep: 15 }}
-                format="MMM-DD HH:mm"
-                name="end_date"
-                defaultOpenValue={dayjs(FormBillCreate.getFieldValue('end_date'))}
-               
-              defaultValue={job.end_date}
-                
-              />
+      <Form.Item label="Datum placanja:" name="end_date">
+        <DatePicker
+          showTime={{ minuteStep: 15 }}
+          format="MMM-DD HH:mm"
+          name="end_date"
+          defaultOpenValue={dayjs(FormBillCreate.getFieldValue('end_date'))}
+          defaultValue={job.end_date}
+        />
       </Form.Item>
 
       <div className="flex flex-row justify-between mt-5">
@@ -112,7 +115,6 @@ const CreateTaskForm = () => {
             animating ? 'opacity-0 rotate-45' : 'opacity-100 rotate-0'
           }`}
         />
-
       </div>
     </Form>
   )

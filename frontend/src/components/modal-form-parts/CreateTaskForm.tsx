@@ -8,10 +8,18 @@ import moment from 'moment'
 import dayjs from 'dayjs'
 
 const CreateTaskForm = () => {
-  const { currentPage, setCurrentPage, customerContact, setModalTitle, setJob, setModalIsOpen } = useGlobalContext()
+  const {
+    currentPage,
+    setCurrentPage,
+    customerContact,
+    setFormTitle: setFormTitle,
+    setJob,
+    setModalIsOpen,
+    formTitleFormatted: formTitle,
+  } = useGlobalContext()
 
   useEffect(() => {
-    setModalTitle('Detalji posla')
+    setFormTitle('Detalji posla')
   }, [])
 
   const [form] = Form.useForm<ITaskResponse>()
@@ -41,6 +49,7 @@ const CreateTaskForm = () => {
             task_id: response.data.id,
             end_date: values.end_date,
           })
+          setCurrentPage(0)
         })
         .then(() => {
           isFinished ? setCurrentPage(currentPage + 1) : setModalIsOpen(false)
@@ -69,20 +78,12 @@ const CreateTaskForm = () => {
         <Input disabled={true} placeholder={customerContact?.fullName} />
       </Form.Item>
 
-      <Form.Item
-        label="Naslov posla:"
-        name="job_name"
-        rules={[{ required: true, message: 'Popuni naziv posla!' }]}
-      >
+      <Form.Item label="Naslov posla:" name="job_name" rules={[{ required: true, message: 'Popuni naziv posla!' }]}>
         <Input />
       </Form.Item>
 
       {/* Job Description */}
-      <Form.Item
-        label="Detalji posla:"
-        name="job_description"
-        rules={[{ required: false,  }]}
-      >
+      <Form.Item label="Detalji posla:" name="job_description" rules={[{ required: false }]}>
         <Input.TextArea />
       </Form.Item>
 

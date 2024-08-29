@@ -1,16 +1,17 @@
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import { Typography } from 'antd'
-
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 const Header = () => {
-  const { headerTitle } = useGlobalContext()
+  const { headerTitle, formTitleString } = useGlobalContext()
+
+  useEffect(() => {
+    console.log(formTitleString)
+  }, [formTitleString])
 
   return (
     <header className="px-4 lg:px-6 h-14 flex items-center bg-black text-white">
-      <Link to="/" className="flex items-center justify-center">
-        <Typography className="text-4xl font-medium font-bold header-title">Pocetna: </Typography>
-      </Link>
       <Typography className="text-4xl font-medium font-bold header-title">{headerTitle}</Typography>
 
       <nav className="ml-auto flex items-left gap-4 sm:gap-10">

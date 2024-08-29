@@ -7,19 +7,26 @@ import CreateBillForm from '../modal-form-parts/CreateBillForm'
 import { useEffect } from 'react'
 
 export const ModalBody = () => {
-  const { modalIsOpen, currentPage, setModalIsOpen, modalTitle, setModalTitle, setCurrentPage } = useGlobalContext()
+  const {
+    modalIsOpen,
+    currentPage,
+    setModalIsOpen,
+    formTitleFormatted: formTitle,
+    setFormTitle: setFormTitle,
+    setCurrentPage,
+  } = useGlobalContext()
 
   //must be separate inside of useEffect because it needs to load when currentPage is loaded
   useEffect(() => {
     switch (currentPage) {
       case 0:
-        setModalTitle('Izaberi ili dodaj musteriju ')
+        setFormTitle('Izaberi ili dodaj musteriju ')
         break
       case 1:
-        setModalTitle('Unesi podatke o poslu')
+        setFormTitle('Unesi podatke o poslu')
         break
       case 2:
-        setModalTitle('Naplata:')
+        setFormTitle('Naplata:')
         break
       default:
         break
@@ -41,7 +48,7 @@ export const ModalBody = () => {
 
   return modalIsOpen ? (
     <Modal
-      title={<div className="modal-title">{modalTitle}</div>}
+      title={formTitle}
       centered
       open={modalIsOpen}
       width={'400px'}

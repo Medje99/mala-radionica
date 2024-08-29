@@ -9,7 +9,7 @@ import { ICustomerContact, useGlobalContext } from '@/contexts/GlobalContextProv
 import { ModalBody } from '../create-task-form-component/ModalBody'
 
 export const TasksList: React.FC = () => {
-  const { setCustomerContact, setJob, modalTitle, setHeaderTitle } = useGlobalContext()
+  const { setCustomerContact, setJob, formTitleFormatted: modalTitle, setHeaderTitle } = useGlobalContext()
   const { UnfinishedOnes } = useGetUnfinishedTasks()
   const { handleEdit, handleDelete, handleSave } = TasksAdvancedActions()
   const [searchTerm, setSearchTerm] = useState('')

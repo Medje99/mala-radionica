@@ -1,3 +1,4 @@
+import { Typography } from 'antd'
 import { createContext, useContext, useState } from 'react'
 
 interface ModalStateType {
@@ -5,16 +6,17 @@ interface ModalStateType {
   setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   currentPage: number
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>
-  modalTitle: string
-  setModalTitle: React.Dispatch<React.SetStateAction<string>>
+  formTitleFormatted: string | React.ReactElement
+  setFormTitle: React.Dispatch<React.SetStateAction<string>>
   customerContact: ICustomerContact | undefined
   setCustomerContact: React.Dispatch<React.SetStateAction<ICustomerContact | undefined>>
   job: ITask
   setJob: React.Dispatch<React.SetStateAction<ITask>>
   setHeaderTitle: React.Dispatch<React.SetStateAction<string>>
   headerTitle: string
-  end_date: ITask["end_date"]
-  setEndDate: React.Dispatch<React.SetStateAction<ITask["end_date"]>>
+  end_date: ITask['end_date']
+  setEndDate: React.Dispatch<React.SetStateAction<ITask['end_date']>>
+  formTitleString: string
 }
 
 export interface ICustomerContact {
@@ -41,13 +43,11 @@ export const useGlobalContext = (): ModalStateType => {
 export const ContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(0)
-  const [modalTitle, setModalTitle] = useState('')
+  const [formTitle, setFormTitle] = useState('Izaberi ili dodaj musteriju')
   const [customerContact, setCustomerContact] = useState<ICustomerContact>()
   const [job, setJob] = useState<ITask>({} as ITask)
-  const [headerTitle, setHeaderTitle] = useState('NOTHING YET')
-  const [end_date, setEndDate] = useState<ITask["end_date"]>()
-
-
+  const [headerTitle, setHeaderTitle] = useState('')
+  const [end_date, setEndDate] = useState<ITask['end_date']>()
 
   return (
     <GlobalContext.Provider
@@ -56,8 +56,13 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
         setModalIsOpen,
         currentPage,
         setCurrentPage,
-        modalTitle,
-        setModalTitle,
+        formTitleFormatted: (
+          <Typography className="lg:leading-tighter text-4xl font-bold tracking-tighter align-center">
+            {formTitle}
+          </Typography>
+        ),
+        formTitleString: formTitle,
+        setFormTitle: setFormTitle,
         customerContact,
         setCustomerContact,
         job,

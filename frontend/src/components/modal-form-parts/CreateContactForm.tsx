@@ -18,7 +18,7 @@ const { setCustomerSelectOptions, setCustomerFormValues, handleSelectChange } = 
 
 // Component main function
 const CreateContactForm = () => {
-  const { setCustomerContact, setCurrentPage, currentPage } = useGlobalContext() // context passing to form 2
+  const { setCustomerContact, setCurrentPage, currentPage, formTitleFormatted: formTitle } = useGlobalContext() // context passing to form 2
   const [newCustomer, setNewCustomer] = useState(false) // definined default false
   const { customers } = useGetAllContacts() // getting customer full list via get request
   const [FormContactCreate] = Form.useForm<IContacts>() // create form instance useState for all fields and elements abstracted
@@ -80,8 +80,13 @@ const CreateContactForm = () => {
   }
 
   return (
-    <Form form={FormContactCreate} name="musterija-form" layout="vertical" className="bg-white p-5 rounded-lg">
-      <Form.Item label="Musterija" required className="mb-4 mr-10 ml-10">
+    <Form
+      form={FormContactCreate}
+      name="musterija-form"
+      layout="vertical"
+      className="bg-white p-2 rounded-lg width-full"
+    >
+      <Form.Item label="Musterija" required className="mb-10 mr-1 ml-10">
         <Form.Item
           name="firstName"
           noStyle
