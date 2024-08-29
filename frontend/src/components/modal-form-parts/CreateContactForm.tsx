@@ -90,7 +90,7 @@ const CreateContactForm = () => {
           name="firstName"
           noStyle
           rules={[{ required: true, message: 'Izaberi ili dodaj' }]}
-          className="flex-1"
+          className="mb-4 mr-10 ml-10 "
         >
           {newCustomer && selectedCustomer ? (
             <Input value={contactSerchCriteria} onChange={() => setContactSearchCriteria(contactSerchCriteria)} />
@@ -104,6 +104,7 @@ const CreateContactForm = () => {
               onSearch={setContactSearchCriteria}
               filterOption={false}
               allowClear
+              className="pr-9 "
               onKeyDown={(event: any) => {
                 FormContactCreate.setFieldValue('firstName', event.target.value)
               }}

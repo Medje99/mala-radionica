@@ -105,7 +105,7 @@ const ContactsList: React.FC = () => {
     <div>
       <Input.Search placeholder="Pretrazi kontakte" onChange={(e) => setSearchTerm(e.target.value)} />
 
-      <Table columns={columns} dataSource={filteredContacts} pagination={{ pageSize: 7 }} rowKey="id" />
+      <Table columns={columns} dataSource={filteredContacts} pagination={{ pageSize: 10 }} rowKey="id" />
 
       <Modal title="Uredi kontakt" open={isModalOpen} onOk={handleSave} onCancel={() => setIsModalOpen(false)}>
         <Form form={FormContactList} layout="vertical">

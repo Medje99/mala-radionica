@@ -12,7 +12,7 @@ var color .ant-input-search {
 }
 .ant-btn {
   color: rgb(255, 255, 255);
-  background-color: #01A4F1;
+  background-color: #01a4f1;
   border: none;
   font-size: 14px;
 }
@@ -25,7 +25,7 @@ var color .ant-input-search {
 
 .modal-title {
   text-align: center;
-  color: #01A4F1;
+  color: #01a4f1;
 }
 
 .ant-form {
@@ -34,8 +34,6 @@ var color .ant-input-search {
 }
 
 .ant-input-search {
-  padding: 16px;
-  padding-block: 16px;
   background: rgb(55, 139, 179);
 }
 
