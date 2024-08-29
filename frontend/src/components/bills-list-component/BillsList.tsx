@@ -24,9 +24,9 @@ const BillsList: React.FC = () => {
     const filtered = bills.filter((bill) => {
       const searchText = searchTerm.toLowerCase()
       return (
-        bill.firstName?.toString().includes(searchText) ||
-        bill.job_name?.toString().includes(searchText) ||
-        bill.labor_cost?.toString().includes(searchText)
+        bill.firstName?.toString().toLowerCase().includes(searchText) ||
+        bill.job_name?.toString().toLowerCase().includes(searchText) ||
+        bill.job_description?.toString().toLowerCase().includes(searchText)
       )
     })
     setFilteredBills(filtered)
@@ -77,6 +77,11 @@ const BillsList: React.FC = () => {
       title: 'Naslov posla',
       dataIndex: 'job_name',
       key: 'job_name',
+    },
+    {
+      title: 'Opis posla',
+      dataIndex: 'job_description',
+      key: 'job_description',
     },
     {
       title: 'Datum zavrsetka',

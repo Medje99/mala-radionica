@@ -1,7 +1,7 @@
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import { Typography } from 'antd'
 
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const Header = () => {
   const { headerTitle } = useGlobalContext()
@@ -65,11 +65,9 @@ const Header = () => {
             KP
           </Link>
         </div>
-
         <Link to="/" className="text-sm font-medium hover:underline underline-offset-4">
           Pocetna
         </Link>
-
         <Link to="/ProductCreate" className="text-sm font-medium hover:underline underline-offset-4">
           Kreiraj proizvod
         </Link>
@@ -85,9 +83,9 @@ const Header = () => {
         <Link to="/Bills" className="text-sm font-medium hover:underline underline-offset-4">
           Arhiva zavrsenih poslova
         </Link>
-        {/* <Link to="/Bills" className="text-sm font-medium hover:underline underline-offset-4">
+        <Link to="/Bills" className="text-sm font-medium hover:underline underline-offset-4">
           Finansije
-        </Link> */}
+        </Link>
       </nav>
     </header>
   )
