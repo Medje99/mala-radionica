@@ -87,7 +87,7 @@ export const TasksList = () => {
   ]
 
   return (
-    <div>
+    <div className=" flex flex-col w-full">
       {/*edit FormTaskList*/}
       <Modal
         title={modalTitle}
@@ -115,16 +115,29 @@ export const TasksList = () => {
         <CreateBillForm />
       </Modal>
 
+      {/* <div className="flex flex-row w-full">
+        <div className="flex flex-col w-11/12">
+          <Input.Search placeholder="Pretrazi poslove" onChange={(e) => setSearchTerm(e.target.value)} />
+        </div>
+        <div className="flex flex-col w-1/12 mt-4">
+          <Button type="primary" onClick={() => setIsModalOpen(true)}>
+            Dodaj posao
+          </Button>
+        </div>
+      </div> */}
       <Input.Search
+        className="mx-auto w-90"
+        size="large"
         placeholder="Pretrazi poslove"
         onChange={(e) => setSearchTerm(e.target.value)}
-        style={{ marginBottom: 20 }}
       />
+
       <Table
+        className="mx-12 mt-2 border-2 border-grey-500 shadow-2xl task"
         columns={columns}
         dataSource={filteredTasks}
         rowKey="id"
-        pagination={{ pageSizeOptions: ['3', '7', '10', '30'], size: 'small' }}
+        pagination={{ pageSize: 7, position: ['bottomCenter'] }}
       />
       {filteredTasks.length === 0 && <ModalBody />}
     </div>

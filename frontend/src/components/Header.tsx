@@ -10,18 +10,17 @@ const Header = () => {
     setHeaderTitle(formTitleString)
   }, [formTitleString]) // removes lag
 
-  useEffect(() => {
-    
-  }, [location.pathname]); 
+  useEffect(() => {}, [location.pathname])
 
   return (
     <header className="px-4 lg:px-6 h-14 flex items-center bg-black text-white header-container">
       <Typography className="text-2xl font-medium font-bold header-title">{headerTitle}</Typography>
       <div className="flex items-center gap-20 ml-auto main-nav">
-      {location.pathname !== '/' && ( 
+        {location.pathname !== '/' && (
           <Link to="/" className="text-l font-medium hover:underline underline-offset-8 nav-link">
             Pocetna
-          </Link>)}
+          </Link>
+        )}
         <Link to="/ProductCreate" className="text-l font-medium hover:underline underline-offset-8 nav-link">
           Novi proizvod
         </Link>
@@ -47,7 +46,6 @@ const Header = () => {
         >
           VeneraBike
         </Link> */}
-  
       </nav>
     </header>
   )

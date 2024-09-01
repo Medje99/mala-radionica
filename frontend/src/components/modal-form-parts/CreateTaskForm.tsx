@@ -1,4 +1,4 @@
-import { Form, Input, DatePicker, Switch, Space, message } from 'antd'
+import { Form, Input, DatePicker, Switch, Space, message, Typography } from 'antd'
 import { useEffect, useState } from 'react'
 import ActionButton from '../CustomButtons/ActionButton'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
@@ -67,17 +67,15 @@ const CreateTaskForm = () => {
       form={form}
       name="job-form"
       layout="vertical"
-      className="bg-white p-5 rounded-lg"
+      className="rounded-lg "
       initialValues={{
         creation_date: moment(),
         end_date: moment(),
       }}
     >
-      {/* Job Name */}
-      <Form.Item label="Odabrana musterija:">
-        <Input disabled={true} placeholder={customerContact?.fullName} />
-      </Form.Item>
+      <Typography className="font-bold text-xl mb-4 text-center">{'Posao za: ' + customerContact?.fullName}</Typography>
 
+      {/* Job Name */}
       <Form.Item label="Naslov posla:" name="job_name" rules={[{ required: true, message: 'Popuni naziv posla!' }]}>
         <Input />
       </Form.Item>

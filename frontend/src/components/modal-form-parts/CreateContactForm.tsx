@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Form, Input, Select, message } from 'antd' // Import message from antd
+import { Form, Input, Select, Typography, message } from 'antd' // Import message from antd
 import TextArea from 'antd/es/input/TextArea'
 import createTaskFormActions from '../create-task-form-component/actions'
 import { useEffect, useState } from 'react'
@@ -79,19 +79,10 @@ const CreateContactForm = () => {
   }
 
   return (
-    <Form
-      form={FormContactCreate}
-      name="musterija-form"
-      layout="vertical"
-      className="bg-white p-2 rounded-lg width-full"
-    >
+    <Form form={FormContactCreate} name="musterija-form" layout="vertical">
+      <Typography className="font-bold text-xl mb-4 text-center">Izaberi ili unesi novu musteriju</Typography>
       <Form.Item label="Musterija" required className="mb-10 mr-1 ml-10">
-        <Form.Item
-          name="firstName"
-          noStyle
-          rules={[{ required: true, message: 'Izaberi ili dodaj' }]}
-          className="mb-4 mr-10 ml-10 "
-        >
+        <Form.Item name="firstName" noStyle rules={[{ required: true, message: 'Izaberi ili dodaj' }]} className="">
           {newCustomer && selectedCustomer ? (
             <Input value={contactSerchCriteria} onChange={() => setContactSearchCriteria(contactSerchCriteria)} />
           ) : (

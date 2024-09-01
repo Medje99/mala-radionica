@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+.no-vertical-scroll {
+  overflow-y: hidden;
+  height: 90vh; /* Limit height to 100% of viewport height */
+}
+
 .ant-btn {
   color: rgb(255, 255, 255);
   background-color: #01a4f1;
@@ -21,15 +26,16 @@
 }
 
 .ant-form {
-  padding: 20px 0px 50px 0px;
-  background-color: #dcecffa1;
+  background-color: rgba(55, 140, 179, 0.164);
+  padding: 30px;
+  border-radius: 10px;
+  border-color: black;
+  border-style: solid;
+  border-width: 2px;
 }
 
 .ant-input-search {
-  padding: 10px;
-
-  padding-right: 0px;
-  padding-block: 16px;
+  padding: 1.2vh;
   background: rgb(55, 139, 179);
 }
 

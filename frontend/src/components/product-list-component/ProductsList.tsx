@@ -66,13 +66,10 @@ const ProductsList: React.FC = () => {
   ]
 
   return (
-    <div>
-      <Input.Search
-        placeholder="Pretraži proizvode"
-        onChange={(e) => setSearchTerm(e.target.value)}
-        style={{ marginBottom: 16 }}
-      />
-
+    <div className="flex flex-col">
+      <div className="flex w-11/12">
+        <Input.Search placeholder="Pretraži proizvode" onChange={(e) => setSearchTerm(e.target.value)} />
+      </div>
       <Table
         columns={columns}
         dataSource={filteredProducts}

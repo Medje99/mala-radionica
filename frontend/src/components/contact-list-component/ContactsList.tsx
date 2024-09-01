@@ -78,10 +78,10 @@ const ContactsList: React.FC = () => {
       key: 'phoneNumber',
     },
     {
-      title: 'Radnje',
+      title: <div className="text-center">Radnje</div>,
       key: 'action',
       render: (record: IContacts) => (
-        <Space size="large">
+        <Space size="large" className="flex justify-center gap-12">
           <Button type="primary" ghost onClick={() => handleEdit(record)}>
             Izmeni
           </Button>
@@ -102,10 +102,16 @@ const ContactsList: React.FC = () => {
   ]
 
   return (
-    <div>
+    <div className="flex flex-col">
       <Input.Search placeholder="Pretrazi kontakte" onChange={(e) => setSearchTerm(e.target.value)} />
 
-      <Table columns={columns} dataSource={filteredContacts} pagination={{ pageSize: 10 }} rowKey="id" />
+      <Table
+        columns={columns}
+        dataSource={filteredContacts}
+        pagination={{ pageSize: 10 }}
+        rowKey="id"
+        className=" w-full  mx-auto"
+      />
 
       <Modal title="Uredi kontakt" open={isModalOpen} onOk={handleSave} onCancel={() => setIsModalOpen(false)}>
         <Form form={FormContactList} layout="vertical">
