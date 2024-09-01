@@ -37,6 +37,7 @@
 .ant-input-search {
   padding: 1.2vh;
   background: rgb(55, 139, 179);
+  flex: auto;
 }
 
 .ant-input-search-button {

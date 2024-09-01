@@ -80,7 +80,7 @@ const CreateContactForm = () => {
 
   return (
     <Form form={FormContactCreate} name="musterija-form" layout="vertical">
-      <Typography className="font-bold text-xl mb-4 text-center">Izaberi ili unesi novu musteriju</Typography>
+      <Typography className="font-bold text-xl mb-5 text-center">Izaberi ili unesi novu musteriju</Typography>
       <Form.Item label="Musterija" required className="mb-10 mr-1 ml-10">
         <Form.Item name="firstName" noStyle rules={[{ required: true, message: 'Izaberi ili dodaj' }]} className="">
           {newCustomer && selectedCustomer ? (

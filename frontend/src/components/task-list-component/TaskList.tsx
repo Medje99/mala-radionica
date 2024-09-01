@@ -47,10 +47,10 @@ export const TasksList = () => {
     taskDescription,
     creation_date,
     {
-      title: 'Radnje',
+      title: <div className="text-center">Radnje</div>,
       key: 'action',
       render: (record: ITaskResponse) => (
-        <Space size="middle">
+        <Space size="middle" className="flex justify-center gap-2">
           <Button type="primary" ghost onClick={() => handleEdit(record, setEditingTask, FormTaskList, setIsModalOpen)}>
             Izmeni
           </Button>

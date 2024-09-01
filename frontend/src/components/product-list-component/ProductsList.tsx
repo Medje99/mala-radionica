@@ -6,6 +6,7 @@ import { proizvod, proizvodjac, model, cena, kolicina } from './constats'
 import ProductsAdvancedActions from './actions'
 import { Link } from 'react-router-dom'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
+import { PlusCircleOutlined } from '@ant-design/icons'
 
 const { handleEdit, handleDelete, handleSave } = ProductsAdvancedActions()
 
@@ -40,10 +41,10 @@ const ProductsList: React.FC = () => {
     cena,
     kolicina,
     {
-      title: 'Izmeni',
+      title: <div className="text-center">Radnje</div>,
       key: 'action',
       render: (record: IProducts) => (
-        <Space size="large">
+        <Space size="large" className="flex justify-center gap-12">
           <Button
             type="primary"
             ghost
@@ -66,8 +67,8 @@ const ProductsList: React.FC = () => {
   ]
 
   return (
-    <div className="flex flex-col">
-      <div className="flex w-11/12">
+    <div className="flex flex-col ">
+      <div className="flex w-full ">
         <Input.Search placeholder="Pretraži proizvode" onChange={(e) => setSearchTerm(e.target.value)} />
       </div>
       <Table
@@ -75,10 +76,11 @@ const ProductsList: React.FC = () => {
         dataSource={filteredProducts}
         pagination={{ pageSize: 7 }} // Adjust page size as needed
         rowKey="id" // Use 'id' as the row key
+        className="w-full ml-12"
       />
 
       <Modal
-        title="Edit Product"
+        title="Uredi proizvod"
         open={isModalOpen}
         onOk={() => handleSave(FormProductList, editingProduct, filteredProducts, setFilteredProducts, setIsModalOpen)}
         onCancel={() => setIsModalOpen(false)}

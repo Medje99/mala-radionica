@@ -9,6 +9,7 @@ import BillService from '@/service/BillService'
 import { IBillResponse } from '@/model/response/IBillResponse'
 import dayjs from 'dayjs'
 import moment from 'moment'
+import { taskName } from '../task-list-component/constants'
 
 const CreateTaskForm = () => {
   const {
@@ -81,6 +82,9 @@ const CreateTaskForm = () => {
         end_date: job.end_date ? dayjs(job.end_date) : dayjs(moment().toDate()),
       }}
     >
+      <Typography className="font-bold text-xl mb-4 text-center">
+        {'Naplata za: ' + customerContact?.fullName}
+      </Typography>
       {/* Labor Cost */}
       <Form.Item
         label="Cena usluge"
