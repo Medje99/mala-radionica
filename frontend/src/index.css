@@ -1,15 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-var color .ant-input-search {
-  padding: 16px;
-  padding-block: 16px;
-  background: rgb(55, 139, 179);
-}
 
-.header-title {
-  color: rgb(120, 187, 221);
-}
 .ant-btn {
   color: rgb(255, 255, 255);
   background-color: #01a4f1;
@@ -34,8 +26,9 @@ var color .ant-input-search {
 }
 
 .ant-input-search {
-  padding: 16px;
-  padding-right: 300px;
+  padding: 10px;
+
+  padding-right: 0px;
   padding-block: 16px;
   background: rgb(55, 139, 179);
 }
@@ -53,10 +46,15 @@ var color .ant-input-search {
 .ant-select-selector {
   /* Customize the appearance of the select dropdown */
   width: 200px; /* Adjust the width as needed */
-  border: 1px solid #e01414; /* Add a border */
-  border-radius: 4px; /* Round the corners */
   padding: 8px; /* Add some padding */
   font-size: 16px; /* Adjust font size */
-  color: #333; /* Set text color */
-  background-color: #d62929; /* Set background color */
+}
+
+.header-title {
+  color: rgb(120, 187, 221);
+  font-size: clamp(1rem, 2vw, 1rem);
+  padding-right: 50px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-all;
 }

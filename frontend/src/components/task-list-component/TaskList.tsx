@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
 import { Table, Input, Popconfirm, message, Modal, Form, Space, Button } from 'antd'
 import { customer_firstName, customer_lastName, taskName, taskDescription, creation_date } from './constants'
@@ -8,7 +8,7 @@ import CreateBillForm from '../modal-form-parts/CreateBillForm' // Import Create
 import { ICustomerContact, useGlobalContext } from '@/contexts/GlobalContextProvider'
 import { ModalBody } from '../create-task-form-component/ModalBody'
 
-export const TasksList: React.FC = () => {
+export const TasksList = () => {
   const { setCustomerContact, setJob, formTitleFormatted: modalTitle, setHeaderTitle } = useGlobalContext()
   const { UnfinishedOnes } = useGetUnfinishedTasks()
   const { handleEdit, handleDelete, handleSave } = TasksAdvancedActions()
@@ -16,7 +16,7 @@ export const TasksList: React.FC = () => {
   const [filteredTasks, setFilteredTasks] = useState<ITaskResponse[]>([])
   const [editingTask, setEditingTask] = useState<ITaskResponse>({} as ITaskResponse)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [isBillModalOpen, setIsBillModalOpen] = useState(false) // State for the bill modal
+  const [isBillModalOpen, setIsBillModalOpen] = useState(false) // State for the bill
 
   useEffect(() => {
     setHeaderTitle('Aktivni poslovi')
@@ -88,14 +88,7 @@ export const TasksList: React.FC = () => {
 
   return (
     <div>
-      <Input.Search
-        placeholder="Pretrazi poslove"
-        onChange={(e) => setSearchTerm(e.target.value)}
-        style={{ marginBottom: 20 }}
-      />
-
-      <Table columns={columns} dataSource={filteredTasks} pagination={{ pageSize: 100 }} rowKey="id" />
-
+      {/*edit FormTaskList*/}
       <Modal
         title={modalTitle}
         open={isModalOpen}
@@ -106,11 +99,7 @@ export const TasksList: React.FC = () => {
           <Form.Item label="Naziv posla" name="job_name" rules={[{ required: true, message: 'Unesi naziv posla' }]}>
             <Input />
           </Form.Item>
-          <Form.Item
-            label="Detalji posla"
-            name="job_description"
-            rules={[{ required: true, message: 'Unesi detalje posla ' }]}
-          >
+          <Form.Item label="Detalji posla" name="job_description">
             <Input.TextArea />
           </Form.Item>
         </Form>
@@ -126,8 +115,20 @@ export const TasksList: React.FC = () => {
         <CreateBillForm />
       </Modal>
 
+      <Input.Search
+        placeholder="Pretrazi poslove"
+        onChange={(e) => setSearchTerm(e.target.value)}
+        style={{ marginBottom: 20 }}
+      />
+      <Table
+        columns={columns}
+        dataSource={filteredTasks}
+        rowKey="id"
+        pagination={{ pageSizeOptions: ['3', '7', '10', '30'], size: 'small' }}
+      />
       {filteredTasks.length === 0 && <ModalBody />}
     </div>
   )
 }
+
 export default TasksList
