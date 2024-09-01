@@ -15,7 +15,7 @@ const CreateTaskForm = () => {
     setFormTitle: setFormTitle,
     setJob,
     setModalIsOpen,
-    formTitleFormatted: formTitle,
+    formTitle: formTitle,
   } = useGlobalContext()
 
   useEffect(() => {

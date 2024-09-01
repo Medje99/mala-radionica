@@ -17,7 +17,7 @@ const CreateTaskForm = () => {
     job,
     setFormTitle: setFormTitle,
     setModalIsOpen,
-    formTitleFormatted: formTitle,
+    formTitle: formTitle,
     setCurrentPage,
   } = useGlobalContext()
   const [FormBillCreate] = Form.useForm<IBillResponse>()
@@ -107,7 +107,7 @@ const CreateTaskForm = () => {
           format="MMM-DD HH:mm"
           name="end_date"
           defaultOpenValue={dayjs(FormBillCreate.getFieldValue('end_date'))}
-          defaultValue={job.end_date}
+          //defaultValue={job.end_date}
         />
       </Form.Item>
 

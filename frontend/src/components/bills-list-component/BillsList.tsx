@@ -7,6 +7,7 @@ import { IBillResponse } from '@/model/response/IBillResponse'
 import dayjs from 'dayjs'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import moment from 'moment'
+import ProductsComponent from '../modal-form-parts/test/ProductsComponent'
 
 const BillsList: React.FC = () => {
   const { setHeaderTitle } = useGlobalContext()
@@ -188,7 +189,6 @@ const BillsList: React.FC = () => {
                 format="MMM-DD HH:mm"
                 name="end_date"
                 defaultOpenValue={dayjs(FormBillList.getFieldValue('end_date'))}
-                defaultValue={dayjs(FormBillList.getFieldValue('end_date'))}
                 onChange={(date) => FormBillList.setFieldValue('end_date', date)}
               />
             </Space>
@@ -208,7 +208,7 @@ const BillsList: React.FC = () => {
             <Input disabled />
           </Form.Item>
           <Form.Item label="Uportrebljeni materijal" name="products_used" rules={[{ required: false }]}>
-            <Input.TextArea />
+            <ProductsComponent />
           </Form.Item>
         </Form>
       </Modal>

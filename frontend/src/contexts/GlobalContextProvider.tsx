@@ -6,7 +6,7 @@ interface ModalStateType {
   setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   currentPage: number
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>
-  formTitleFormatted: string | React.ReactElement
+  formTitle: string | React.ReactElement
   setFormTitle: React.Dispatch<React.SetStateAction<string>>
   customerContact: ICustomerContact | undefined
   setCustomerContact: React.Dispatch<React.SetStateAction<ICustomerContact | undefined>>
@@ -56,7 +56,7 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
         setModalIsOpen,
         currentPage,
         setCurrentPage,
-        formTitleFormatted: (
+        formTitle: (
           <Typography className="lg:leading-tighter text-4xl font-bold tracking-tighter align-center">
             {formTitle}
           </Typography>

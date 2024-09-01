@@ -7,14 +7,7 @@ import CreateBillForm from '../modal-form-parts/CreateBillForm'
 import { useEffect } from 'react'
 
 export const ModalBody = () => {
-  const {
-    modalIsOpen,
-    currentPage,
-    setModalIsOpen,
-    formTitleFormatted: formTitle,
-    setFormTitle: setFormTitle,
-    setCurrentPage,
-  } = useGlobalContext()
+  const { modalIsOpen, currentPage, setModalIsOpen, formTitle, setFormTitle, setCurrentPage } = useGlobalContext()
 
   //must be separate inside of useEffect because it needs to load when currentPage is loaded
   useEffect(() => {
