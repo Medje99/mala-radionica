@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
-import { Table, Input, Popconfirm, message, Modal, Form, Space, Button, Tooltip } from 'antd'
-import { customer_firstName, customer_lastName, taskName, taskDescription, creation_date } from './constants'
+import { Table, Input, Popconfirm, message, Modal, Form, Space, Button, Tooltip, Typography } from 'antd'
+import { customer_firstName, customer_lastName, taskName, creation_date } from './constants'
 import useGetUnfinishedTasks from '@/CustomHooks/useGetUnfinishedTasks'
 import TasksAdvancedActions from './actions'
 import CreateBillForm from '../modal-form-parts/CreateBillForm' // Import CreateBillForm
 import { ICustomerContact, useGlobalContext } from '@/contexts/GlobalContextProvider'
-import { ModalBody } from '../create-task-form-component/ModalBody'
 import { DeleteOutlined, EditOutlined, FileDoneOutlined } from '@ant-design/icons'
 
 export const TasksList = () => {
@@ -45,7 +44,6 @@ export const TasksList = () => {
     customer_firstName,
     customer_lastName,
     taskName,
-    taskDescription,
     creation_date,
     // actions
     {
@@ -102,7 +100,7 @@ export const TasksList = () => {
   ]
 
   return (
-    <div className=" flex flex-col w-full">
+    <div className=" flex flex-col ">
       {/*edit FormTaskList*/}
 
       <Modal
@@ -134,14 +132,27 @@ export const TasksList = () => {
       />
 
       <Table
+        style={{ width: '96%', margin: 'auto' }}
         virtual
-        scroll={{ y: 460, x: 'max-content' }}
+        scroll={{ y: '10vh' }}
+        pagination={{ hideOnSinglePage: true, pageSize: 20 }}
         className="pr-20 border-2 border-grey-500 shadow-2xl task"
         columns={columns}
+        expandable={{
+          expandedRowRender: (record) => (
+            <Typography key={record.job_name} className="text-center ">
+              {record.job_description}
+            </Typography>
+          ),
+
+          rowExpandable: (record) => !!record.job_description,
+
+          columnWidth: 50, // Adjust width as needed
+          expandIconColumnIndex: 2, // Index of the taskName column
+        }}
         dataSource={filteredTasks}
         rowKey="id"
       />
-      {filteredTasks.length === 0 && <ModalBody />}
     </div>
   )
 }
