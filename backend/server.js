@@ -23,6 +23,10 @@ app.use("/products", productsRoutes);
 const contactsRoutes = require("./routes/contacts");
 app.use("/contacts", contactsRoutes);
 
+//Contacts route
+const quantitySubtract = require("./routes/product-q-update");
+app.use("/quantitySubtract", quantitySubtract);
+
 //Bills route
 const billsRoutes = require("./routes/bills");
 app.use("/bills", billsRoutes);

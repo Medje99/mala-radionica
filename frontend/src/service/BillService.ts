@@ -29,13 +29,18 @@ const markAsPaid = async (id: number) => {
   return await axios.put(`${baseUrl}/bills/${id}`)
 }
 
+const productQUpdate = async (data: any) => {
+  return await axios.post<any>(baseUrl + '/quantitySubtract', data)
+}
+
 const BillService = {
   markAsPaid,
   createBill,
   getAllBills,
-  getBillById, // Added getBillById method
+  getBillById,
   updateBill,
   deleteBill,
+  productQUpdate,
 }
 
 export default BillService

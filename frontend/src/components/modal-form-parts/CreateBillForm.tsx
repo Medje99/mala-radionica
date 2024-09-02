@@ -34,6 +34,7 @@ const CreateBillForm = () => {
   const submitLogic = () => {
     FormBillCreate.validateFields()
       .then(async (values) => {
+        console.log('Values after validation: ' + values.products_used)
         const updatedProductsUsed = values.products_used?.map((item) => {
           const productName = allProducts.find((p) => p.id === item.product)?.name
           return {
@@ -53,6 +54,7 @@ const CreateBillForm = () => {
         }
 
         BillService.createBill(updatedValues)
+        BillService.productQUpdate(values.products_used)
         message.success('Racun uspesno kreiran !') // Show error message
         setModalIsOpen(false)
         setCurrentPage(0)
