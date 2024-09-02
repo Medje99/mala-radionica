@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Key } from 'react'
-import { Table, Input, Popconfirm, message, Modal, Form, Space, Button, DatePicker, Tooltip } from 'antd'
+import { Table, Input, Popconfirm, message, Modal, Form, Space, Button, DatePicker, Tooltip, Typography } from 'antd'
 import { Link } from 'react-router-dom'
 import BillService from '@/service/BillService'
 import useGetAllBills from '@/CustomHooks/useGetAllBills'
@@ -80,11 +80,11 @@ const BillsList: React.FC = () => {
       dataIndex: 'job_name',
       key: 'job_name',
     },
-    {
-      title: 'Opis posla',
-      dataIndex: 'job_description',
-      key: 'job_description',
-    },
+    // {
+    //   title: 'Opis posla',
+    //   dataIndex: 'job_description',
+    //   key: 'job_description',
+    // },
     {
       title: 'Datum zavrsetka',
       dataIndex: 'end_date',
@@ -179,7 +179,24 @@ const BillsList: React.FC = () => {
     <div>
       <Input.Search placeholder="Pretrazi racune" onChange={(e) => setSearchTerm(e.target.value)} />
 
-      <Table columns={columns} dataSource={filteredBills} pagination={{ pageSize: 15 }} rowKey="bill_id" />
+      <Table
+        columns={columns}
+        dataSource={filteredBills}
+        pagination={{ pageSize: 15 }}
+        rowKey="job_name"
+        expandable={{
+          expandedRowRender: (record) => (
+            <Typography key={record.job_name} className="text-center py-4 text-lg ">
+              Detalji posla: {record.job_description}
+            </Typography>
+          ),
+
+          rowExpandable: (record) => !!record.job_description,
+
+          columnWidth: 50, // Adjust width as needed
+          expandIconColumnIndex: 2, // Index of the taskName column
+        }}
+      />
 
       <Modal title="Izmeni racun" open={isModalOpen} onOk={handleSave} onCancel={() => setIsModalOpen(false)}>
         <Form

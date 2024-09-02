@@ -1,4 +1,5 @@
 export interface IBillResponse {
+  job_description: string
   firstName: string | null
   bill_id: number
   id: number // The unique identifier for the bill
