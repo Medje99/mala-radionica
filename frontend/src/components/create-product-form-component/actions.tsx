@@ -1,7 +1,14 @@
 import { IProducts } from '@/model/response/IProductResponse'
 import ProductsService from '@/service/ProductsService'
 import { message } from 'antd'
+
 import { FormInstance } from 'antd/es/form/hooks/useForm'
+import { AxiosError } from 'axios'
+
+interface ErrorResponse {
+  error?: string // Or whatever property your backend uses for error messages
+  // ... other properties of your error response ...
+}
 
 const onHandleSubmit = (form: FormInstance<IProducts>) => {
   form
@@ -14,23 +21,24 @@ const onHandleSubmit = (form: FormInstance<IProducts>) => {
         .then((createdProduct) => {
           console.log('Product created:', createdProduct)
           message.success('Proizvod uspesno kreiran!')
-          // Additional success handling, e.g., reset form, show success message
+          form.resetFields()
         })
-        .catch((error) => {
-          console.error('Error creating product= :', error.response.data.error)
-          if (error.sqlMessage && error.response.data.includes('Duplicate entry')) {
-            message.error('SKU je zauzet.' + error.response.data.error)
-          } else {
-            message.error('implement this is false ' + error.data)
+        .catch((error: AxiosError<ErrorResponse>) => {
+          console.error('Error creating product:', error)
+
+          if (error.response && error.response.data && error.response.data.error) {
+            if (error.response.data.error.includes('Duplicate entry')) {
+              message.error('SKU je zauzet.')
+              return
+            }
           }
 
-          // Additional error handling, e.g., show error message
+          message.error('Problem sa dodavanjem proizvoda,kontaktirajte administratora.')
         })
     })
-
     .catch((errorInfo: any) => {
       console.error('Validation failed:', errorInfo)
-      // Provide user feedback on validation failure
     })
 }
+
 export { onHandleSubmit }

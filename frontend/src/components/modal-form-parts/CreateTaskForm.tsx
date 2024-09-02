@@ -6,6 +6,7 @@ import TaskService from '@/service/TaskService'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
 import moment from 'moment'
 import dayjs from 'dayjs'
+import { VerticalRightOutlined } from '@ant-design/icons'
 
 const CreateTaskForm = () => {
   const {
@@ -15,7 +16,6 @@ const CreateTaskForm = () => {
     setFormTitle: setFormTitle,
     setJob,
     setModalIsOpen,
-    formTitle: formTitle,
   } = useGlobalContext()
 
   useEffect(() => {
@@ -67,7 +67,7 @@ const CreateTaskForm = () => {
       form={form}
       name="job-form"
       layout="vertical"
-      className="rounded-lg "
+      className="rounded-lg"
       initialValues={{
         creation_date: moment(),
         end_date: moment(),
@@ -118,7 +118,7 @@ const CreateTaskForm = () => {
         )}
       </div>
       <div className="flex flex-row justify-between mt-5">
-        <ActionButton onClickHandler={() => setCurrentPage(currentPage - 1)} title="Nazad" />
+        <VerticalRightOutlined className="ml-10" onClick={() => setCurrentPage(currentPage - 1)} title="Nazad" />
         <ActionButton
           onClickHandler={onClickHandler}
           title={isFinished ? 'Naplata' : 'Dodaj na listu poslova'}

@@ -11,7 +11,9 @@ const createProductEntry = async (data: IProducts) => {
 }
 
 const updateProduct = async (data: IProducts) => {
-  return await axios.put<IProducts[]>(baseUrl + '/Products/' + data.id, data)
+  return await axios.put<IProducts[]>(baseUrl + '/Products/' + data.id, data).catch((error) => {
+    throw axios.isAxiosError(error) ? error.response?.data : error
+  })
 }
 
 const deleteProduct = async (id: number) => {

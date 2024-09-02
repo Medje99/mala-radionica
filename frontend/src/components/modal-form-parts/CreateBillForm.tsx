@@ -9,9 +9,10 @@ import BillService from '@/service/BillService'
 import { IBillResponse } from '@/model/response/IBillResponse'
 import dayjs from 'dayjs'
 import moment from 'moment'
+import { VerticalRightOutlined } from '@ant-design/icons'
 
 const CreateBillForm = () => {
-  const { customerContact, job, setFormTitle, setModalIsOpen, setCurrentPage } = useGlobalContext()
+  const { customerContact, job, setFormTitle, setModalIsOpen, setCurrentPage, currentPage } = useGlobalContext()
   const [FormBillCreate] = Form.useForm<IBillResponse>()
   const [isPaid, setIsPaid] = useState(false)
   const [animating, setAnimating] = useState(false)
@@ -67,7 +68,7 @@ const CreateBillForm = () => {
       form={FormBillCreate}
       name="task-form"
       layout="vertical"
-      className="bg-white p-5 rounded-lg"
+      className="pt-10  px-8  h-[80vh] " // Added shadow and spacing
       onFinish={submitLogic}
       initialValues={{
         paid: false,
@@ -78,38 +79,55 @@ const CreateBillForm = () => {
       <Typography className="font-bold text-xl mb-4 text-center">
         {'Naplata za: ' + customerContact?.fullName}
       </Typography>
-      {/* Labor Cost */}
-      <Form.Item
-        label="Cena usluge"
-        name="labor_cost"
-        rules={[{ required: true, message: 'Cena usluge je obavezna!' }]}
-      >
-        <InputNumber suffix="RSD" style={{ width: '100%' }} min={0} step={1} />
+
+      <div className="flex justify-between">
+        <Form.Item
+          className="w-3/5 flex flex-row justify-between"
+          label="Cena usluge"
+          name="labor_cost"
+          rules={[{ required: true, message: 'Cena usluge je obavezna!' }]}
+        >
+          <InputNumber
+            suffix="RSD"
+            style={{ width: '100%' }} // InputNumber now takes full width
+            min={0}
+            step={1}
+            className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </Form.Item>
+
+        <Form.Item
+          className="w-1/4 pt-5 flex flex-row justify-between cursor-pointer  "
+          label={isPaid ? 'Izmireno' : 'Neizmireno'}
+          name="paid"
+          valuePropName="checked"
+        >
+          <Switch checked={isPaid} onChange={() => setIsPaid(!isPaid)} />
+        </Form.Item>
+      </div>
+
+      <Form.Item label="Upotrebljeni delovi:" name="products_used" className="">
+        <ProductsComponent />
       </Form.Item>
 
-      {/* Paid */}
-
-      <Form.Item label={isPaid ? 'Izmireno' : 'Neizmireno'} name="paid" valuePropName="checked">
-        <Switch checked={isPaid} onChange={() => setIsPaid(!isPaid)} />
-      </Form.Item>
-      <Typography>Iskoristeni proizvodi:</Typography>
-      <ProductsComponent />
-      <Form.Item label="Datum placanja:" name="end_date">
+      <Form.Item label="Datum placanja:" name="end_date" className="mb-4">
         <DatePicker
           showTime={{ minuteStep: 15 }}
           format="MMM-DD HH:mm"
           name="end_date"
-          //defaultOpenValue={dayjs(FormBillCreate.getFieldValue('end_date'))}
+          className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
         />
       </Form.Item>
 
-      <div className="flex flex-row justify-between mt-5">
+      <div className="flex">
+        <VerticalRightOutlined className="ml-10 hover cursor-pointer" onClick={() => setCurrentPage(currentPage - 1)} />
         <ActionButton
           onClickHandler={submitLogic}
           title={isPaid ? 'Naplata' : 'Dodaj na listu dugova'}
-          className={`transition-all duration-500 transform ${
+          style={{ marginBlock: '10px' }}
+          className={`transition-all duration-500 transform  ${
             animating ? 'opacity-0 rotate-45' : 'opacity-100 rotate-0'
-          }`}
+          }  rounded-md bg-blue-500 hover:bg-blue-600 `}
         />
       </div>
     </Form>

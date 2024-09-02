@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Form, Input, Select, Typography, message } from 'antd' // Import message from antd
-import TextArea from 'antd/es/input/TextArea'
 import createTaskFormActions from '../create-task-form-component/actions'
 import { useEffect, useState } from 'react'
 import useGetAllContacts from '@/CustomHooks/useGetAllContants'
@@ -81,7 +80,7 @@ const CreateContactForm = () => {
   return (
     <Form form={FormContactCreate} name="musterija-form" layout="vertical">
       <Typography className="font-bold text-xl mb-5 text-center">Izaberi ili unesi novu musteriju</Typography>
-      <Form.Item label="Musterija" required className="mb-10 mr-1 ml-10">
+      <Form.Item label="Musterija" required>
         <Form.Item name="firstName" noStyle rules={[{ required: true, message: 'Izaberi ili dodaj' }]} className="">
           {newCustomer && selectedCustomer ? (
             <Input value={contactSerchCriteria} onChange={() => setContactSearchCriteria(contactSerchCriteria)} />
@@ -95,7 +94,6 @@ const CreateContactForm = () => {
               onSearch={setContactSearchCriteria}
               filterOption={false}
               allowClear
-              className="pr-9 "
               onKeyDown={(event: any) => {
                 FormContactCreate.setFieldValue('firstName', event.target.value)
               }}
@@ -117,30 +115,19 @@ const CreateContactForm = () => {
           { required: false, message: 'Unesite broj telefona' },
           { pattern: /^\d+$/, message: 'Samo brojevi!' },
         ]}
-        className="mb-4 mr-10 ml-10"
       >
         <Input disabled={!newCustomer} />
       </Form.Item>
 
-      <Form.Item
-        label="Mesto"
-        name="city"
-        rules={[{ required: false, message: 'Unesite mesto' }]}
-        className="mb-4 mr-10 ml-10"
-      >
+      <Form.Item label="Mesto" name="city" rules={[{ required: false, message: 'Unesite mesto' }]}>
         <Input disabled={!newCustomer} />
       </Form.Item>
-      <Form.Item
-        label="Adresa"
-        name="address"
-        rules={[{ required: false, message: 'Unesite adresu' }]}
-        className="mb-4 mr-10 ml-10"
-      >
+      <Form.Item label="Adresa" name="address" rules={[{ required: false, message: 'Unesite adresu' }]}>
         <Input disabled={!newCustomer} />
       </Form.Item>
-      <Form.Item label="Ostalo" name="other" className="mb-4 mr-10 ml-10">
+      {/* <Form.Item label="Ostalo" name="other" className="mb-4 mr-10 ml-10">
         <TextArea disabled={!newCustomer} />
-      </Form.Item>
+      </Form.Item> */}
       <div className="flex flex-row justify-between mt-5">
         <ActionButton onClickHandler={onClickHandler} title={!newCustomer ? 'Nastavi' : 'Dodaj i nastavi'} />
       </div>

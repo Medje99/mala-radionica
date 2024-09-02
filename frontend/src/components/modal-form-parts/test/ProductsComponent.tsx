@@ -42,7 +42,6 @@ const ProductsComponent = () => {
                 const optionText = option?.children as unknown as string
                 return optionText.toLowerCase().includes(input.toLowerCase())
               }}
-              style={{ width: 'calc(100% - 32px)' }}
               onChange={(value) => {
                 handleProductChange(index, value)
               }}
@@ -76,15 +75,7 @@ const ProductsComponent = () => {
               },
             ]}
           >
-            <Input
-              name="quantity"
-              allowClear
-              placeholder="Kolicina"
-              type="number"
-              min="1"
-              style={{ width: 'calc(100% - 32px)' }}
-              max={row.inventoryQ}
-            />
+            <Input name="quantity" allowClear placeholder="Kolicina" type="number" min="1" max={row.inventoryQ} />
           </Form.Item>
         </Col>
       </Row>

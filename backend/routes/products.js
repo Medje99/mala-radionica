@@ -71,7 +71,7 @@ router.post("/", (req, res) => {
 
 router.put("/:id", (req, res) => {
   const productId = req.params.id;
-  const { name, manufacturer, model, price, quantity } = req.body;
+  const { name, manufacturer, model, price, quantity, SKU } = req.body;
 
   if (
     !name ||
@@ -82,15 +82,16 @@ router.put("/:id", (req, res) => {
     return res.status(400).send("All fields must be provided.");
   }
 
+  // Update product based on id
   const query = `
     UPDATE product 
-    SET name = ?, manufacturer = ?, model = ?, price = ?, quantity = ?
-    WHERE id = ?,SKU = ?
+    SET name = ?, manufacturer = ?, model = ?, price = ?, quantity = ?, SKU = ?
+    WHERE id = ?
   `;
 
   db.query(
     query,
-    [name, manufacturer, model, price, quantity, productId],
+    [name, manufacturer, model, price, quantity, SKU, productId],
     (err, results) => {
       if (err) {
         console.error("Error updating product:", err);

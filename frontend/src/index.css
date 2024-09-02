@@ -27,17 +27,23 @@
 
 .ant-form {
   background-color: rgba(55, 140, 179, 0.164);
-  padding: 30px;
+  padding-block: 20px;
+  padding-inline: 4vw;
   border-radius: 10px;
-  border-color: black;
+  border-color: rgb(139, 66, 66);
   border-style: solid;
   border-width: 2px;
+  max-height: 89vh;
+  overflow-y: auto;
 }
 
 .ant-input-search {
-  padding: 1.2vh;
+  padding: 1vh;
   background: rgb(55, 139, 179);
   flex: auto;
+  border-color: rgb(139, 66, 66);
+  border-radius: 10px;
+  border-style: solid;
 }
 
 .ant-input-search-button {
@@ -46,22 +52,18 @@
 
 .modal-title {
   margin-top: 5px;
-  margin-bottom: 25px;
+  margin-bottom: 250px;
   background-color: rgb(255, 255, 255);
-}
-
-.ant-select-selector {
-  /* Customize the appearance of the select dropdown */
-  width: 200px; /* Adjust the width as needed */
-  padding: 8px; /* Add some padding */
-  font-size: 16px; /* Adjust font size */
 }
 
 .header-title {
   color: rgb(120, 187, 221);
   font-size: clamp(1rem, 2vw, 1rem);
   padding-right: 50px;
-  text-overflow: ellipsis;
   white-space: nowrap;
   word-break: break-all;
+}
+
+.action-button {
+  background-color: #004483;
 }

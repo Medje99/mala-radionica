@@ -9,7 +9,7 @@ import { ICustomerContact, useGlobalContext } from '@/contexts/GlobalContextProv
 import { DeleteOutlined, EditOutlined, FileDoneOutlined } from '@ant-design/icons'
 
 export const TasksList = () => {
-  const { setCustomerContact, setJob, formTitle: modalTitle, setHeaderTitle } = useGlobalContext()
+  const { setCustomerContact, setJob, setHeaderTitle } = useGlobalContext()
   const { UnfinishedOnes } = useGetUnfinishedTasks()
   const { handleEdit, handleDelete, handleSave } = TasksAdvancedActions()
   const [searchTerm, setSearchTerm] = useState('')
@@ -104,7 +104,6 @@ export const TasksList = () => {
       {/*edit FormTaskList*/}
 
       <Modal
-        title={modalTitle}
         open={isEditModalOpen}
         onOk={() => handleSave(FormTaskList, editingTask, filteredTasks, setFilteredTasks, setEditModalOpen)}
         onCancel={() => setEditModalOpen(false)}
@@ -120,7 +119,7 @@ export const TasksList = () => {
       </Modal>
 
       {/* Bill Modal */}
-      <Modal title={modalTitle} open={isBillModalOpen} onCancel={() => setIsBillModalOpen(false)}>
+      <Modal open={isBillModalOpen} onCancel={() => setIsBillModalOpen(false)}>
         <CreateBillForm />
       </Modal>
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Key } from 'react'
-import { Table, Input, Popconfirm, message, Modal, Form, Space, Button, DatePicker } from 'antd'
+import { Table, Input, Popconfirm, message, Modal, Form, Space, Button, DatePicker, Tooltip } from 'antd'
 import { Link } from 'react-router-dom'
 import BillService from '@/service/BillService'
 import useGetAllBills from '@/CustomHooks/useGetAllBills'
@@ -8,6 +8,7 @@ import dayjs from 'dayjs'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import moment from 'moment'
 import ProductsComponent from '../modal-form-parts/test/ProductsComponent'
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
 const BillsList: React.FC = () => {
   const { setHeaderTitle } = useGlobalContext()
@@ -119,7 +120,9 @@ const BillsList: React.FC = () => {
       render: (paid: number, record: IBillResponse) => {
         // Pass 'record' as an argument
         return paid ? (
-          <Button type="primary">Placeno</Button>
+          <Button type="primary" style={{ backgroundColor: 'green', borderColor: 'green' }}>
+            Placeno
+          </Button>
         ) : (
           <div className="flex items-center">
             <Popconfirm
@@ -150,18 +153,22 @@ const BillsList: React.FC = () => {
       key: 'action',
       render: (record: IBillResponse) => (
         <Space size="large">
-          <Button type="primary" ghost onClick={() => handleEdit(record)} key={record.bill_id}>
-            Izmeni
-          </Button>
+          <Tooltip title="Izmeni">
+            <Button type="primary" ghost onClick={() => handleEdit(record)} key={record.bill_id}>
+              <EditOutlined />
+            </Button>
+          </Tooltip>
           <Popconfirm
             title="Jeste li sigurni da zelite izbrisati ovaj racun?!"
             onConfirm={() => handleDelete(record.bill_id)} // Use bill_id here
             onCancel={() => message.error('Racun izbrisan!')}
             key={record.bill_id + 'delete'} // Add a unique key for the Popconfirm
           >
-            <Button danger ghost>
-              Izbrisi
-            </Button>
+            <Tooltip title="Obrisi">
+              <Button danger ghost>
+                <DeleteOutlined />
+              </Button>
+            </Tooltip>
           </Popconfirm>
         </Space>
       ),

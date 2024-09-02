@@ -24,12 +24,19 @@ export const cena = {
   dataIndex: 'price',
   key: 'price',
   editable: true,
-  render: (price: number) => `$${price.toFixed(2)}`,
+  render: (price: number) => `${price} RSD`,
 }
 
 export const kolicina = {
   title: 'Kolicina',
   dataIndex: 'quantity',
   key: 'quantity',
+  editable: true,
+}
+
+export const SKU = {
+  title: 'SKU',
+  dataIndex: 'SKU',
+  key: 'SKU',
   editable: true,
 }

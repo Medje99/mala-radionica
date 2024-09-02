@@ -1,4 +1,12 @@
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
+import {
+  ContactsOutlined,
+  DatabaseOutlined,
+  FileAddOutlined,
+  HomeOutlined,
+  ProductOutlined,
+  ToolOutlined,
+} from '@ant-design/icons'
 import { Typography } from 'antd'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
@@ -18,23 +26,23 @@ const Header = () => {
       <div className="flex items-center gap-20 ml-auto main-nav">
         {location.pathname !== '/' && (
           <Link to="/" className="text-l font-medium hover:underline underline-offset-8 nav-link">
-            Pocetna
+            <HomeOutlined />
           </Link>
         )}
         <Link to="/ProductCreate" className="text-l font-medium hover:underline underline-offset-8 nav-link">
-          Novi proizvod
+          <FileAddOutlined />
         </Link>
         <Link to="/ProductList" className="text-l font-medium hover:underline underline-offset-8 nav-link">
-          Lista proizvoda
+          <ProductOutlined />
         </Link>
         <Link to="/ContactsList" className="text-l font-medium hover:underline underline-offset-8 nav-link">
-          Lista Musterija
+          <ContactsOutlined />
         </Link>
         <Link to="/Tasks" className="text-l font-medium hover:underline underline-offset-8 nav-link">
-          Aktivni Poslovi
+          <ToolOutlined />
         </Link>
         <Link to="/Bills" className="text-l font-medium hover:underline underline-offset-8 nav-link">
-          Arhiva zavrsenih poslova
+          <DatabaseOutlined />
         </Link>
       </div>
       <nav className="ml-auto flex items-left gap-4 l:gap-10 external-links">

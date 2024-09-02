@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { Table, Typography, Input, Popconfirm, message, Modal, Form, Space, Button } from 'antd'
+import { Table, Typography, Input, Popconfirm, message, Modal, Form, Space, Button, Tooltip } from 'antd'
 import { Link } from 'react-router-dom'
 import { IContacts } from '@/model/response/IContactResponse'
 import useGetAllContacts from '@/CustomHooks/useGetAllContants'
 import ContactService from '@/service/ContactsService'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
 const ContactsList: React.FC = () => {
   const { setHeaderTitle } = useGlobalContext()
@@ -82,9 +83,11 @@ const ContactsList: React.FC = () => {
       key: 'action',
       render: (record: IContacts) => (
         <Space size="large" className="flex justify-center gap-12">
-          <Button type="primary" ghost onClick={() => handleEdit(record)}>
-            Izmeni
-          </Button>
+          <Tooltip title="Izmeni">
+            <Button type="primary" ghost onClick={() => handleEdit(record)}>
+              <EditOutlined />
+            </Button>
+          </Tooltip>
           <Popconfirm
             title="Da li ste sigurni da zelite izbrisati ovaj kontakt?"
             onConfirm={() => handleDelete(record.id)}
@@ -92,9 +95,11 @@ const ContactsList: React.FC = () => {
             okText="Da"
             cancelText="Ne"
           >
-            <Button danger ghost>
-              Obrisi
-            </Button>
+            <Tooltip title="Obrisi">
+              <Button danger ghost>
+                <DeleteOutlined />
+              </Button>
+            </Tooltip>
           </Popconfirm>
         </Space>
       ),
