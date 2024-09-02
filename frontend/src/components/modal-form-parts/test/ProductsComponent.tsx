@@ -11,7 +11,7 @@ const ProductsComponent = () => {
 
   const handleProductChange = (rowIndex: number, productId: number) => {
     const selectedProduct = allProducts.find((product) => product.id === productId)
-    const maxQuantity = selectedProduct ? selectedProduct.quantity : 10
+    const maxQuantity = selectedProduct ? selectedProduct.quantity : 0
 
     const name = selectedProduct?.name ?? ''
 
@@ -29,13 +29,13 @@ const ProductsComponent = () => {
             rules={[
               {
                 required: true,
-                message: 'Please select a product!',
+                message: 'Izaberi proizvod!',
               },
             ]}
           >
             <Select
               showSearch
-              placeholder="Select a product"
+              placeholder="proizvod"
               allowClear
               optionFilterProp="children"
               filterOption={(input, option) => {
@@ -62,14 +62,14 @@ const ProductsComponent = () => {
             rules={[
               {
                 required: true,
-                message: 'Please enter the quantity!',
+                message: 'Molimo unesite kolicinu!',
               },
               {
                 validator: (_, value) => {
                   if (value > row.inventoryQ) {
-                    return Promise.reject(new Error(`Items left in inventory: ${row.inventoryQ}!`))
+                    return Promise.reject(new Error(`Preostali proizvodi: ${row.inventoryQ}!`))
                   } else if (value < 1) {
-                    return Promise.reject(new Error('Select at least one item!'))
+                    return Promise.reject(new Error('Izaberi min. 1 proizvod!'))
                   }
                   return Promise.resolve()
                 },
@@ -79,7 +79,7 @@ const ProductsComponent = () => {
             <Input
               name="quantity"
               allowClear
-              placeholder="Enter quantity"
+              placeholder="Kolicina"
               type="number"
               min="1"
               style={{ width: 'calc(100% - 32px)' }}

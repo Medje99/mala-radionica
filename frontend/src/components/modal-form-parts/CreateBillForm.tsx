@@ -9,10 +9,8 @@ import BillService from '@/service/BillService'
 import { IBillResponse } from '@/model/response/IBillResponse'
 import dayjs from 'dayjs'
 import moment from 'moment'
-import ProductsService from '@/service/ProductsService'
-import { IProducts } from '@/model/response/IProductResponse'
 
-const CreateTaskForm = () => {
+const CreateBillForm = () => {
   const { customerContact, job, setFormTitle, setModalIsOpen, setCurrentPage } = useGlobalContext()
   const [FormBillCreate] = Form.useForm<IBillResponse>()
   const [isPaid, setIsPaid] = useState(false)
@@ -35,16 +33,6 @@ const CreateTaskForm = () => {
   const submitLogic = () => {
     FormBillCreate.validateFields()
       .then(async (values) => {
-        // // Update product quantities
-        // for (const productUsed of values.products_used) {
-        //   const productToUpdate = allProducts.find((p) => p.id === productUsed.product)
-        //   if (productToUpdate) {
-        //     const updatedQuantity = productToUpdate.quantity - productUsed.quantity
-        //     await ProductsService.updateMultipleProducts({ ...productToUpdate, quantity: updatedQuantity })
-        //   }
-        // }
-
-        //addding back name property to item because cant from ProductComponent
         const updatedProductsUsed = values.products_used?.map((item) => {
           const productName = allProducts.find((p) => p.id === item.product)?.name
           return {
@@ -128,4 +116,4 @@ const CreateTaskForm = () => {
   )
 }
 
-export default CreateTaskForm
+export default CreateBillForm

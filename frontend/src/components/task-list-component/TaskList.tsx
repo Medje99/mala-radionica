@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
-import { Table, Input, Popconfirm, message, Modal, Form, Space, Button } from 'antd'
+import { Table, Input, Popconfirm, message, Modal, Form, Space, Button, Tooltip } from 'antd'
 import { customer_firstName, customer_lastName, taskName, taskDescription, creation_date } from './constants'
 import useGetUnfinishedTasks from '@/CustomHooks/useGetUnfinishedTasks'
 import TasksAdvancedActions from './actions'
 import CreateBillForm from '../modal-form-parts/CreateBillForm' // Import CreateBillForm
 import { ICustomerContact, useGlobalContext } from '@/contexts/GlobalContextProvider'
 import { ModalBody } from '../create-task-form-component/ModalBody'
+import { DeleteOutlined, EditOutlined, FileDoneOutlined } from '@ant-design/icons'
 
 export const TasksList = () => {
   const { setCustomerContact, setJob, formTitle: modalTitle, setHeaderTitle } = useGlobalContext()
@@ -15,7 +16,7 @@ export const TasksList = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredTasks, setFilteredTasks] = useState<ITaskResponse[]>([])
   const [editingTask, setEditingTask] = useState<ITaskResponse>({} as ITaskResponse)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isEditModalOpen, setEditModalOpen] = useState(false)
   const [isBillModalOpen, setIsBillModalOpen] = useState(false) // State for the bill
 
   useEffect(() => {
@@ -46,14 +47,24 @@ export const TasksList = () => {
     taskName,
     taskDescription,
     creation_date,
+    // actions
     {
-      title: <div className="text-center">Radnje</div>,
+      title: <div className="text-center flex justify-center">Radnje</div>,
       key: 'action',
+      width: 200,
+
       render: (record: ITaskResponse) => (
-        <Space size="middle" className="flex justify-center gap-2">
-          <Button type="primary" ghost onClick={() => handleEdit(record, setEditingTask, FormTaskList, setIsModalOpen)}>
-            Izmeni
-          </Button>
+        <Space className="gap-2 flex justify-center items-center">
+          <Tooltip title="Izmeni">
+            <Button
+              type="primary"
+              ghost
+              onClick={() => handleEdit(record, setEditingTask, FormTaskList, setEditModalOpen)}
+            >
+              <EditOutlined />
+            </Button>
+          </Tooltip>
+
           <Popconfirm
             title="Da li ste sigurni da zelite izbrisati ovaj posao?"
             onConfirm={() => handleDelete(record.id, filteredTasks, setFilteredTasks)}
@@ -61,26 +72,30 @@ export const TasksList = () => {
             okText="Da"
             cancelText="Joj ne!"
           >
-            <Button danger ghost>
-              Izbrisi
-            </Button>
+            <Tooltip title="Obrisi">
+              <Button danger ghost>
+                <DeleteOutlined />
+              </Button>
+            </Tooltip>
           </Popconfirm>
-          <Button
-            type="primary"
-            ghost
-            onClick={() => {
-              setCustomerContact({
-                id: record.contact_id,
-                fullName: `${record.firstName} ${record.lastName}`,
-              } as ICustomerContact)
-              setJob({
-                task_id: record.id,
-              })
-              setIsBillModalOpen(true)
-            }}
-          >
-            Naplata
-          </Button>
+          <Tooltip title="Naplata">
+            <Button
+              type="primary"
+              ghost
+              onClick={() => {
+                setCustomerContact({
+                  id: record.contact_id,
+                  fullName: `${record.firstName} ${record.lastName}`,
+                } as ICustomerContact)
+                setJob({
+                  task_id: record.id,
+                })
+                setIsBillModalOpen(true)
+              }}
+            >
+              <FileDoneOutlined />
+            </Button>
+          </Tooltip>
         </Space>
       ),
     },
@@ -89,11 +104,12 @@ export const TasksList = () => {
   return (
     <div className=" flex flex-col w-full">
       {/*edit FormTaskList*/}
+
       <Modal
         title={modalTitle}
-        open={isModalOpen}
-        onOk={() => handleSave(FormTaskList, editingTask, filteredTasks, setFilteredTasks, setIsModalOpen)}
-        onCancel={() => setIsModalOpen(false)}
+        open={isEditModalOpen}
+        onOk={() => handleSave(FormTaskList, editingTask, filteredTasks, setFilteredTasks, setEditModalOpen)}
+        onCancel={() => setEditModalOpen(false)}
       >
         <Form form={FormTaskList} layout="vertical">
           <Form.Item label="Naziv posla" name="job_name" rules={[{ required: true, message: 'Unesi naziv posla' }]}>
@@ -106,25 +122,10 @@ export const TasksList = () => {
       </Modal>
 
       {/* Bill Modal */}
-      <Modal
-        title={modalTitle}
-        open={isBillModalOpen}
-        onCancel={() => setIsBillModalOpen(false)}
-        footer={null} // Remove default footer
-      >
+      <Modal title={modalTitle} open={isBillModalOpen} onCancel={() => setIsBillModalOpen(false)}>
         <CreateBillForm />
       </Modal>
 
-      {/* <div className="flex flex-row w-full">
-        <div className="flex flex-col w-11/12">
-          <Input.Search placeholder="Pretrazi poslove" onChange={(e) => setSearchTerm(e.target.value)} />
-        </div>
-        <div className="flex flex-col w-1/12 mt-4">
-          <Button type="primary" onClick={() => setIsModalOpen(true)}>
-            Dodaj posao
-          </Button>
-        </div>
-      </div> */}
       <Input.Search
         className="mx-auto w-90"
         size="large"
@@ -133,11 +134,12 @@ export const TasksList = () => {
       />
 
       <Table
-        className="mx-12 mt-2 border-2 border-grey-500 shadow-2xl task"
+        virtual
+        scroll={{ y: 460, x: 'max-content' }}
+        className="pr-20 border-2 border-grey-500 shadow-2xl task"
         columns={columns}
         dataSource={filteredTasks}
         rowKey="id"
-        pagination={{ pageSize: 7, position: ['bottomCenter'] }}
       />
       {filteredTasks.length === 0 && <ModalBody />}
     </div>
