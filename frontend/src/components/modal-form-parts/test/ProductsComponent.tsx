@@ -77,9 +77,11 @@ const ProductsComponent = () => {
             ]}
           >
             <Input
+              name="quantity"
               allowClear
               placeholder="Enter quantity"
               type="number"
+              min="1"
               style={{ width: 'calc(100% - 32px)' }}
               max={row.inventoryQ}
             />

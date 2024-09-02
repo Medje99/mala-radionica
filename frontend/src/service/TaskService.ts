@@ -3,7 +3,7 @@ import { ITaskResponse } from '@/model/response/ITaskResponse'
 import axios from 'axios'
 
 const createTask = async (data: ITaskResponse) => {
-  return await axios.post<ITaskResponse>(baseUrl + '/task', data)
+  return await axios.post<ITaskResponse>(baseUrl + '/tasks', data)
 }
 
 const getAllTasks = async () => {
@@ -19,18 +19,18 @@ const getTaskById = async (id: number) => {
 }
 
 const updateTask = async (data: ITaskResponse) => {
-  return await axios.put<ITaskResponse>(`${baseUrl}/task/${data.id}`, data)
+  return await axios.put<ITaskResponse>(`${baseUrl}/tasks/${data.id}`, data)
 }
 
 const deleteTask = async (id: number) => {
-  return await axios.delete(`${baseUrl}/task/${id}`)
+  return await axios.delete(`${baseUrl}/tasks/${id}`)
 }
 
 const TaskService = {
   getAllTasks,
   getUnfinishedTasks,
   createTask,
-  getTaskById, // Added getTaskById method
+  getTaskById,
   updateTask,
   deleteTask,
 }

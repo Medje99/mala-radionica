@@ -4,7 +4,7 @@ import { IBillResponse } from '@/model/response/IBillResponse'
 
 // for existing task
 const createBill = async (data: IBillResponse) => {
-  return await axios.post<IBillResponse>(baseUrl + '/bill', data)
+  return await axios.post<IBillResponse>(baseUrl + '/bills', data)
 }
 // ok
 const getAllBills = async () => {
@@ -16,17 +16,17 @@ const getBillById = async (id: number) => {
 }
 
 const updateBill = async (data: IBillResponse) => {
-  return await axios.put<IBillResponse>(`${baseUrl}/bill/${data.bill_id}`, data).then((response) => {
+  return await axios.put<IBillResponse>(`${baseUrl}/bills/${data.bill_id}`, data).then((response) => {
     return response.data
   }) // Using bill_id as the identifier
 }
 
 const deleteBill = async (id: number) => {
-  return await axios.delete(`${baseUrl}/bill/${id}`)
+  return await axios.delete(`${baseUrl}/bills/${id}`)
 }
 
 const markAsPaid = async (id: number) => {
-  return await axios.put(`${baseUrl}/bill/${id}`)
+  return await axios.put(`${baseUrl}/bills/${id}`)
 }
 
 const BillService = {

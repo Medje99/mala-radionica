@@ -9,17 +9,11 @@ import BillService from '@/service/BillService'
 import { IBillResponse } from '@/model/response/IBillResponse'
 import dayjs from 'dayjs'
 import moment from 'moment'
-import { taskName } from '../task-list-component/constants'
+import ProductsService from '@/service/ProductsService'
+import { IProducts } from '@/model/response/IProductResponse'
 
 const CreateTaskForm = () => {
-  const {
-    customerContact,
-    job,
-    setFormTitle: setFormTitle,
-    setModalIsOpen,
-    formTitle: formTitle,
-    setCurrentPage,
-  } = useGlobalContext()
+  const { customerContact, job, setFormTitle, setModalIsOpen, setCurrentPage } = useGlobalContext()
   const [FormBillCreate] = Form.useForm<IBillResponse>()
   const [isPaid, setIsPaid] = useState(false)
   const [animating, setAnimating] = useState(false)
@@ -40,7 +34,16 @@ const CreateTaskForm = () => {
   // form submitAction()
   const submitLogic = () => {
     FormBillCreate.validateFields()
-      .then((values) => {
+      .then(async (values) => {
+        // // Update product quantities
+        // for (const productUsed of values.products_used) {
+        //   const productToUpdate = allProducts.find((p) => p.id === productUsed.product)
+        //   if (productToUpdate) {
+        //     const updatedQuantity = productToUpdate.quantity - productUsed.quantity
+        //     await ProductsService.updateMultipleProducts({ ...productToUpdate, quantity: updatedQuantity })
+        //   }
+        // }
+
         //addding back name property to item because cant from ProductComponent
         const updatedProductsUsed = values.products_used?.map((item) => {
           const productName = allProducts.find((p) => p.id === item.product)?.name
@@ -59,6 +62,7 @@ const CreateTaskForm = () => {
           labor_cost: values.labor_cost,
           total_cost: values.labor_cost,
         }
+
         BillService.createBill(updatedValues)
         message.success('Racun uspesno kreiran !') // Show error message
         setModalIsOpen(false)
@@ -80,6 +84,7 @@ const CreateTaskForm = () => {
       initialValues={{
         paid: false,
         end_date: job.end_date ? dayjs(job.end_date) : dayjs(moment().toDate()),
+        quantity: 1,
       }}
     >
       <Typography className="font-bold text-xl mb-4 text-center">
@@ -106,8 +111,7 @@ const CreateTaskForm = () => {
           showTime={{ minuteStep: 15 }}
           format="MMM-DD HH:mm"
           name="end_date"
-          defaultOpenValue={dayjs(FormBillCreate.getFieldValue('end_date'))}
-          //defaultValue={job.end_date}
+          //defaultOpenValue={dayjs(FormBillCreate.getFieldValue('end_date'))}
         />
       </Form.Item>
 

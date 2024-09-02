@@ -7,7 +7,7 @@ const getAllProducts = async () => {
 }
 
 const createProductEntry = async (data: IProducts) => {
-  return await axios.post<IProducts[]>(baseUrl + '/ProductInput', data)
+  return await axios.post<IProducts[]>(baseUrl + '/Products', data)
 }
 
 const updateProduct = async (data: IProducts) => {
@@ -28,12 +28,23 @@ const getProductById = async (id: string | number) => {
   }
 }
 
+const updateMultipleProducts = async (productsToUpdate: { id: number; quantity: number }[]) => {
+  try {
+    const response = await axios.put<IProducts[]>(`${baseUrl}/Products/updateMultiple`, productsToUpdate)
+    return response.data
+  } catch (error) {
+    console.error('Error updating multiple products:', error)
+    throw error
+  }
+}
+
 const ProductsService = {
   getAllProducts,
   createProductEntry,
   updateProduct,
   deleteProduct,
   getProductById,
+  updateMultipleProducts,
 }
 
 export default ProductsService
