@@ -16,24 +16,24 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 //Products route
-const productsRoutes = require("./routes/products"); // Import the products router
-app.use("/products", productsRoutes); // Use the products router
+const productsRoutes = require("./routes/products");
+app.use("/products", productsRoutes);
 
 //Contacts route
-const contactsRoutes = require("./routes/contacts"); // Import the contacts router
-app.use("/contacts", contactsRoutes); // Use the contacts router
+const contactsRoutes = require("./routes/contacts");
+app.use("/contacts", contactsRoutes);
 
 //Bills route
-const billsRoutes = require("./routes/bills"); // Import the bills router
-app.use("/bills", billsRoutes); // Use the bills router
+const billsRoutes = require("./routes/bills");
+app.use("/bills", billsRoutes);
 
 //Tasks route
-const tasksRoutes = require("./routes/tasks"); // Import the tasks router
-app.use("/tasks", tasksRoutes); // Use the tasks router
+const tasksRoutes = require("./routes/tasks");
+app.use("/tasks", tasksRoutes);
 
 //Unfinished tasks route
-const unfinishedTasksRoutes = require("./routes/unfinishedTasks"); // Import the unfinished tasks router
-app.use("/unfinishedTasks", unfinishedTasksRoutes); // Use the unfinished tasks router
+const unfinishedTasksRoutes = require("./routes/unfinishedTasks");
+app.use("/unfinishedTasks", unfinishedTasksRoutes);
 
 //Middleware for logging incoming requests
 app.use((req, res, next) => {
