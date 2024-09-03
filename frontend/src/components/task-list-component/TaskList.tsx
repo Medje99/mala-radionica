@@ -16,7 +16,7 @@ export const TasksList = () => {
   const [filteredTasks, setFilteredTasks] = useState<ITaskResponse[]>([])
   const [editingTask, setEditingTask] = useState<ITaskResponse>({} as ITaskResponse)
   const [isEditModalOpen, setEditModalOpen] = useState(false)
-  const [isBillModalOpen, setIsBillModalOpen] = useState(false) // State for the bill
+  const { modalIsOpen, setModalIsOpen } = useGlobalContext()
 
   useEffect(() => {
     setHeaderTitle('Aktivni poslovi')
@@ -39,11 +39,6 @@ export const TasksList = () => {
       setFilteredTasks(filtered)
     }
   }, [searchTerm, UnfinishedOnes])
-
-  // useEffect(() => {
-  //   console.log('new entry:' + currentTask.task_name)
-  //   setFilteredTasks((prevFilteredTasks: any) => [...prevFilteredTasks, currentTask])
-  // }, [currentTask])
 
   const columns = [
     customer_firstName,
@@ -98,7 +93,7 @@ export const TasksList = () => {
                 setCurrentTask({
                   task_id: record.id,
                 })
-                setIsBillModalOpen(true)
+                setModalIsOpen(true)
               }}
             >
               <FileDoneOutlined />
@@ -117,6 +112,10 @@ export const TasksList = () => {
         open={isEditModalOpen}
         onOk={() => handleSave(FormTaskList, editingTask, filteredTasks, setFilteredTasks, setEditModalOpen)}
         onCancel={() => setEditModalOpen(false)}
+        footer={null}
+        closeIcon={null}
+        title="Izmeni posao : "
+        className="modal-form-container"
       >
         <Form form={FormTaskList} layout="vertical">
           <Form.Item label="Naziv posla" name="job_name" rules={[{ required: true, message: 'Unesi naziv posla' }]}>
@@ -129,24 +128,29 @@ export const TasksList = () => {
       </Modal>
 
       {/* Bill Modal */}
-      <Modal open={isBillModalOpen} onCancel={() => setIsBillModalOpen(false)}>
+      <Modal
+        open={modalIsOpen}
+        onCancel={() => setModalIsOpen(false)}
+        footer={null}
+        closeIcon={null}
+        className="modal-form-container"
+      >
         <CreateBillForm />
       </Modal>
 
       <Input.Search
         id="search-tasks"
-        className="mx-auto w-90"
+        className="mx-auto"
         size="large"
         placeholder="Pretrazi poslove"
         onChange={(e) => setSearchTerm(e.target.value)}
       />
 
       <Table
-        style={{ width: '96%', margin: 'auto' }}
+        id="tasks-table"
         virtual
         scroll={{ y: 445 }}
         pagination={{ hideOnSinglePage: true, pageSize: 7 }}
-        className="pr-20 shadow-2xl task"
         columns={columns}
         expandable={{
           expandedRowRender: (record) => (

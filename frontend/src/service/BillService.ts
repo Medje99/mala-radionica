@@ -30,7 +30,9 @@ const markAsPaid = async (id: number) => {
 }
 
 const productQUpdate = async (data: any) => {
-  return await axios.post<any>(baseUrl + '/quantitySubtract', data)
+  return await axios.post<any>(baseUrl + '/quantitySubtract', data).catch((error) => {
+    throw axios.isAxiosError(error) ? error.response?.data : error
+  })
 }
 
 const BillService = {

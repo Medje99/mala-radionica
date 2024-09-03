@@ -5,7 +5,7 @@ import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 
 const useGetUnfinishedTasks = () => {
   const [UnfinishedOnes, setUnfinishedTasks] = useState<ITaskResponse[]>([])
-  const { currentTask } = useGlobalContext()
+  const { currentTask, modalIsOpen } = useGlobalContext()
 
   useEffect(() => {
     TaskService.getUnfinishedTasks()
@@ -15,7 +15,7 @@ const useGetUnfinishedTasks = () => {
       .catch((error) => {
         console.error('Error fetching tasks:', error)
       })
-  }, [currentTask])
+  }, [currentTask, modalIsOpen])
 
   return { UnfinishedOnes }
 }

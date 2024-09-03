@@ -20,11 +20,6 @@
   color: rgb(255, 255, 255);
 }
 
-.modal-title {
-  text-align: center;
-  color: #01a4f1;
-}
-
 .ant-form {
   background-color: rgba(55, 140, 179, 0.164);
   padding-block: 20px;
@@ -32,28 +27,37 @@
   border-radius: 10px;
   border-color: rgb(139, 66, 66);
   border-style: solid;
-  border-width: 2px;
+  border-width: 1px;
   max-height: 89vh;
   overflow-y: auto;
 }
 
 .ant-input-search {
   padding: 1vh;
-  background: rgb(55, 139, 179);
-  flex: auto;
+  padding-inline: 3vh;
+}
+
+#search-tasks {
+  border-radius: 20px;
+  text-align: center;
   border-color: rgb(139, 66, 66);
-  border-radius: 10px;
+  border-width: 1px;
   border-style: solid;
+  font-style: oblique;
+  font-size: large;
 }
 
 .ant-input-search-button {
-  background: rgb(137, 181, 221);
+  background: rgba(255, 255, 255, 0.856);
+  border-radius: 60px;
+  margin-right: 10px;
+  margin-left: 10px;
 }
 
 .modal-title {
   margin-top: 5px;
   margin-bottom: 250px;
-  background-color: rgb(255, 255, 255);
+  background-color: rgb(190, 79, 79);
 }
 
 .header-title {
@@ -68,5 +72,9 @@
   background-color: #004483;
 }
 .ant-table-row-expand-icon-cell {
-  background-color: #0044830e;
+  font-size: larger;
+}
+
+.modal-form-container {
+  padding: 30px;
 }

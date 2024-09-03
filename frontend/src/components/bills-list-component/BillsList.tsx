@@ -89,7 +89,7 @@ const BillsList: React.FC = () => {
       title: 'Datum zavrsetka',
       dataIndex: 'end_date',
       key: 'end_date',
-      sorter: (a, b) => {
+      sorter: (a: { end_date: string | Date }, b: { end_date: string | Date }) => {
         if (a.end_date && b.end_date) {
           return new Date(b.end_date).getTime() - new Date(a.end_date).getTime()
         } else {
@@ -98,7 +98,7 @@ const BillsList: React.FC = () => {
       },
       defaultSortOrder: 'ascend', // Set default sort order to new first
 
-      render: (endDate: string | null) => {
+      render: (endDate: string | Date) => {
         if (endDate) {
           const formattedDate = moment(endDate).fromNow() // Calculate time difference from endDate
           return formattedDate
