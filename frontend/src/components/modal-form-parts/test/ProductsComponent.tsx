@@ -1,6 +1,13 @@
 import { useState } from 'react'
-import { PlusOutlined, MinusOutlined } from '@ant-design/icons'
-import { Button, Col, Form, Input, Row, Select, Space } from 'antd'
+import {
+  PlusOutlined,
+  MinusOutlined,
+  DeleteRowOutlined,
+  InsertRowBelowOutlined,
+  ArrowDownOutlined,
+  ArrowUpOutlined,
+} from '@ant-design/icons'
+import { Button, Col, Form, Input, Row, Select, Space, Tooltip } from 'antd'
 import useGetAllProducts from '@/CustomHooks/useGetAllProducts'
 
 const { Option } = Select
@@ -96,13 +103,18 @@ const ProductsComponent = () => {
     <>
       {getFields()}
       <Form.Item>
-        <Space>
-          <Button type="dashed" onClick={addRow} icon={<PlusOutlined />}>
-            Dodaj proizvod
-          </Button>
-          <Button type="dashed" onClick={removeRow} icon={<MinusOutlined />}>
-            Ukloni proizvod
-          </Button>
+        <Space className=" flex gap-10 flex-row items-center justify-center mt-4">
+          <Tooltip title="Dodaj novi proizvod" placement="left">
+            <Button type="primary" onClick={addRow} icon={<PlusOutlined />}>
+              <ArrowDownOutlined />
+            </Button>
+          </Tooltip>
+
+          <Tooltip title="Ukloni proizvod" placement="right">
+            <Button type="dashed" onClick={removeRow} icon={<MinusOutlined />}>
+              <ArrowUpOutlined />
+            </Button>
+          </Tooltip>
         </Space>
       </Form.Item>
     </>
