@@ -26,10 +26,10 @@ const ProductsList: React.FC = () => {
     const filtered = allProducts.filter((product) => {
       const searchText = searchTerm.toLowerCase()
       return (
-        product.name.toLowerCase().includes(searchText) ||
-        product.manufacturer.toLowerCase().includes(searchText) ||
-        product.model.toLowerCase().includes(searchText) ||
-        product.SKU.toLowerCase().includes(searchText)
+        product.name?.toLowerCase().includes(searchText) ||
+        product.manufacturer?.toLowerCase().includes(searchText) ||
+        product.model?.toLowerCase().includes(searchText) ||
+        product.SKU?.toLowerCase().includes(searchText)
       )
     })
     setFilteredProducts(filtered)
