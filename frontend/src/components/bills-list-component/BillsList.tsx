@@ -186,7 +186,7 @@ const BillsList: React.FC = () => {
         rowKey="job_name"
         expandable={{
           expandedRowRender: (record) => (
-            <Typography key={record.job_name} className="text-center py-4 text-lg ">
+            <Typography key={record.bill_id} className="text-center py-4 text-lg ">
               Detalji posla: {record.job_description}
             </Typography>
           ),

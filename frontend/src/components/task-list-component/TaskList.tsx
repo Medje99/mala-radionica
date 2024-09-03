@@ -9,7 +9,7 @@ import { ICustomerContact, useGlobalContext } from '@/contexts/GlobalContextProv
 import { DeleteOutlined, EditOutlined, FileDoneOutlined } from '@ant-design/icons'
 
 export const TasksList = () => {
-  const { setCustomerContact, setJob, setHeaderTitle } = useGlobalContext()
+  const { setCustomerContact, setCurrentTask } = useGlobalContext()
   const { UnfinishedOnes } = useGetUnfinishedTasks()
   const { handleEdit, handleDelete, handleSave } = TasksAdvancedActions()
   const [searchTerm, setSearchTerm] = useState('')
@@ -18,9 +18,9 @@ export const TasksList = () => {
   const [isEditModalOpen, setEditModalOpen] = useState(false)
   const [isBillModalOpen, setIsBillModalOpen] = useState(false) // State for the bill
 
-  useEffect(() => {
-    setHeaderTitle('Aktivni poslovi')
-  }, [])
+  // useEffect(() => {
+  //   setHeaderTitle('Aktivni poslovi')
+  // }, [])
 
   const [FormTaskList] = Form.useForm<ITaskResponse>()
 
@@ -40,12 +40,18 @@ export const TasksList = () => {
     }
   }, [searchTerm, UnfinishedOnes])
 
+  // useEffect(() => {
+  //   console.log('new entry:' + currentTask.task_name)
+  //   setFilteredTasks((prevFilteredTasks: any) => [...prevFilteredTasks, currentTask])
+  // }, [currentTask])
+
   const columns = [
     customer_firstName,
     customer_lastName,
     taskName,
+    Table.EXPAND_COLUMN,
     creation_date,
-    // actions
+
     {
       title: <div className="text-center flex justify-center">Radnje</div>,
       key: 'action',
@@ -85,7 +91,7 @@ export const TasksList = () => {
                   id: record.contact_id,
                   fullName: `${record.firstName} ${record.lastName}`,
                 } as ICustomerContact)
-                setJob({
+                setCurrentTask({
                   task_id: record.id,
                 })
                 setIsBillModalOpen(true)
@@ -133,21 +139,19 @@ export const TasksList = () => {
       <Table
         style={{ width: '96%', margin: 'auto' }}
         virtual
-        scroll={{ y: '10vh' }}
-        pagination={{ hideOnSinglePage: true, pageSize: 20 }}
-        className="pr-20 border-2 border-grey-500 shadow-2xl task"
+        scroll={{ y: 445 }}
+        pagination={{ hideOnSinglePage: true, pageSize: 7 }}
+        className="pr-20 shadow-2xl task"
         columns={columns}
         expandable={{
           expandedRowRender: (record) => (
-            <Typography key={record.job_name} className="text-center ">
+            <Typography key={record.id} className="text-center ">
               {record.job_description}
             </Typography>
           ),
 
           rowExpandable: (record) => !!record.job_description,
-
           columnWidth: 50, // Adjust width as needed
-          expandIconColumnIndex: 2, // Index of the taskName column
         }}
         dataSource={filteredTasks}
         rowKey="id"

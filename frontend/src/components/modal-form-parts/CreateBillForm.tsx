@@ -12,7 +12,7 @@ import moment from 'moment'
 import { VerticalRightOutlined } from '@ant-design/icons'
 
 const CreateBillForm = () => {
-  const { customerContact, job, setFormTitle, setModalIsOpen, setCurrentPage, currentPage } = useGlobalContext()
+  const { customerContact, currentTask, setFormTitle, setModalIsOpen, setCurrentPage, currentPage } = useGlobalContext()
   const [FormBillCreate] = Form.useForm<IBillResponse>()
   const [isPaid, setIsPaid] = useState(false)
   const [animating, setAnimating] = useState(false)
@@ -47,7 +47,7 @@ const CreateBillForm = () => {
           ...values,
           products_used: updatedProductsUsed,
           contact_id: customerContact?.id ?? 0,
-          job_id: job.task_id ?? 0,
+          job_id: currentTask.task_id ?? 0,
           parts_cost: 20,
           labor_cost: values.labor_cost,
           total_cost: values.labor_cost,
@@ -74,7 +74,7 @@ const CreateBillForm = () => {
       onFinish={submitLogic}
       initialValues={{
         paid: false,
-        end_date: job.end_date ? dayjs(job.end_date) : dayjs(moment().toDate()),
+        end_date: currentTask.end_date ? dayjs(currentTask.end_date) : dayjs(moment().toDate()),
         quantity: 1,
       }}
     >

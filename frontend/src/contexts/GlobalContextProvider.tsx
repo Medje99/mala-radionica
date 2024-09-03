@@ -1,7 +1,7 @@
 import { Typography } from 'antd'
 import { createContext, useContext, useState } from 'react'
 
-interface ModalStateType {
+interface GlobalContext {
   modalIsOpen: boolean
   setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>
   currentPage: number
@@ -10,8 +10,8 @@ interface ModalStateType {
   setFormTitle: React.Dispatch<React.SetStateAction<string>>
   customerContact: ICustomerContact | undefined
   setCustomerContact: React.Dispatch<React.SetStateAction<ICustomerContact | undefined>>
-  job: ITask
-  setJob: React.Dispatch<React.SetStateAction<ITask>>
+  currentTask: ITask
+  setCurrentTask: React.Dispatch<React.SetStateAction<ITask>>
   setHeaderTitle: React.Dispatch<React.SetStateAction<string>>
   headerTitle: string
   end_date: ITask['end_date']
@@ -30,9 +30,9 @@ export interface ITask {
   task_name?: string
 }
 
-const GlobalContext = createContext<ModalStateType | null>(null)
+const GlobalContext = createContext<GlobalContext | null>(null)
 
-export const useGlobalContext = (): ModalStateType => {
+export const useGlobalContext = (): GlobalContext => {
   const context = useContext(GlobalContext)
   if (!context) {
     throw new Error('useModalState must be used within a ModalStateProvider')
@@ -45,7 +45,7 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
   const [currentPage, setCurrentPage] = useState(0)
   const [formTitle, setFormTitle] = useState('Izaberi ili dodaj musteriju')
   const [customerContact, setCustomerContact] = useState<ICustomerContact>()
-  const [job, setJob] = useState<ITask>({} as ITask)
+  const [currentTask, setCurrentTask] = useState<ITask>({} as ITask)
   const [headerTitle, setHeaderTitle] = useState('')
   const [end_date, setEndDate] = useState<ITask['end_date']>()
 
@@ -65,8 +65,8 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
         setFormTitle: setFormTitle,
         customerContact,
         setCustomerContact,
-        job,
-        setJob,
+        currentTask,
+        setCurrentTask: setCurrentTask,
         headerTitle,
         setHeaderTitle,
         end_date,

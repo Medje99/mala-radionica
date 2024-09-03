@@ -14,7 +14,7 @@ const CreateTaskForm = () => {
     setCurrentPage,
     customerContact,
     setFormTitle: setFormTitle,
-    setJob,
+    setCurrentTask,
     setModalIsOpen,
   } = useGlobalContext()
 
@@ -45,7 +45,7 @@ const CreateTaskForm = () => {
           console.log(response, 'response')
           message.success('Posao uspesno kreiran!')
           // Update the job object in the context
-          setJob({
+          setCurrentTask({
             task_id: response.data.id,
             end_date: values.end_date,
           })
