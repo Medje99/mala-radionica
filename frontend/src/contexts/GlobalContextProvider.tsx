@@ -9,7 +9,7 @@ interface GlobalContext {
   formTitle: string | React.ReactElement
   setFormTitle: React.Dispatch<React.SetStateAction<string>>
   customerContact: ICustomerContact | undefined
-  setCustomerContact: React.Dispatch<React.SetStateAction<ICustomerContact | undefined>>
+  setContextCustomer: React.Dispatch<React.SetStateAction<ICustomerContact | undefined>>
   currentTask: ITask
   setCurrentTask: React.Dispatch<React.SetStateAction<ITask>>
   setHeaderTitle: React.Dispatch<React.SetStateAction<string>>
@@ -64,7 +64,7 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
         formTitleString: formTitle,
         setFormTitle: setFormTitle,
         customerContact,
-        setCustomerContact,
+        setContextCustomer: setCustomerContact,
         currentTask,
         setCurrentTask: setCurrentTask,
         headerTitle,

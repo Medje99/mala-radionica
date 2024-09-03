@@ -10,6 +10,7 @@ router.get("/", (req, res) => {
       res.status(500).send("Error retrieving contacts");
     } else {
       res.json(results);
+      console.log("Retrieved contacts:", results);
     }
   });
 });

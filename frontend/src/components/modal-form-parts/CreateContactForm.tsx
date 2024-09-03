@@ -3,35 +3,34 @@ import { Form, Input, Select, Typography, message } from 'antd' // Import messag
 import createTaskFormActions from '../create-task-form-component/actions'
 import { useEffect, useState } from 'react'
 import useGetAllContacts from '@/CustomHooks/useGetAllContants'
+import ContactService from '@/service/ContactsService'
 import { IContacts } from '@/model/response/IContactResponse'
 import { concateFullName } from '@/Utilities/setFullName'
 import { CustomerSelect } from '../create-task-form-component/types'
 import { separateFullName } from '@/Utilities/getSeparatedFullName'
-import ContactService from '@/service/ContactsService'
 import ActionButton from '../CustomButtons/ActionButton'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 
-const { Option } = Select //redeclare before component body main function
 const { setCustomerSelectOptions, setCustomerFormValues, handleSelectChange } = createTaskFormActions() // createTaskFormActions
 
 // Component main function
 const CreateContactForm = () => {
-  const { setCustomerContact, setCurrentPage, currentPage } = useGlobalContext() // context passing to form 2
+  const { setContextCustomer, setCurrentPage, currentPage } = useGlobalContext() // context passing to form 2
   const [newCustomer, setNewCustomer] = useState(false) // definined default false
   const { customers } = useGetAllContacts() // getting customer full list via get request
   const [FormContactCreate] = Form.useForm<IContacts>() // create form instance useState for all fields and elements abstracted
-  const [ContactSelect, setContactSelect] = useState<string | undefined>('') //contactSelect
+  const [ContactSelect, setContactSelect] = useState<string | undefined>('') //contactSelect one from select dropdown
   const [contactSerchCriteria, setContactSearchCriteria] = useState<string>(ContactSelect as string) //contact name,lastname input if no match
-  const [ContactSelectionFull, setContactSelectionFull] = useState<CustomerSelect[]>() // if no match set true
+  const [searchMatch, searchMatchQuerry] = useState<CustomerSelect[]>() // if no match set true
   const selectedCustomer = customers.find((item) => concateFullName(item.firstName, item.lastName) === ContactSelect)
 
-  const filteredOptions = ContactSelectionFull?.filter((option: any) =>
+  const filteredOptions = searchMatch?.filter((option: any) =>
     option.label.toLowerCase().includes(contactSerchCriteria.toLowerCase()),
   )
 
   useEffect(() => {
     if (selectedCustomer) {
-      setCustomerContact({
+      setContextCustomer({
         id: selectedCustomer.id,
         fullName: concateFullName(selectedCustomer.firstName, selectedCustomer.lastName),
       })
@@ -39,8 +38,8 @@ const CreateContactForm = () => {
   }, [selectedCustomer, contactSerchCriteria, FormContactCreate]) // if selected
 
   useEffect(() => {
-    setCustomerSelectOptions(customers, setContactSelectionFull)
-  }, [customers, setContactSelectionFull])
+    setCustomerSelectOptions(customers, searchMatchQuerry)
+  }, [customers, searchMatchQuerry])
 
   useEffect(() => {
     setCustomerFormValues(selectedCustomer, FormContactCreate, setNewCustomer)
@@ -63,16 +62,16 @@ const CreateContactForm = () => {
               //responese as input
               const customer = response.data
               setCurrentPage(currentPage + 1)
-              setCustomerContact({
+              setContextCustomer({
                 id: customer.id,
                 fullName: concateFullName(customer.firstName, customer.lastName),
               })
               console.log('Pushed to context', customer)
-              message.success('Kontakt uspesno kreiran!') // Show error message
+              message.success('Kontakt uspesno kreiran!')
             })
             .catch((error) => {
               console.error('Error creating contact:', error)
-              message.error('Greška prilikom kreiranja kontakta.Kontaktirajte administratora.') // Show error message
+              message.error('Greška prilikom kreiranja kontakta.Kontaktirajte administratora.')
             })
         })
   }
@@ -80,34 +79,32 @@ const CreateContactForm = () => {
   return (
     <Form form={FormContactCreate} name="musterija-form" layout="vertical">
       <Typography className="font-bold text-xl mb-5 text-center">Izaberi ili unesi novu musteriju</Typography>
-      <Form.Item label="Musterija" required>
-        <Form.Item name="firstName" noStyle rules={[{ required: true, message: 'Izaberi ili dodaj' }]} className="">
-          {newCustomer && selectedCustomer ? (
-            <Input value={contactSerchCriteria} onChange={() => setContactSearchCriteria(contactSerchCriteria)} />
-          ) : (
-            <Select
-              showSearch
-              placeholder="Izaberi ili dodaj"
-              value={ContactSelect as any}
-              onChange={(event: string) => handleSelectChange(event, setContactSelect, setContactSearchCriteria)}
-              style={{ width: '100%' }} // Ensure the Select input is 100% width
-              onSearch={setContactSearchCriteria}
-              filterOption={false}
-              allowClear
-              onKeyDown={(event: any) => {
+
+      <Form.Item label="Musterija" name="firstName" id="Musterija">
+        {newCustomer && selectedCustomer ? null : (
+          <Select
+            showSearch
+            placeholder="Izaberi ili dodaj"
+            value={ContactSelect as any}
+            onChange={(event: string) => handleSelectChange(event, setContactSelect, setContactSearchCriteria)}
+            onSearch={setContactSearchCriteria}
+            filterOption={true}
+            allowClear
+            onKeyDown={(event: any) => {
+              // Instead of using event.target.value directly, schedule the update:
+              setTimeout(() => {
                 FormContactCreate.setFieldValue('firstName', event.target.value)
-              }}
-              notFoundContent={null}
-            >
-              {filteredOptions?.map((option: any) => (
-                <Option key={option.value} value={option.value}>
-                  {option.label}
-                </Option>
-              ))}
-            </Select>
-          )}
-        </Form.Item>
+              }, 0)
+            }}
+            notFoundContent={null}
+          >
+            {filteredOptions?.map((Option, index) => (
+              <option key={index} value={Option.value}></option>
+            ))}
+          </Select>
+        )}
       </Form.Item>
+
       <Form.Item
         label="Broj telefona:"
         name="phoneNumber"

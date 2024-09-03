@@ -9,7 +9,7 @@ import { ICustomerContact, useGlobalContext } from '@/contexts/GlobalContextProv
 import { DeleteOutlined, EditOutlined, FileDoneOutlined } from '@ant-design/icons'
 
 export const TasksList = () => {
-  const { setCustomerContact, setCurrentTask } = useGlobalContext()
+  const { setContextCustomer: setCustomerContact, setCurrentTask } = useGlobalContext()
   const { UnfinishedOnes } = useGetUnfinishedTasks()
   const { handleEdit, handleDelete, handleSave } = TasksAdvancedActions()
   const [searchTerm, setSearchTerm] = useState('')
@@ -130,6 +130,7 @@ export const TasksList = () => {
       </Modal>
 
       <Input.Search
+        id="search-tasks"
         className="mx-auto w-90"
         size="large"
         placeholder="Pretrazi poslove"

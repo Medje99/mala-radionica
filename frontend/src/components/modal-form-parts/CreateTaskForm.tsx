@@ -22,7 +22,7 @@ const CreateTaskForm = () => {
     setFormTitle('Detalji posla')
   }, [])
 
-  const [form] = Form.useForm<ITaskResponse>()
+  const [TaskForm] = Form.useForm<ITaskResponse>()
   const [isFinished, setIsFinished] = useState(false)
   const [animating, setAnimating] = useState(false)
 
@@ -33,7 +33,7 @@ const CreateTaskForm = () => {
   }, [isFinished])
 
   const onClickHandler = () => {
-    form.validateFields().then((values) => {
+    TaskForm.validateFields().then((values) => {
       const fullData = {
         ...values,
         contact_id: customerContact?.id ?? 0,
@@ -64,7 +64,7 @@ const CreateTaskForm = () => {
 
   return (
     <Form
-      form={form}
+      form={TaskForm}
       name="job-form"
       layout="vertical"
       className="rounded-lg"
@@ -90,12 +90,13 @@ const CreateTaskForm = () => {
         <Form.Item label="Posao zapocet:" name="creation_date">
           <Space direction="vertical">
             <DatePicker
+              id="creation_date"
               showTime={{ minuteStep: 15 }}
               format="MMM-DD HH:mm"
               name="creation_date"
-              defaultOpenValue={dayjs(form.getFieldValue('creation_date'))}
-              defaultValue={dayjs(form.getFieldValue('creation_date'))}
-              onChange={(date) => form.setFieldValue('creation_date', date)}
+              defaultOpenValue={dayjs(TaskForm.getFieldValue('creation_date'))}
+              defaultValue={dayjs(TaskForm.getFieldValue('creation_date'))}
+              onChange={(date) => TaskForm.setFieldValue('creation_date', date)}
             />
           </Space>
         </Form.Item>
@@ -109,9 +110,9 @@ const CreateTaskForm = () => {
                 showTime={{ minuteStep: 15 }}
                 format="MMM-DD HH:mm"
                 name="end_date"
-                defaultOpenValue={dayjs(form.getFieldValue('end_date'))}
-                defaultValue={dayjs(form.getFieldValue('end_date'))}
-                onChange={(date) => form.setFieldValue('end_date', date)}
+                defaultOpenValue={dayjs(TaskForm.getFieldValue('end_date'))}
+                defaultValue={dayjs(TaskForm.getFieldValue('end_date'))}
+                onChange={(date) => TaskForm.setFieldValue('end_date', date)}
               />
             </Space>
           </Form.Item>

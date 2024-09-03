@@ -7,9 +7,7 @@ import { FormInstance } from 'antd'
 const createTaskFormActions = () => {
   const setCustomerSelectOptions = (
     customers: IContacts[],
-    setNewCustomerSelect: React.Dispatch<
-      React.SetStateAction<CustomerSelect[] | undefined>
-    >
+    setNewCustomerSelect: React.Dispatch<React.SetStateAction<CustomerSelect[] | undefined>>,
   ) => {
     const selectLabel = customers.map((item) => ({
       label: concateFullName(item.firstName, item.lastName),
@@ -21,7 +19,7 @@ const createTaskFormActions = () => {
   const setCustomerFormValues = (
     pickedCustomer: IContacts | undefined,
     form: FormInstance<IContacts>,
-    setNewCustomer: React.Dispatch<React.SetStateAction<boolean>>
+    setNewCustomer: React.Dispatch<React.SetStateAction<boolean>>,
   ) => {
     if (pickedCustomer) {
       setNewCustomer(false)
@@ -40,10 +38,8 @@ const createTaskFormActions = () => {
   // Handles selection changes
   const handleSelectChange = (
     pickedCustomer: string,
-    setCurrentCustomer: React.Dispatch<
-      React.SetStateAction<string | undefined>
-    >,
-    setInputValue: React.Dispatch<React.SetStateAction<string>>
+    setCurrentCustomer: React.Dispatch<React.SetStateAction<string | undefined>>,
+    setInputValue: React.Dispatch<React.SetStateAction<string>>,
   ) => {
     setCurrentCustomer(pickedCustomer)
     setInputValue('')
