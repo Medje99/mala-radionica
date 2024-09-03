@@ -16,7 +16,9 @@ const updateContactCustomer = async (data: IContacts) => {
 }
 
 const deleteContactCustomer = async (id: number) => {
-  return await axios.delete<IContacts>(baseUrl + '/contacts/' + id)
+  return await axios.delete<IContacts>(baseUrl + '/contacts/' + id).catch((error) => {
+    throw axios.isAxiosError(error) ? error.response?.data : error
+  })
 }
 
 const ContactService = {

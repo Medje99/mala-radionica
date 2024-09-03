@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Table, Typography, Input, Popconfirm, message, Modal, Form, Space, Button, Tooltip } from 'antd'
-import { Link } from 'react-router-dom'
+import { ErrorResponse, Link } from 'react-router-dom'
 import { IContacts } from '@/model/response/IContactResponse'
 import useGetAllContacts from '@/CustomHooks/useGetAllContants'
 import ContactService from '@/service/ContactsService'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import { AxiosError } from 'axios'
 
 const ContactsList: React.FC = () => {
   const { setHeaderTitle } = useGlobalContext()
@@ -39,9 +40,16 @@ const ContactsList: React.FC = () => {
   }
 
   const handleDelete = (id: number) => {
-    message.success('Contact deleted successfully')
     ContactService.deleteContactCustomer(id)
-    setFilteredContacts(filteredContacts.filter((contact) => contact.id !== id))
+      .then(() => {
+        message.success('Kontakt izbrisan')
+        setFilteredContacts(filteredContacts.filter((contact) => contact.id !== id))
+      })
+      .catch((error: AxiosError<ErrorResponse>) => {
+        console.error('Error deleting contact:', error)
+        message.error('Kontakt nije obrisan. ')
+        message.warning('Nije dozvoljeno obrisati kontakt za koji postoji aktivan posao! ')
+      })
   }
 
   const handleSave = async () => {
