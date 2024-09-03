@@ -12,7 +12,7 @@ import moment from 'moment'
 import { VerticalRightOutlined } from '@ant-design/icons'
 
 const CreateBillForm = () => {
-  const { customerContact, currentTask, setFormTitle, setModalIsOpen, setCurrentPage, currentPage } = useGlobalContext()
+  const { customerContact, currentTask, setModalIsOpen, setCurrentPage, currentPage } = useGlobalContext()
   const [FormBillCreate] = Form.useForm<IBillResponse>()
   const [isPaid, setIsPaid] = useState(false)
   const [animating, setAnimating] = useState(false)
@@ -24,11 +24,11 @@ const CreateBillForm = () => {
     return () => clearTimeout(timer)
   }, [isPaid])
 
-  useEffect(() => {
-    setFormTitle('Naplata: ' + customerContact?.fullName)
-    console.log(customerContact?.fullName)
-  }),
-    [FormBillCreate]
+  // useEffect(() => {
+  //   setFormTitle('Naplata: ' + customerContact?.fullName)
+  //   console.log(customerContact?.fullName)
+  // }),
+  //   [FormBillCreate]
 
   // form submitAction()
   const submitLogic = () => {
@@ -57,6 +57,7 @@ const CreateBillForm = () => {
         BillService.productQUpdate(values.products_used)
         message.success('Racun uspesno kreiran !') // Show error message
         setModalIsOpen(false)
+        FormBillCreate.resetFields()
         setCurrentPage(0)
       })
       .catch((error) => {

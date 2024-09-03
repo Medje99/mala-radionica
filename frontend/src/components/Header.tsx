@@ -7,7 +7,7 @@ import {
   ProductOutlined,
   ToolOutlined,
 } from '@ant-design/icons'
-import { Typography } from 'antd'
+import { Tooltip, Typography } from 'antd'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -25,25 +25,39 @@ const Header = () => {
       <Typography className="text-2xl font-medium font-bold header-title">{headerTitle}</Typography>
       <div className="flex items-center gap-20 ml-auto main-nav">
         {/* {location.pathname !== '/' && ( */}
-        <Link to="/" className="text-l font-medium hover:underline underline-offset-8 nav-link">
-          <HomeOutlined />
-        </Link>
+        <Tooltip title="Home">
+          <Link to="/" className="text-l font-medium hover:underline underline-offset-8 nav-link">
+            <HomeOutlined />
+          </Link>{' '}
+        </Tooltip>
         {/* )} */}
-        <Link to="/ProductCreate" className="text-l font-medium hover:underline underline-offset-8 nav-link">
-          <FileAddOutlined />
-        </Link>
-        <Link to="/ProductList" className="text-l font-medium hover:underline underline-offset-8 nav-link">
-          <ProductOutlined />
-        </Link>
-        <Link to="/ContactsList" className="text-l font-medium hover:underline underline-offset-8 nav-link">
-          <ContactsOutlined />
-        </Link>
-        <Link to="/Tasks" className="text-l font-medium hover:underline underline-offset-8 nav-link">
-          <ToolOutlined />
-        </Link>
-        <Link to="/Bills" className="text-l font-medium hover:underline underline-offset-8 nav-link">
-          <DatabaseOutlined />
-        </Link>
+
+        <Tooltip title="Dodaj proizvod">
+          <Link to="/ProductCreate" className="text-l font-medium hover:underline underline-offset-8 nav-link">
+            <FileAddOutlined />
+          </Link>
+        </Tooltip>
+        <Tooltip title="Lista proizvoda">
+          <Link to="/ProductList" className="text-l font-medium hover:underline underline-offset-8 nav-link">
+            <ProductOutlined />
+          </Link>
+        </Tooltip>
+        <Tooltip title="Lista kontakata">
+          <Link to="/ContactsList" className="text-l font-medium hover:underline underline-offset-8 nav-link">
+            <ContactsOutlined />
+          </Link>
+        </Tooltip>
+        <Tooltip title="Aktivni poslovi">
+          <Link to="/Tasks" className="text-l font-medium hover:underline underline-offset-8 nav-link">
+            <ToolOutlined />
+          </Link>
+        </Tooltip>
+
+        <Tooltip title="Zavrseni poslovi">
+          <Link to="/Bills" className="text-l font-medium hover:underline underline-offset-8 nav-link">
+            <DatabaseOutlined />
+          </Link>
+        </Tooltip>
       </div>
       <nav className="ml-auto flex items-left gap-4 l:gap-10 external-links"></nav>
     </header>

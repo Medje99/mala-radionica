@@ -40,6 +40,7 @@ const TasksAdvancedActions = () => {
       TaskService.updateTask(updatedTask)
       message.success('Task updated successfully')
       setFilteredTasks(filteredTasks.map((task) => (task.id === updatedTask.id ? updatedTask : task)))
+      form.resetFields()
       setIsModalOpen(false)
     } catch (error) {
       console.error('Validation failed:', error)

@@ -9,7 +9,7 @@ import { ICustomerContact, useGlobalContext } from '@/contexts/GlobalContextProv
 import { DeleteOutlined, EditOutlined, FileDoneOutlined } from '@ant-design/icons'
 
 export const TasksList = () => {
-  const { setContextCustomer: setCustomerContact, setCurrentTask } = useGlobalContext()
+  const { setContextCustomer: setCustomerContact, setCurrentTask, setHeaderTitle } = useGlobalContext()
   const { UnfinishedOnes } = useGetUnfinishedTasks()
   const { handleEdit, handleDelete, handleSave } = TasksAdvancedActions()
   const [searchTerm, setSearchTerm] = useState('')
@@ -18,9 +18,9 @@ export const TasksList = () => {
   const [isEditModalOpen, setEditModalOpen] = useState(false)
   const [isBillModalOpen, setIsBillModalOpen] = useState(false) // State for the bill
 
-  // useEffect(() => {
-  //   setHeaderTitle('Aktivni poslovi')
-  // }, [])
+  useEffect(() => {
+    setHeaderTitle('Aktivni poslovi')
+  }, [])
 
   const [FormTaskList] = Form.useForm<ITaskResponse>()
 
@@ -91,6 +91,10 @@ export const TasksList = () => {
                   id: record.contact_id,
                   fullName: `${record.firstName} ${record.lastName}`,
                 } as ICustomerContact)
+                setCurrentTask({
+                  task_id: record.id,
+                  task_name: record.job_name,
+                })
                 setCurrentTask({
                   task_id: record.id,
                 })
