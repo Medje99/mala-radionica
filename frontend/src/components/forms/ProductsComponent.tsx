@@ -52,7 +52,7 @@ const ProductsComponent = () => {
             >
               {allProducts.map((item) => (
                 <Option className="wide-option" key={item.id} value={item.id}>
-                  {item.name + ' ' + item.model}
+                  {item?.name ?? '' + ' ' + item?.model ?? ''}
                 </Option>
               ))}
             </Select>
