@@ -183,7 +183,7 @@ const BillsList: React.FC = () => {
         columns={columns}
         dataSource={filteredBills}
         pagination={{ pageSize: 15 }}
-        rowKey="job_name"
+        rowKey="job_id"
         expandable={{
           expandedRowRender: (record, index) => (
             <Typography key={index} className="text-center py-4 text-lg ">
