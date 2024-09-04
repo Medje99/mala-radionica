@@ -79,17 +79,17 @@ const ProductsList: React.FC = () => {
   ]
 
   return (
-    <div className="flex flex-col ">
-      <div className="flex w-full ">
+    <div className="flex flex-col product ">
+      <div className="flex w-full product">
         <Input.Search placeholder="Pretraži proizvode" onChange={(e) => setSearchTerm(e.target.value)} />
       </div>
-      <div className="flex flex-col w-1/3 "></div>
+      <div className="flex flex-col w-1/3"></div>
       <Table
         columns={columns}
         dataSource={filteredProducts}
         pagination={{ pageSize: 6 }} // Adjust page size as needed
         rowKey="id" // Use 'id' as the row key
-        className="w-full ml-12"
+        className="product ml-12 mr-12 mt-6  border border-pink-300 p-2 rounded-xl "
       />
 
       <Modal

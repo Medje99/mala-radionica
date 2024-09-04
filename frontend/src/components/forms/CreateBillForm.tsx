@@ -109,9 +109,9 @@ const CreateBillForm = () => {
         </Form.Item>
       </div>
 
-      <Form.Item label="Upotrebljeni delovi:" name="products_used" className="">
+      <div id="product-form">
         <ProductsComponent />
-      </Form.Item>
+      </div>
 
       <Form.Item label="Datum placanja:" name="end_date" className="mb-4">
         <DatePicker

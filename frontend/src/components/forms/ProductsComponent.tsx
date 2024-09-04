@@ -6,6 +6,7 @@ import useGetAllProducts from '@/CustomHooks/useGetAllProducts'
 const { Option } = Select
 
 const ProductsComponent = () => {
+  const [form] = Form.useForm()
   const [rows, setRows] = useState<{ id: number; inventoryQ: number; name: string }[]>([]) // Start with one row with a default maxQuantity
   const { allProducts } = useGetAllProducts()
 
@@ -97,9 +98,8 @@ const ProductsComponent = () => {
 
   return (
     <>
-      {getFields()}
-      <Form.Item>
-        <Space className=" flex gap-10 flex-row items-center justify-center mt-4">
+      <Form.Item name="products_used" className="flex flex-col" labelCol={{ span: 14 }} label="Upotrebljeni delovi:">
+        <Space className=" product-select-wrapper mt-2 flex flex-row justify-center gap-8">
           <Tooltip title="Dodaj novi proizvod" placement="left">
             <Button type="primary" onClick={addRow} icon={<PlusOutlined />}>
               <ArrowDownOutlined />
@@ -113,6 +113,7 @@ const ProductsComponent = () => {
           </Tooltip>
         </Space>
       </Form.Item>
+      {getFields()}
     </>
   )
 }

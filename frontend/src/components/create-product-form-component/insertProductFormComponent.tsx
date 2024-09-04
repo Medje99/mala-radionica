@@ -13,8 +13,8 @@ export const InsertProductFormComponent = () => {
 
   return (
     <Form
+      id="product-form"
       form={form}
-      name="musterija-form"
       title="Unos proizvoda"
       layout="vertical"
       className="bg-white rounded-lg shadow-md p-8 mt-[3%] m-auto h-[80vh] md:w-[40%] flex flex-col justify-center items-center"

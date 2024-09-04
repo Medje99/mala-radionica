@@ -32,12 +32,35 @@
   overflow-y: auto;
 }
 
+#product-form {
+  padding-inline-start: 1em;
+  padding-top: 1em;
+  margin-bottom: 1em;
+  border: rgba(159, 35, 103, 0.119) solid 3px;
+  border-radius: 2em;
+  background-color: rgba(159, 35, 103, 0.119);
+}
+
+.product {
+  background-color: rgba(159, 35, 103, 0.119);
+}
+
 #musterija-form {
   background-color: rgba(159, 107, 35, 0.119);
+  border-color: rgb(139, 66, 66);
+  border-width: 1px;
+  border-style: solid;
+  font-style: oblique;
+  font-size: large;
 }
 
 #task-form {
   background-color: rgba(62, 220, 23, 0.119);
+  border-color: rgb(139, 66, 66);
+  border-width: 1px;
+  border-style: solid;
+  font-style: oblique;
+  font-size: large;
 }
 
 .ant-input-search {
@@ -47,9 +70,8 @@
 
 #search-tasks {
   margin-bottom: 0.5em;
-
   padding-bottom: 0.5em;
-  border-radius: 20px;
+  border-radius: 2em;
   text-align: center;
   border-color: rgb(139, 66, 66);
   border-width: 1px;

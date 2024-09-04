@@ -231,9 +231,7 @@ const BillsList: React.FC = () => {
           >
             <Input disabled />
           </Form.Item>
-          <Form.Item label="Uportrebljeni materijal" name="products_used" rules={[{ required: false }]}>
-            <ProductsComponent />
-          </Form.Item>
+          <ProductsComponent />
         </Form>
       </Modal>
 
