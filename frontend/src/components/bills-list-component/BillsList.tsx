@@ -185,8 +185,8 @@ const BillsList: React.FC = () => {
         pagination={{ pageSize: 15 }}
         rowKey="job_name"
         expandable={{
-          expandedRowRender: (record) => (
-            <Typography key={record.bill_id} className="text-center py-4 text-lg ">
+          expandedRowRender: (record, index) => (
+            <Typography key={index} className="text-center py-4 text-lg ">
               Detalji posla: {record.job_description}
             </Typography>
           ),
