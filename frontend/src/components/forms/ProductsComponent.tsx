@@ -13,9 +13,11 @@ const ProductsComponent = () => {
     const selectedProduct = allProducts.find((product) => product.id === productId)
     const maxQuantity = selectedProduct ? selectedProduct.quantity : 0
 
-    const name = selectedProduct?.name ?? ''
+    const nameModel = selectedProduct?.name + ' ' + selectedProduct?.model ?? ''
 
-    const updatedRows = rows.map((row, index) => (index === rowIndex ? { ...row, inventoryQ: maxQuantity, name } : row))
+    const updatedRows = rows.map((row, index) =>
+      index === rowIndex ? { ...row, inventoryQ: maxQuantity, nameModel } : row,
+    )
     setRows(updatedRows)
   }
 
@@ -34,8 +36,9 @@ const ProductsComponent = () => {
             ]}
           >
             <Select
+              dropdownStyle={{ width: '20em' }}
               showSearch
-              placeholder="proizvod"
+              placeholder="Proizvodi"
               allowClear
               optionFilterProp="children"
               filterOption={(input, option) => {
@@ -47,8 +50,8 @@ const ProductsComponent = () => {
               }}
             >
               {allProducts.map((item) => (
-                <Option key={item.id} value={item.id}>
-                  {item.name}
+                <Option className="wide-option" key={item.id} value={item.id}>
+                  {item.name + ' ' + item.model}
                 </Option>
               ))}
             </Select>
