@@ -117,18 +117,22 @@ const ContactsList: React.FC = () => {
   ]
 
   return (
-    <div className="flex flex-col">
-      <Space id="search-container">
+    <div className=" flex-row ">
+      <Space id="search-container" className="w-full col-span-12 flex contact ">
         <Input.Search placeholder="Pretrazi kontakte" onChange={(e) => setSearchTerm(e.target.value)} id="search" />
       </Space>
 
-      <Table
-        columns={columns}
-        dataSource={filteredContacts}
-        pagination={{ pageSize: 10 }}
-        rowKey="id"
-        className=" w-full  mx-auto"
-      />
+      <section className="w-full px-24 ">
+        <Table
+          id="tableContainer"
+          columns={columns}
+          dataSource={filteredContacts}
+          pagination={{ pageSize: 10 }}
+          rowKey="id"
+          size="small"
+          className="contact ml-12 mr-12 mt-6 p-2 rounded-xl"
+        />
+      </section>
 
       <Modal title="Uredi kontakt" open={isModalOpen} onOk={handleSave} onCancel={() => setIsModalOpen(false)}>
         <Form form={FormContactList} layout="vertical">

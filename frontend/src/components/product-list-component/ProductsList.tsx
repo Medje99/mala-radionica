@@ -83,19 +83,19 @@ const ProductsList: React.FC = () => {
   ]
 
   return (
-    <div className="flex flex-col product ">
-      <div className="flex w-full product">
+    <div className=" flex-row product">
+      <Space id="search-container" className="col-span-12 flex product mt-2 pt-2">
         <Input.Search placeholder="Pretraži proizvode" onChange={(e) => setSearchTerm(e.target.value)} />
-      </div>
-      <div className="flex flex-col w-1/3"></div>
-      <Table
-        columns={columns}
-        dataSource={filteredProducts}
-        pagination={{ pageSize: 6 }} // Adjust page size as needed
-        rowKey="id" // Use 'id' as the row key
-        className="product ml-12 mr-12 mt-6  border border-pink-300 p-2 rounded-xl "
-      />
-
+      </Space>
+      <section className="w-full px-24 ">
+        <Table
+          columns={columns}
+          dataSource={filteredProducts}
+          pagination={{ pageSize: 6 }} // Adjust page size as needed
+          rowKey="id" // Use 'id' as the row key
+          className="product ml-12 mr-12 mt-6  border border-pink-300 p-2 rounded-xl "
+        />
+      </section>
       <Modal
         title="Uredi proizvod"
         open={isModalOpen}
@@ -110,7 +110,7 @@ const ProductsList: React.FC = () => {
           },
         }}
       >
-        <Form form={FormProductList} layout="vertical" className="space-y-4">
+        <Form form={FormProductList} layout="vertical" className="task">
           <Form.Item
             label="Naziv proizvoda"
             name="name"

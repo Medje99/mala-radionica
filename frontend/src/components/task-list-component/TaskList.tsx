@@ -111,7 +111,7 @@ export const TasksList = () => {
   ]
 
   return (
-    <div id="tasks-list-container" className="flex flex-col">
+    <div className=" flex-row task ">
       {/*edit FormTaskList*/}
 
       <Modal
@@ -143,34 +143,37 @@ export const TasksList = () => {
       >
         <CreateBillForm />
       </Modal>
+      <Space id="search-container" className="w-full col-span-12 flex task ">
+        <Input.Search
+          id="search"
+          size="large"
+          placeholder="Pretrazi poslove"
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </Space>
+      <section className="w-full px-24 task">
+        <Table
+          className="task  ml-12 mr-12 mt-6 p-2 rounded-xl"
+          size="small"
+          id="tableContainer"
+          virtual
+          scroll={{ y: 500 }}
+          pagination={{ hideOnSinglePage: true, pageSize: 10000 }}
+          columns={columns}
+          expandable={{
+            expandedRowRender: (record) => (
+              <Typography key={record.id} className="text-center ">
+                {record.job_description}
+              </Typography>
+            ),
 
-      <Input.Search
-        id="search"
-        size="large"
-        placeholder="Pretrazi poslove"
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-
-      <Table
-        size="small"
-        id="tableContainer"
-        virtual
-        scroll={{ y: 500 }}
-        pagination={{ hideOnSinglePage: true, pageSize: 10000 }}
-        columns={columns}
-        expandable={{
-          expandedRowRender: (record) => (
-            <Typography key={record.id} className="text-center ">
-              {record.job_description}
-            </Typography>
-          ),
-
-          rowExpandable: (record) => !!record.job_description,
-          columnWidth: 50, // Adjust width as needed
-        }}
-        dataSource={filteredTasks}
-        rowKey="id"
-      />
+            rowExpandable: (record) => !!record.job_description,
+            columnWidth: 50, // Adjust width as needed
+          }}
+          dataSource={filteredTasks}
+          rowKey="id"
+        />
+      </section>
       {/* 
     tableclose */}
     </div>
