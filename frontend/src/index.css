@@ -32,6 +32,14 @@
   overflow-y: auto;
 }
 
+#musterija-form {
+  background-color: rgba(159, 107, 35, 0.119);
+}
+
+#task-form {
+  background-color: rgba(62, 220, 23, 0.119);
+}
+
 .ant-input-search {
   padding: 1vh;
   padding-inline: 3vh;

@@ -49,8 +49,8 @@ const CreateContactForm = () => {
     selectedCustomer //if existing contact advance to next form
       ? setCurrentPage(currentPage + 1) //else validate form , try adding
       : FormContactCreate.validateFields().then((values: any) => {
-          const { firstName } = values
-          const separatedName = separateFullName(firstName)
+          const { fullName } = values
+          const separatedName = separateFullName(fullName)
           const formatedData = {
             ...values,
             firstName: separatedName.firstName,
@@ -77,10 +77,10 @@ const CreateContactForm = () => {
   }
 
   return (
-    <Form form={FormContactCreate} name="musterija-form" layout="vertical">
+    <Form form={FormContactCreate} layout="vertical" id="musterija-form">
       <Typography className="font-bold text-xl mb-5 text-center">Izaberi ili unesi novu musteriju</Typography>
 
-      <Form.Item label="Musterija" name="firstName" id="Musterija">
+      <Form.Item label="Musterija" name="fullName" id="Musterija">
         {newCustomer && selectedCustomer ? null : (
           <Select
             showSearch
@@ -91,9 +91,9 @@ const CreateContactForm = () => {
             filterOption={true}
             allowClear
             onKeyDown={(event: any) => {
-              // Instead of using event.target.value directly, schedule the update:
+              // Instead of using event.target.value directly, schedule the update so it takes all characters
               setTimeout(() => {
-                FormContactCreate.setFieldValue('firstName', event.target.value)
+                FormContactCreate.setFieldValue('fullName', event.target.value)
               }, 0)
             }}
             notFoundContent={null}

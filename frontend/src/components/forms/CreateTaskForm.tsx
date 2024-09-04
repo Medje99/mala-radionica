@@ -64,8 +64,8 @@ const CreateTaskForm = () => {
 
   return (
     <Form
+      id="task-form"
       form={TaskForm}
-      name="job-form"
       layout="vertical"
       className="rounded-lg"
       initialValues={{

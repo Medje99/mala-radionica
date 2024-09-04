@@ -68,10 +68,9 @@ const CreateBillForm = () => {
 
   return (
     <Form
+      id="bill-form"
       form={FormBillCreate}
-      name="task-form"
       layout="vertical"
-      className="pt-10  px-8  h-[80vh] " // Added shadow and spacing
       onFinish={submitLogic}
       initialValues={{
         paid: false,

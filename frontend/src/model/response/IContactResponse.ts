@@ -6,4 +6,5 @@ export interface IContacts {
   lastName: string
   other: string | null
   phoneNumber: string
+  fullName: string
 }
