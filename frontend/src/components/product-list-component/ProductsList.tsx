@@ -89,6 +89,8 @@ const ProductsList: React.FC = () => {
       </Space>
       <section className="w-full px-24 ">
         <Table
+          id="tableContainer"
+          size="small"
           columns={columns}
           dataSource={filteredProducts}
           pagination={{ pageSize: 6 }} // Adjust page size as needed
@@ -171,9 +173,10 @@ const ProductsList: React.FC = () => {
         </Form>
       </Modal>
       {filteredProducts.length === 0 && (
-        // <DrawerWithExtraActions />
         <Link to="/ProductCreate" className="text-center">
-          <h1 className="lg:leading-tighter text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl xl:text-[3.4rem] 2xl:text-[3.75rem]"></h1>
+          <h1 className="lg:leading-tighter text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl xl:text-[3.4rem] 2xl:text-[3.75rem]">
+            Dodaj novi proizvod
+          </h1>
         </Link>
       )}
     </div>
