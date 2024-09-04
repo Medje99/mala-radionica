@@ -85,7 +85,7 @@ const ProductsList: React.FC = () => {
   return (
     <div className=" flex-row product">
       <Space id="search-container" className="col-span-12 flex product mt-2 pt-2">
-        <Input.Search placeholder="Pretraži proizvode" onChange={(e) => setSearchTerm(e.target.value)} />
+        <Input.Search placeholder="Pretraži proizvode" onChange={(e) => setSearchTerm(e.target.value)} id="search" />
       </Space>
       <section className="w-full px-24 ">
         <Table
