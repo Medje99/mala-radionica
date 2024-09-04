@@ -42,14 +42,15 @@ export const TasksList = () => {
     }
   }, [searchTerm, UnfinishedOnes])
 
-  //Columns imported
+  //Columns imported clean
   const columns = [
     customer_firstName,
     customer_lastName,
     taskName,
     Table.EXPAND_COLUMN,
     creation_date,
-    //Colums with local state
+
+    //Actions column
     {
       title: <div className="text-center flex justify-center">Radnje</div>,
       key: 'action',
@@ -108,7 +109,7 @@ export const TasksList = () => {
   ]
 
   return (
-    <div className=" flex flex-col ">
+    <div id="tasks-list-container">
       {/*edit FormTaskList*/}
 
       <Modal
@@ -118,7 +119,7 @@ export const TasksList = () => {
         footer={null}
         closeIcon={null}
         title="Izmeni posao : "
-        className="modal-form-container"
+        className="flex flex-col"
       >
         <Form form={FormTaskList} layout="vertical">
           <Form.Item label="Naziv posla" name="job_name" rules={[{ required: true, message: 'Unesi naziv posla' }]}>

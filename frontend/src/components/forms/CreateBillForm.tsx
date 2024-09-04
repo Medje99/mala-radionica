@@ -54,7 +54,8 @@ const CreateBillForm = () => {
         }
 
         BillService.createBill(updatedValues)
-        BillService.productQUpdate(values.products_used)
+        values.products_used && BillService.productQUpdate(values.products_used)
+
         message.success('Racun uspesno kreiran !') // Show error message
         setModalIsOpen(false)
         FormBillCreate.resetFields()
