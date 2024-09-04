@@ -7,11 +7,12 @@
   height: 94vh;
 } */
 
+#tasks-list-container {
+  display: block-inline;
+}
+
 #tableContainer {
-  background-color: rgba(170, 170, 170, 0.068);
-  padding: 2em;
   border-radius: 0.1em;
-  /* background-color: #01a5f11e; */
   box-shadow: #3380a777 0px 0px 10px;
 }
 .ant-btn {
@@ -32,6 +33,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+#bill-form {
+  display: block;
 }
 
 .action-button {
@@ -61,6 +66,7 @@
 #product-form {
   width: 30vw;
   margin-top: 4em;
+  /* productinput dont touch */
   padding-inline-start: 1em;
   padding-top: 2em;
   margin-bottom: 1em;
@@ -70,6 +76,18 @@
 
 .product {
   background-color: rgba(159, 35, 103, 0.119);
+}
+
+.contact {
+  background-color: rgba(185, 133, 60, 0.301);
+}
+
+.task {
+  background-color: rgba(62, 220, 23, 0.119);
+}
+
+.bill {
+  background-color: rgba(55, 140, 179, 0.164);
 }
 
 #musterija-form {
@@ -104,22 +122,20 @@
 }
 
 #search {
-  background-color: #cccccc15;
+  margin-top: 0.5em;
   margin-bottom: 0.5em;
   padding-bottom: 0.5em;
   border-radius: 2em;
   text-align: center;
-  border-color: rgb(139, 66, 66);
-  border-width: 2px;
   border-style: solid;
   font-style: oblique;
   font-size: large;
 }
 
 .ant-input-search-button {
-  background-color: #0b131b2c;
+  background-color: #0b131b00;
   border-color: rgb(139, 66, 66);
-  border-width: 2px;
+  border-width: 1px;
   border-style: solid;
   font-style: oblique;
   font-size: large;

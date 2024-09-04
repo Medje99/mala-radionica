@@ -176,30 +176,32 @@ const BillsList: React.FC = () => {
   ]
 
   return (
-    <div>
-      <Input.Search placeholder="Pretrazi racune" onChange={(e) => setSearchTerm(e.target.value)} id="search" />
+    <div className=" flex-row bill">
+      <Space id="search-container" className="w-full col-span-12 flex bill ">
+        <Input.Search placeholder="Pretrazi racune" onChange={(e) => setSearchTerm(e.target.value)} id="search" />
+      </Space>
+      <section className="w-full px-24 bill pb-20">
+        <Table
+          className="bill ml-12 mr-12  p-2 rounded-xl"
+          size="small"
+          columns={columns}
+          dataSource={filteredBills}
+          pagination={{ pageSize: 15 }}
+          rowKey="job_id"
+          expandable={{
+            expandedRowRender: (record, index) => (
+              <Typography key={index} className="text-center py-4 text-lg ">
+                Detalji posla: {record.job_description}
+              </Typography>
+            ),
 
-      <Table
-        size="small"
-        id="tableContainer"
-        columns={columns}
-        dataSource={filteredBills}
-        pagination={{ pageSize: 15 }}
-        rowKey="job_id"
-        expandable={{
-          expandedRowRender: (record, index) => (
-            <Typography key={index} className="text-center py-4 text-lg ">
-              Detalji posla: {record.job_description}
-            </Typography>
-          ),
+            rowExpandable: (record) => !!record.job_description,
 
-          rowExpandable: (record) => !!record.job_description,
-
-          columnWidth: 50, // Adjust width as needed
-          expandIconColumnIndex: 2, // Index of the taskName column
-        }}
-      />
-
+            columnWidth: 50, // Adjust width as needed
+            expandIconColumnIndex: 2, // Index of the taskName column
+          }}
+        />
+      </section>
       <Modal title="Izmeni racun" open={isModalOpen} onOk={handleSave} onCancel={() => setIsModalOpen(false)}>
         <Form
           form={FormBillList}
