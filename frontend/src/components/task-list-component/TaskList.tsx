@@ -152,7 +152,7 @@ export const TasksList = () => {
       <Table
         id="tasks-table"
         virtual
-        scroll={{ y: 800 }}
+        scroll={{ y: 600 }}
         pagination={{ hideOnSinglePage: true, pageSize: 10000 }}
         columns={columns}
         expandable={{

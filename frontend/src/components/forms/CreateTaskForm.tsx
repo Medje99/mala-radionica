@@ -49,7 +49,7 @@ const CreateTaskForm = () => {
             task_id: response.data.id,
             end_date: values.end_date,
           })
-          //setCurrentPage(0)
+          setCurrentPage(0)
         })
         .then(() => {
           isFinished ? setCurrentPage(currentPage + 1) : setModalIsOpen(false)
