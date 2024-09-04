@@ -2,18 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-/* .no-vertical-scroll {
+.no-vertical-scroll {
   overflow-y: hidden;
   height: 94vh;
-} */
+}
 
 #tasks-list-container {
   display: block-inline;
 }
 
+.ant-table {
+  box-shadow: #00000088 2px 2px 30px 20px;
+}
 #tableContainer {
-  border-radius: 0.1em;
-  box-shadow: #3380a777 0px 0px 10px;
+  padding: 30px;
 }
 .ant-btn {
   color: rgb(255, 255, 255);
@@ -111,36 +113,36 @@
 .ant-input-search {
   display: flex;
   padding: 1vh;
-  padding-inline: 3vh;
+
+  padding-inline: 11vw;
 }
 
 /* DO NOT TOUCH THIS BLOCK */
 
 #search-container {
   display: block;
-  border-radius: 2em;
+  /* border-radius: 2em; */
 }
 
 #search {
   margin-top: 0.5em;
   margin-bottom: 0.5em;
-  padding-bottom: 0.5em;
-  border-radius: 2em;
+  box-shadow: #686c6e 10px 5px 10px;
+  border-radius: 1em;
   text-align: center;
+  border: #686c6e 2px;
   border-style: solid;
   font-style: oblique;
   font-size: large;
+  font: black-400;
 }
 
 .ant-input-search-button {
-  background-color: #0b131b00;
-  border-color: rgb(139, 66, 66);
-  border-width: 1px;
-  border-style: solid;
-  font-style: oblique;
-  font-size: large;
-  margin-left: 0.3em;
-  margin-bottom: 0.4em;
+  background-color: #00000000;
+  margin-left: 1em;
+}
+.ant-input-search-button :hover {
+  font-size: x-large;
 }
 
 .header-title {

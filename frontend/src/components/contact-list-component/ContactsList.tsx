@@ -117,12 +117,12 @@ const ContactsList: React.FC = () => {
   ]
 
   return (
-    <div className=" flex-row ">
+    <div className=" flex-row contact">
       <Space id="search-container" className="w-full col-span-12 flex contact ">
         <Input.Search placeholder="Pretrazi kontakte" onChange={(e) => setSearchTerm(e.target.value)} id="search" />
       </Space>
 
-      <section className="w-full px-24 ">
+      <section className="w-full px-24">
         <Table
           id="tableContainer"
           columns={columns}
