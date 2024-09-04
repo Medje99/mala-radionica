@@ -109,7 +109,7 @@ export const TasksList = () => {
   ]
 
   return (
-    <div id="tasks-list-container">
+    <div id="tasks-list-container" className="flex flex-col">
       {/*edit FormTaskList*/}
 
       <Modal
@@ -118,8 +118,8 @@ export const TasksList = () => {
         onCancel={() => setEditModalOpen(false)}
         footer={null}
         closeIcon={null}
-        title="Izmeni posao : "
-        className="flex flex-col"
+        title="Izmeni posao :"
+        className="flex editModal"
       >
         <Form form={FormTaskList} layout="vertical">
           <Form.Item label="Naziv posla" name="job_name" rules={[{ required: true, message: 'Unesi naziv posla' }]}>
@@ -137,7 +137,7 @@ export const TasksList = () => {
         onCancel={() => setModalIsOpen(false)}
         footer={null}
         closeIcon={null}
-        className="modal-form-container"
+        className="billModal"
       >
         <CreateBillForm />
       </Modal>
@@ -152,8 +152,8 @@ export const TasksList = () => {
       <Table
         id="tasks-table"
         virtual
-        scroll={{ y: 445 }}
-        pagination={{ hideOnSinglePage: true, pageSize: 7 }}
+        scroll={{ y: 800 }}
+        pagination={{ hideOnSinglePage: true, pageSize: 10000 }}
         columns={columns}
         expandable={{
           expandedRowRender: (record) => (
@@ -168,6 +168,8 @@ export const TasksList = () => {
         dataSource={filteredTasks}
         rowKey="id"
       />
+      {/* 
+    tableclose */}
     </div>
   )
 }

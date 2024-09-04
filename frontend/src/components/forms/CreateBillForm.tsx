@@ -79,13 +79,13 @@ const CreateBillForm = () => {
         quantity: 1,
       }}
     >
-      <Typography className="font-bold text-xl mb-4 text-center">
+      <Typography className="font-bold text-xl mb-8 text-center">
         {'Naplata za: ' + customerContact?.fullName}
       </Typography>
 
-      <div className="flex justify-between">
+      <div className="flex justify-center">
         <Form.Item
-          className="w-3/5 flex flex-row justify-between"
+          className="w-full flex flex-row justify"
           label="Cena usluge"
           name="labor_cost"
           rules={[{ required: true, message: 'Cena usluge je obavezna!' }]}
@@ -123,7 +123,10 @@ const CreateBillForm = () => {
       </Form.Item>
 
       <div className="flex">
-        <VerticalRightOutlined className="ml-10 hover cursor-pointer" onClick={() => setCurrentPage(currentPage - 1)} />
+        <VerticalRightOutlined
+          className="ml-10 hover cursor-pointer backB "
+          onClick={() => setCurrentPage(currentPage - 1)}
+        />
         <ActionButton
           onClickHandler={submitLogic}
           title={isPaid ? 'Naplata' : 'Dodaj na listu dugova'}

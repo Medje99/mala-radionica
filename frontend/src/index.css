@@ -2,10 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-.no-vertical-scroll {
+/* .no-vertical-scroll {
   overflow-y: hidden;
-  height: 90vh; /* Limit height to 100% of viewport height */
-}
+  height: 94vh;
+} */
 
 .ant-btn {
   color: rgb(255, 255, 255);
@@ -14,21 +14,40 @@
   font-size: 14px;
 }
 
+.ant-modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.billModal,
+.editModal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .action-button {
   margin: auto;
   padding: 5px 30px 5px 30px;
   color: rgb(255, 255, 255);
 }
 
+.backB {
+  font-size: 2em;
+}
+
 .ant-form {
+  height: auto;
+  min-width: 20vw;
   background-color: rgba(55, 140, 179, 0.164);
-  padding-block: 20px;
-  padding-inline: 4vw;
+  margin: 0 auto;
+  padding: 2em;
   border-radius: 10px;
   border-color: rgb(139, 66, 66);
   border-style: solid;
   border-width: 1px;
-  max-height: 89vh;
+  /* max-height: 89vh; */
   overflow-y: auto;
 }
 
@@ -114,7 +133,13 @@
 
 .ctst {
   display: flex;
-  margin-right: 50px;
-  padding-left: 20px;
-  padding-top: 10px;
+  margin-right: 20vw;
+  margin-left: 10vw;
+  padding-top: 2vh;
+}
+
+.msf {
+  margin-top: 10em;
+  margin-left: 5em;
+  margin-right: 5em;
 }

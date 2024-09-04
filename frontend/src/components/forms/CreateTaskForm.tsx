@@ -49,7 +49,7 @@ const CreateTaskForm = () => {
             task_id: response.data.id,
             end_date: values.end_date,
           })
-          setCurrentPage(0)
+          //setCurrentPage(0)
         })
         .then(() => {
           isFinished ? setCurrentPage(currentPage + 1) : setModalIsOpen(false)
@@ -119,7 +119,7 @@ const CreateTaskForm = () => {
         )}
       </div>
       <div className="flex flex-row justify-between mt-5">
-        <VerticalRightOutlined className="ml-10" onClick={() => setCurrentPage(currentPage - 1)} title="Nazad" />
+        <VerticalRightOutlined className="ml-10 backB" onClick={() => setCurrentPage(currentPage - 1)} title="Nazad" />
         <ActionButton
           onClickHandler={onClickHandler}
           title={isFinished ? 'Naplata' : 'Dodaj na listu poslova'}
