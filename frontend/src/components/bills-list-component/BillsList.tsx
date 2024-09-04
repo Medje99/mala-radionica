@@ -126,11 +126,14 @@ const BillsList: React.FC = () => {
         ) : (
           <div className="flex items-center">
             <Popconfirm
+              key={record.bill_id}
               title="Da li ste sigurni da zelite oznaciti kao isplaceno?"
               onConfirm={() => markAsPaid(record)}
               onCancel={() => message.error('Otkazano!')}
               okText="Da"
               cancelText="Ne"
+              okButtonProps={{ style: { background: 'green' } }}
+              cancelButtonProps={{ style: { background: 'red' } }}
             >
               <Button type="primary" danger>
                 Izmiri dug
@@ -160,9 +163,13 @@ const BillsList: React.FC = () => {
           </Tooltip>
           <Popconfirm
             title="Jeste li sigurni da zelite izbrisati ovaj racun?!"
-            onConfirm={() => handleDelete(record.bill_id)} // Use bill_id here
+            onConfirm={() => handleDelete(record.bill_id)}
             onCancel={() => message.error('Racun izbrisan!')}
-            key={record.bill_id + 'delete'} // Add a unique key for the Popconfirm
+            key={record.bill_id + 'delete'}
+            cancelButtonProps={{ style: { background: 'red' } }}
+            okButtonProps={{ style: { background: 'green' } }}
+            cancelText="Ne"
+            okText="Da"
           >
             <Tooltip title="Obrisi">
               <Button danger ghost>

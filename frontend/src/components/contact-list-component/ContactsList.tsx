@@ -102,6 +102,8 @@ const ContactsList: React.FC = () => {
             onCancel={() => message.error('Brisanje otkazano')}
             okText="Da"
             cancelText="Ne"
+            okButtonProps={{ style: { background: 'green' } }}
+            cancelButtonProps={{ style: { background: 'red' } }}
           >
             <Tooltip title="Obrisi">
               <Button danger ghost>

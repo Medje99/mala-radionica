@@ -73,7 +73,9 @@ export const TasksList = () => {
             onConfirm={() => handleDelete(record.id, filteredTasks, setFilteredTasks)}
             onCancel={() => message.error('Delete canceled')}
             okText="Da"
-            cancelText="Joj ne!"
+            cancelText="Ne!"
+            okButtonProps={{ style: { background: 'green' } }}
+            cancelButtonProps={{ style: { background: 'red' } }}
           >
             <Tooltip title="Obrisi">
               <Button danger ghost>

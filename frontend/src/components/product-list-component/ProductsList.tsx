@@ -66,6 +66,10 @@ const ProductsList: React.FC = () => {
             title="Da li ste sigurni da zelite da obrisete ovaj proizvod?"
             onConfirm={() => handleDelete(record.id, filteredProducts, setFilteredProducts)}
             onCancel={() => message.error('Brisanje proizvoda otkazano')}
+            okText="Da"
+            cancelText="Ne"
+            okButtonProps={{ style: { background: 'green' } }}
+            cancelButtonProps={{ style: { background: 'red' } }}
           >
             <Tooltip title="Obrisi">
               <Button danger ghost>
