@@ -7,6 +7,13 @@
   height: 94vh;
 } */
 
+#tableContainer {
+  background-color: rgba(170, 170, 170, 0.068);
+  padding: 2em;
+  border-radius: 0.1em;
+  /* background-color: #01a5f11e; */
+  box-shadow: #3380a777 0px 0px 10px;
+}
 .ant-btn {
   color: rgb(255, 255, 255);
   background-color: #01a4f1;
@@ -52,11 +59,12 @@
 }
 
 #product-form {
+  width: 30vw;
+  margin-top: 4em;
   padding-inline-start: 1em;
-  padding-top: 1em;
+  padding-top: 2em;
   margin-bottom: 1em;
-  border: rgba(159, 35, 103, 0.119) solid 3px;
-  border-radius: 2em;
+  box-shadow: rgba(159, 35, 103, 0.678) 0px 0px 15px;
   background-color: rgba(159, 35, 103, 0.119);
 }
 
@@ -83,33 +91,40 @@
 }
 
 .ant-input-search {
+  display: flex;
   padding: 1vh;
   padding-inline: 3vh;
 }
 
-#search-tasks {
+/* DO NOT TOUCH THIS BLOCK */
+
+#search-container {
+  display: block;
+  border-radius: 2em;
+}
+
+#search {
+  background-color: #cccccc15;
   margin-bottom: 0.5em;
   padding-bottom: 0.5em;
   border-radius: 2em;
   text-align: center;
   border-color: rgb(139, 66, 66);
-  border-width: 1px;
+  border-width: 2px;
   border-style: solid;
   font-style: oblique;
   font-size: large;
 }
 
 .ant-input-search-button {
-  background: rgba(255, 255, 255, 0.856);
-  border-radius: 60px;
-  margin-right: 10px;
-  margin-left: 10px;
-}
-
-.modal-title {
-  margin-top: 5px;
-  margin-bottom: 250px;
-  background-color: rgb(190, 79, 79);
+  background-color: #0b131b2c;
+  border-color: rgb(139, 66, 66);
+  border-width: 2px;
+  border-style: solid;
+  font-style: oblique;
+  font-size: large;
+  margin-left: 0.3em;
+  margin-bottom: 0.4em;
 }
 
 .header-title {
@@ -121,26 +136,16 @@
 }
 
 .action-button {
-  background-color: #004483;
+  box-shadow: #1297da 0px 0px 10px;
+
+  background-color: #0c62b3a4;
+  /* border: #00448380 2px solid; */
 }
+
 .ant-table-row-expand-icon-cell {
   font-size: larger;
 }
 
-.modal-form-container {
-  padding: 30px;
-}
-
-.ctst {
-  display: flex;
-  margin-top: 1vh;
-  margin-right: 20vw;
-  margin-left: 10vw;
-  padding-top: 2vh;
-}
-
-.msf {
-  margin-top: 10em;
-  margin-left: 5em;
-  margin-right: 5em;
+.ant-table-row-expand-icon-cell {
+  font-size: larger;
 }

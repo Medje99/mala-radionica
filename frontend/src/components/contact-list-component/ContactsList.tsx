@@ -116,7 +116,9 @@ const ContactsList: React.FC = () => {
 
   return (
     <div className="flex flex-col">
-      <Input.Search placeholder="Pretrazi kontakte" onChange={(e) => setSearchTerm(e.target.value)} />
+      <Space id="search-container">
+        <Input.Search placeholder="Pretrazi kontakte" onChange={(e) => setSearchTerm(e.target.value)} id="search" />
+      </Space>
 
       <Table
         columns={columns}

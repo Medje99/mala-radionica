@@ -143,16 +143,17 @@ export const TasksList = () => {
       </Modal>
 
       <Input.Search
-        id="search-tasks"
+        id="search"
         size="large"
         placeholder="Pretrazi poslove"
         onChange={(e) => setSearchTerm(e.target.value)}
       />
 
       <Table
-        id="tasks-table"
+        size="small"
+        id="tableContainer"
         virtual
-        scroll={{ y: 600 }}
+        scroll={{ y: 500 }}
         pagination={{ hideOnSinglePage: true, pageSize: 10000 }}
         columns={columns}
         expandable={{

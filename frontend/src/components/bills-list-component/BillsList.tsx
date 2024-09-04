@@ -177,9 +177,11 @@ const BillsList: React.FC = () => {
 
   return (
     <div>
-      <Input.Search placeholder="Pretrazi racune" onChange={(e) => setSearchTerm(e.target.value)} />
+      <Input.Search placeholder="Pretrazi racune" onChange={(e) => setSearchTerm(e.target.value)} id="search" />
 
       <Table
+        size="small"
+        id="tableContainer"
         columns={columns}
         dataSource={filteredBills}
         pagination={{ pageSize: 15 }}

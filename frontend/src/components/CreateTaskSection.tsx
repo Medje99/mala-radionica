@@ -3,14 +3,14 @@ import TasksList from './task-list-component/TaskList'
 
 const CreateTaskSection = () => {
   return (
-    <main className=" flex flex-row">
-      <section className="msf">
-        <div className="container w-full md:px-4  space-y-10 md:space-y-16 xl:space-y-16">
+    <main className="flex flex-row justify-center">
+      <section className="w-4/12 pr-24 pt-10">
+        <div className="col-span-2">
           <MultiStepForm />
         </div>
       </section>
 
-      <section className="flex ctst">
+      <section className="w-7/12 pt-10">
         <TasksList />
       </section>
     </main>
