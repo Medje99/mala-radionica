@@ -18,12 +18,14 @@ export const TasksList = () => {
   const [isEditModalOpen, setEditModalOpen] = useState(false)
   const { modalIsOpen, setModalIsOpen } = useGlobalContext()
 
+  //Task set title
   useEffect(() => {
     setHeaderTitle('Aktivni poslovi')
   }, [])
 
   const [FormTaskList] = Form.useForm<ITaskResponse>()
 
+  ////Task update list on search/product change main useEffect in UnfinishedOnes !
   useEffect(() => {
     if (UnfinishedOnes) {
       const filtered = UnfinishedOnes.filter((task) => {
@@ -40,13 +42,14 @@ export const TasksList = () => {
     }
   }, [searchTerm, UnfinishedOnes])
 
+  //Columns imported
   const columns = [
     customer_firstName,
     customer_lastName,
     taskName,
     Table.EXPAND_COLUMN,
     creation_date,
-
+    //Colums with local state
     {
       title: <div className="text-center flex justify-center">Radnje</div>,
       key: 'action',

@@ -12,15 +12,19 @@ const { handleEdit, handleDelete, handleSave } = ProductsAdvancedActions()
 
 const ProductsList: React.FC = () => {
   const { setHeaderTitle } = useGlobalContext()
+  //Product set title
   useEffect(() => {
     setHeaderTitle('Proizvodi')
   }, [])
+
   const { allProducts } = useGetAllProducts()
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredProducts, setFilteredProducts] = useState<IProducts[]>([])
   const [editingProduct, setEditingProduct] = useState<IProducts>({} as IProducts)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [FormProductList] = Form.useForm<IProducts>()
+
+  //Product update list on search/product change another useEffect in AllProducts
 
   useEffect(() => {
     const filtered = allProducts.filter((product) => {
