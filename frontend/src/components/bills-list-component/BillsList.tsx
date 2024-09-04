@@ -7,7 +7,7 @@ import { IBillResponse } from '@/model/response/IBillResponse'
 import dayjs from 'dayjs'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import moment from 'moment'
-import ProductsComponent from '../modal-form-parts/test/ProductsComponent'
+import ProductsComponent from '../forms/ProductsComponent'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
 const BillsList: React.FC = () => {

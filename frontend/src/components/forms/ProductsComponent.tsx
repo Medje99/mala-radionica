@@ -1,12 +1,5 @@
 import { useState } from 'react'
-import {
-  PlusOutlined,
-  MinusOutlined,
-  DeleteRowOutlined,
-  InsertRowBelowOutlined,
-  ArrowDownOutlined,
-  ArrowUpOutlined,
-} from '@ant-design/icons'
+import { PlusOutlined, MinusOutlined, ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons'
 import { Button, Col, Form, Input, Row, Select, Space, Tooltip } from 'antd'
 import useGetAllProducts from '@/CustomHooks/useGetAllProducts'
 

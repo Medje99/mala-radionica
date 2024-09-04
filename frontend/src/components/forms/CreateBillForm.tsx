@@ -3,7 +3,7 @@ import { Form, Switch, InputNumber, Typography, message, DatePicker } from 'antd
 import { useEffect, useState } from 'react'
 import ActionButton from '../CustomButtons/ActionButton' // recives function , button title, button class , and aditional styles
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
-import ProductsComponent from './test/ProductsComponent'
+import ProductsComponent from './ProductsComponent'
 import useGetAllProducts from '../../CustomHooks/useGetAllProducts'
 import BillService from '@/service/BillService'
 import { IBillResponse } from '@/model/response/IBillResponse'
