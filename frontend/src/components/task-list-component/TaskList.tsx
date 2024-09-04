@@ -140,7 +140,6 @@ export const TasksList = () => {
 
       <Input.Search
         id="search-tasks"
-        className="mx-auto"
         size="large"
         placeholder="Pretrazi poslove"
         onChange={(e) => setSearchTerm(e.target.value)}

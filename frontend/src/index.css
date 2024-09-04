@@ -38,6 +38,9 @@
 }
 
 #search-tasks {
+  margin-bottom: 0.5em;
+
+  padding-bottom: 0.5em;
   border-radius: 20px;
   text-align: center;
   border-color: rgb(139, 66, 66);
@@ -77,4 +80,11 @@
 
 .modal-form-container {
   padding: 30px;
+}
+
+.ctst {
+  display: flex;
+  margin-right: 50px;
+  padding-left: 20px;
+  padding-top: 10px;
 }
