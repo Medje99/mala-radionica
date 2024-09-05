@@ -24,8 +24,8 @@ const ProductsComponent = () => {
 
   const getFields = () => {
     return rows.map((row, index) => (
-      <Row gutter={24} key={index}>
-        <Col span={11}>
+      <Row gutter={24} key={index} className="justify-center">
+        <Col span={12}>
           <Form.Item
             name={['products_used', row.id, 'product']}
             label={`Proizvod  ${index + 1}`}
@@ -98,8 +98,8 @@ const ProductsComponent = () => {
 
   return (
     <>
-      <Form.Item name="products_used" className="flex flex-col" labelCol={{ span: 14 }} label="Upotrebljeni delovi:">
-        <Space className=" product-select-wrapper mt-2 flex flex-row justify-center gap-8">
+      <Form.Item name="products_used" className="flex flex-col items-center" label="Upotrebljeni delovi:">
+        <Space className=" product-select-wrapper mt-4 flex flex-row gap-8 mb-4 ">
           <Tooltip title="Dodaj novi proizvod" placement="left">
             <Button type="primary" onClick={addRow} icon={<PlusOutlined />}>
               <ArrowDownOutlined />

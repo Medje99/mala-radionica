@@ -52,12 +52,12 @@ export const TasksList = () => {
 
     //Actions column
     {
-      title: <div className="text-center flex justify-center">Radnje</div>,
+      title: <div className="text-">Radnje</div>,
       key: 'action',
-      width: 200,
+      width: 60,
 
       render: (record: ITaskResponse) => (
-        <Space className="gap-2 flex justify-center items-center">
+        <Space className="gap-2 flex justify-center items-center mr-10">
           <Tooltip title="Izmeni">
             <Button
               type="primary"
@@ -157,24 +157,25 @@ export const TasksList = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </Space>
-      <section className="w-full px-24 task">
+      <section className="">
         <Table
-          className="task  ml-12 mr-12 mt-6 p-2 rounded-xl"
-          size="small"
+          className="task ml-12 mr-12 mt-6 p-2 rounded-xl"
+          style={{ width: '100%', tableLayout: 'fixed' }}
           id="tableContainer"
           virtual
-          scroll={{ y: 500 }}
-          pagination={{ hideOnSinglePage: true, pageSize: 10000 }}
+          scroll={{ y: 600, x: 1000 }}
+          rowClassName="border-b border-gray-200"
+          pagination={{ hideOnSinglePage: true, pageSize: 1000 }}
           columns={columns}
           expandable={{
             expandedRowRender: (record) => (
-              <Typography key={record.id} className="text-center ">
+              <Typography key={record.id} className="text-center bg-gray-100 border-b border-gray-200 py-4 text-lg">
                 {record.job_description}
               </Typography>
             ),
 
             rowExpandable: (record) => !!record.job_description,
-            columnWidth: 50, // Adjust width as needed
+            columnWidth: 20,
           }}
           dataSource={filteredTasks}
           rowKey="id"
