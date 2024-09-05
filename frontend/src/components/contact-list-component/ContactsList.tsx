@@ -127,7 +127,7 @@ const ContactsList: React.FC = () => {
           id="tableContainer"
           columns={columns}
           dataSource={filteredContacts}
-          pagination={{ pageSize: 10 }}
+          pagination={{ pageSize: 15 }}
           rowKey="id"
           size="small"
           className="contact ml-12 mr-12 mt-6 p-2 rounded-xl"
