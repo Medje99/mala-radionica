@@ -6,7 +6,6 @@ import useGetAllProducts from '@/CustomHooks/useGetAllProducts'
 const { Option } = Select
 
 const ProductsComponent = () => {
-  const [form] = Form.useForm()
   const [rows, setRows] = useState<{ id: number; inventoryQ: number; name: string }[]>([]) // Start with one row with a default maxQuantity
   const { allProducts } = useGetAllProducts()
 
