@@ -3,13 +3,13 @@ import { Form, Switch, InputNumber, Typography, message, DatePicker } from 'antd
 import { useEffect, useState } from 'react'
 import ActionButton from '../CustomButtons/ActionButton' // recives function , button title, button class , and aditional styles
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
-import ProductsComponent from './ProductsComponent'
+import SelectProductsComponent from './SelectProductsComponent'
 import useGetAllProducts from '../../CustomHooks/useGetAllProducts'
 import BillService from '@/service/BillService'
 import { IBillResponse } from '@/model/response/IBillResponse'
 import dayjs from 'dayjs'
 import moment from 'moment'
-import { CloseOutlined, VerticalRightOutlined } from '@ant-design/icons'
+import { VerticalRightOutlined } from '@ant-design/icons'
 
 const CreateBillForm = () => {
   const { customerContact, currentTask, setModalIsOpen, setCurrentPage, currentPage } = useGlobalContext()
@@ -109,8 +109,8 @@ const CreateBillForm = () => {
         </Form.Item>
       </div>
 
-      <div id="product-form">
-        <ProductsComponent />
+      <div id="select-products-component">
+        <SelectProductsComponent />
       </div>
 
       <Form.Item label="Datum placanja:" name="end_date" className="mb-4">

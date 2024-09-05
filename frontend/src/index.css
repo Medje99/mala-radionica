@@ -76,8 +76,13 @@
   overflow-y: auto;
 }
 
-#product-form {
-  /* productinput  */
+#create-new-product-form {
+  box-shadow: rgba(159, 35, 103, 0.678) 0px 0px 15px;
+  background-color: rgba(159, 35, 103, 0.119);
+}
+
+#select-products-component {
+  /* products insert COMPONENT not product input form!   */
   display: block;
   padding-top: 1em;
   margin-bottom: 1em;
