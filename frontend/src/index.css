@@ -48,10 +48,6 @@
   color: rgb(255, 255, 255);
 }
 
-.ant-table-th {
-  font-size: larger;
-}
-
 .ant-table-thead > tr > th {
   font-size: 1.5em;
 }
