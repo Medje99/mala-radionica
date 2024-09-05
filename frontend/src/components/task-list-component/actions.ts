@@ -3,7 +3,7 @@ import { ITaskResponse } from '@/model/response/ITaskResponse'
 import TaskService from '@/service/TaskService'
 import { FormInstance, message } from 'antd'
 
-const TasksAdvancedActions = () => {
+const TasksActions = () => {
   const handleEdit = (
     record: ITaskResponse,
     setEditingTask: React.Dispatch<React.SetStateAction<ITaskResponse>>,
@@ -51,4 +51,4 @@ const TasksAdvancedActions = () => {
   return { handleEdit, handleDelete, handleSave }
 }
 
-export default TasksAdvancedActions
+export default TasksActions

@@ -3,7 +3,7 @@ import { ITaskResponse } from '@/model/response/ITaskResponse'
 import { Table, Input, Popconfirm, message, Modal, Form, Space, Button, Tooltip, Typography } from 'antd'
 import { customer_firstName, customer_lastName, taskName, creation_date } from './constants'
 import useGetUnfinishedTasks from '@/CustomHooks/useGetUnfinishedTasks'
-import TasksAdvancedActions from './actions'
+import TasksActions from './actions'
 import CreateBillForm from '../forms/CreateBillForm' // Import CreateBillForm
 import { ICustomerContact, useGlobalContext } from '@/contexts/GlobalContextProvider'
 import { DeleteOutlined, EditOutlined, FileDoneOutlined } from '@ant-design/icons'
@@ -11,7 +11,7 @@ import { DeleteOutlined, EditOutlined, FileDoneOutlined } from '@ant-design/icon
 export const TasksList = () => {
   const { setContextCustomer: setCustomerContact, setCurrentTask, setHeaderTitle } = useGlobalContext()
   const { UnfinishedOnes } = useGetUnfinishedTasks()
-  const { handleEdit, handleDelete, handleSave } = TasksAdvancedActions()
+  const { handleEdit, handleDelete, handleSave } = TasksActions()
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredTasks, setFilteredTasks] = useState<ITaskResponse[]>([])
   const [editingTask, setEditingTask] = useState<ITaskResponse>({} as ITaskResponse)
@@ -116,7 +116,6 @@ export const TasksList = () => {
 
       <Modal
         open={isEditModalOpen}
-        onOk={() => handleSave(FormTaskList, editingTask, filteredTasks, setFilteredTasks, setEditModalOpen)}
         onCancel={() => setEditModalOpen(false)}
         footer={null}
         closeIcon={null}
@@ -130,17 +129,24 @@ export const TasksList = () => {
           <Form.Item label="Detalji posla" name="job_description">
             <Input.TextArea />
           </Form.Item>
+          <Form.Item className="flex justify-center">
+            <Button
+              className="flex-1 mr-2"
+              type="primary"
+              onClick={() => handleSave(FormTaskList, editingTask, filteredTasks, setFilteredTasks, setEditModalOpen)}
+            >
+              Izmeni
+            </Button>
+
+            <Button className="flex-1 ml-2" type="primary" onClick={() => setEditModalOpen(false)}>
+              Otkazi
+            </Button>
+          </Form.Item>
         </Form>
       </Modal>
 
       {/* Bill Modal */}
-      <Modal
-        open={modalIsOpen}
-        onCancel={() => setModalIsOpen(false)}
-        footer={null}
-        closeIcon={null}
-        className="billModal"
-      >
+      <Modal open={modalIsOpen} footer={null} closeIcon={null} className="billModal">
         <CreateBillForm />
       </Modal>
       <Space id="search-container" className="w-full col-span-12 flex task ">
