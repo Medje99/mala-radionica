@@ -6,7 +6,7 @@ import useGetUnfinishedTasks from '@/CustomHooks/useGetUnfinishedTasks'
 import TasksActions from './actions'
 import CreateBillForm from '../forms/CreateBillForm' // Import CreateBillForm
 import { ICustomerContact, useGlobalContext } from '@/contexts/GlobalContextProvider'
-import { DeleteOutlined, EditOutlined, FileDoneOutlined } from '@ant-design/icons'
+import { CloseOutlined, DeleteOutlined, EditOutlined, FileDoneOutlined } from '@ant-design/icons'
 
 export const TasksList = () => {
   const { setContextCustomer: setCustomerContact, setCurrentTask, setHeaderTitle } = useGlobalContext()
@@ -16,7 +16,11 @@ export const TasksList = () => {
   const [filteredTasks, setFilteredTasks] = useState<ITaskResponse[]>([])
   const [editingTask, setEditingTask] = useState<ITaskResponse>({} as ITaskResponse)
   const [isEditModalOpen, setEditModalOpen] = useState(false)
-  const { modalIsOpen, setModalIsOpen } = useGlobalContext()
+  const [billModalOpen, setBillModalOpen] = useState(false)
+
+  const closeBillModal = () => {
+    setBillModalOpen(false)
+  }
 
   //Task set title
   useEffect(() => {
@@ -97,10 +101,7 @@ export const TasksList = () => {
                   task_id: record.id,
                   task_name: record.job_name,
                 })
-                setCurrentTask({
-                  task_id: record.id,
-                })
-                setModalIsOpen(true)
+                setBillModalOpen(true)
               }}
             >
               <FileDoneOutlined />
@@ -147,7 +148,12 @@ export const TasksList = () => {
       </Modal>
 
       {/* Bill Modal */}
-      <Modal open={modalIsOpen} footer={null} closeIcon={null} className="billModal">
+      <Modal open={billModalOpen} footer={null} closeIcon={null} className="billModal">
+        <div className="flex justify-end">
+          <button onClick={closeBillModal} className="text-gray-600 hover:text-gray-800">
+            <CloseOutlined />
+          </button>
+        </div>
         <CreateBillForm />
       </Modal>
       <Space id="search-container" className="w-full col-span-12 flex task ">
