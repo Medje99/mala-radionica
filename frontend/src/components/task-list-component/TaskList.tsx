@@ -55,9 +55,10 @@ export const TasksList = () => {
       title: <div className="text-">Radnje</div>,
       key: 'action',
       width: 60,
+      align: 'center',
 
       render: (record: ITaskResponse) => (
-        <Space className="gap-2 flex justify-center items-center mr-10">
+        <Space className="gap-1 flex justify-center mr-10 items-center ">
           <Tooltip title="Izmeni">
             <Button
               type="primary"
@@ -157,15 +158,15 @@ export const TasksList = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </Space>
-      <section className="">
+      <section className="w-full  flex task">
         <Table
-          className="task ml-12 mr-12 mt-6 p-2 rounded-xl"
-          style={{ width: '100%', tableLayout: 'fixed' }}
+          className="py-10 px-5 rounded-xl"
+          // style={{ width: '100%', tableLayout: 'fixed' }}
           id="tableContainer"
           virtual
-          scroll={{ y: 600, x: 1000 }}
+          scroll={{ y: 600, x: 800 }}
           rowClassName="border-b border-gray-200"
-          pagination={{ hideOnSinglePage: true, pageSize: 1000 }}
+          pagination={false}
           columns={columns}
           expandable={{
             expandedRowRender: (record) => (
