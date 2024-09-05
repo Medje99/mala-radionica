@@ -156,6 +156,8 @@ export const TasksList = () => {
         </div>
         <CreateBillForm />
       </Modal>
+
+      {/* Task Search Bar */}
       <Space id="search-container" className="w-full col-span-12 flex task ">
         <Input.Search
           id="search"
@@ -164,6 +166,9 @@ export const TasksList = () => {
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </Space>
+
+      {/* task Table */}
+
       <section className="w-full  flex task">
         <Table
           className="py-10 px-5 rounded-xl"
@@ -188,8 +193,6 @@ export const TasksList = () => {
           rowKey="id"
         />
       </section>
-      {/* 
-    tableclose */}
     </div>
   )
 }
