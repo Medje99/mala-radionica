@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { PlusOutlined, MinusOutlined, ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons'
-import { Button, Col, Form, Input, Row, Select, Space, Tooltip } from 'antd'
+import { Button, Col, Form, Input, Row, Select, Space, Tooltip, Typography } from 'antd'
 import useGetAllProducts from '@/CustomHooks/useGetAllProducts'
 
 const { Option } = Select
@@ -25,7 +25,7 @@ const ProductsComponent = () => {
   const getFields = () => {
     return rows.map((row, index) => (
       <Row gutter={24} key={index} className="justify-center">
-        <Col span={12}>
+        <Col span={7}>
           <Form.Item
             name={['products_used', row.id, 'product']}
             label={`Proizvod  ${index + 1}`}
@@ -52,13 +52,13 @@ const ProductsComponent = () => {
             >
               {allProducts.map((item) => (
                 <Option className="wide-option" key={item.id} value={item.id}>
-                  {item?.name ?? '' + ' ' + item?.model ?? ''}
+                  {item?.name ?? ' ' + item?.manufacturer ?? ''}
                 </Option>
               ))}
             </Select>
           </Form.Item>
         </Col>
-        <Col span={11}>
+        <Col span={4}>
           <Form.Item
             name={['products_used', row.id, 'quantity']}
             label={`Kolicina: ${index + 1}`}
@@ -80,6 +80,12 @@ const ProductsComponent = () => {
             ]}
           >
             <Input name="quantity" allowClear placeholder="Kolicina" type="number" min="1" max={row.inventoryQ} />
+          </Form.Item>
+        </Col>
+
+        <Col span={5}>
+          <Form.Item label="Cena proizvoda">
+            <Typography> {row.inventoryQ ? row.inventoryQ : 0} </Typography>
           </Form.Item>
         </Col>
       </Row>
