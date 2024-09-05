@@ -3,12 +3,12 @@ import useGetAllProducts from '@/CustomHooks/useGetAllProducts'
 import { IProducts } from '@/model/response/IProductResponse'
 import { Table, Input, Popconfirm, message, Modal, Form, InputNumber, Space, Button, Tooltip } from 'antd'
 import { proizvod, proizvodjac, model, cena, kolicina, SKU } from './constats'
-import ProductsActions from './actions'
+import ProductsAdvancedActions from './actions'
 import { Link } from 'react-router-dom'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
-const { handleEdit, handleDelete, handleSave } = ProductsActions()
+const { handleEdit, handleDelete, handleSave } = ProductsAdvancedActions()
 
 const ProductsList: React.FC = () => {
   const { setHeaderTitle } = useGlobalContext()
