@@ -9,7 +9,7 @@ import BillService from '@/service/BillService'
 import { IBillResponse } from '@/model/response/IBillResponse'
 import dayjs from 'dayjs'
 import moment from 'moment'
-import { VerticalRightOutlined } from '@ant-design/icons'
+import { CloseOutlined, VerticalRightOutlined } from '@ant-design/icons'
 
 const CreateBillForm = () => {
   const { customerContact, currentTask, setModalIsOpen, setCurrentPage, currentPage } = useGlobalContext()

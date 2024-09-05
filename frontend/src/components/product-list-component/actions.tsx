@@ -3,7 +3,7 @@ import { IProducts } from '@/model/response/IProductResponse'
 import ProductsService from '@/service/ProductsService'
 import { FormInstance, message } from 'antd'
 
-const ProductsAdvancedActions = () => {
+const ProductsActions = () => {
   const handleEdit = (
     record: IProducts,
     setEditingProduct: React.Dispatch<React.SetStateAction<IProducts>>,
@@ -52,4 +52,4 @@ const ProductsAdvancedActions = () => {
   return { handleEdit, handleDelete, handleSave }
 }
 
-export default ProductsAdvancedActions
+export default ProductsActions
