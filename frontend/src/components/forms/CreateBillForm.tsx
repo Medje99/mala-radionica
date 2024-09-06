@@ -11,7 +11,9 @@ import dayjs from 'dayjs'
 import moment from 'moment'
 import { VerticalRightOutlined } from '@ant-design/icons'
 
-const CreateBillForm = () => {
+const CreateBillForm = ({ onSubmit }: { onSubmit: () => void }) => {
+  //as props takes callback function if non provided it passes empty function
+
   const { customerContact, currentTask, setModalIsOpen, setCurrentPage, currentPage } = useGlobalContext()
   const [FormBillCreate] = Form.useForm<IBillResponse>()
   const [isPaid, setIsPaid] = useState(false)
@@ -24,13 +26,6 @@ const CreateBillForm = () => {
     return () => clearTimeout(timer)
   }, [isPaid])
 
-  // useEffect(() => {
-  //   setFormTitle('Naplata: ' + customerContact?.fullName)
-  //   console.log(customerContact?.fullName)
-  // }),
-  //   [FormBillCreate]
-
-  // form submitAction()
   const submitLogic = () => {
     FormBillCreate.validateFields()
       .then(async (values) => {
@@ -60,7 +55,12 @@ const CreateBillForm = () => {
         setModalIsOpen(false)
         FormBillCreate.resetFields()
         setCurrentPage(0)
+
+        if (onSubmit) {
+          onSubmit() // Call the callback after successful submission to close bill modal in tasklist
+        }
       })
+
       .catch((error) => {
         console.error('Error creating bill:', error)
         message.error('Greška prilikom kreiranja racuna! Kontaktirajte administratora.') // Show error message

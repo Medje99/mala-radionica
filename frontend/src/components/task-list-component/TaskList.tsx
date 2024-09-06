@@ -6,7 +6,7 @@ import useGetUnfinishedTasks from '@/CustomHooks/useGetUnfinishedTasks'
 import TasksActions from './actions'
 import CreateBillForm from '../forms/CreateBillForm' // Import CreateBillForm
 import { ICustomerContact, useGlobalContext } from '@/contexts/GlobalContextProvider'
-import { CloseOutlined, DeleteOutlined, EditOutlined, FileDoneOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined, FileDoneOutlined } from '@ant-design/icons'
 
 export const TasksList = () => {
   const { setContextCustomer: setCustomerContact, setCurrentTask, setHeaderTitle } = useGlobalContext()
@@ -17,10 +17,6 @@ export const TasksList = () => {
   const [editingTask, setEditingTask] = useState<ITaskResponse>({} as ITaskResponse)
   const [isEditModalOpen, setEditModalOpen] = useState(false)
   const [billModalOpen, setBillModalOpen] = useState(false)
-
-  const closeBillModal = () => {
-    setBillModalOpen(false)
-  }
 
   //Task set title
   useEffect(() => {
@@ -153,10 +149,9 @@ export const TasksList = () => {
         onCancel={() => setBillModalOpen(false)}
         footer={null}
         closeIcon={null}
-        title="Izmeni posao :"
         className="flex billModal"
       >
-        <CreateBillForm />
+        <CreateBillForm onSubmit={() => setBillModalOpen(false)} /> {/* Pass the closing logic */}
       </Modal>
 
       {/* Task Search Bar */}
