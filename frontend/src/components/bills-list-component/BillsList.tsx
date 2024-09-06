@@ -40,10 +40,14 @@ const BillsList: React.FC = () => {
     setIsModalOpen(true)
   }
 
-  const handleDelete = (bill_id: number) => {
-    message.success('Bill deleted successfully')
-    BillService.deleteBill(bill_id)
-    setFilteredBills(filteredBills.filter((bill) => bill.bill_id !== bill_id))
+  const handleDelete = async (bill_id: number) => {
+    try {
+      await BillService.deleteBill(bill_id)
+      setFilteredBills(filteredBills.filter((bill) => bill.bill_id !== bill_id))
+      message.success('Racun izbrisan uspesno!')
+    } catch (error) {
+      message.error('Greška prilikom brisanja racuna! Kontaktirajte administratora.')
+    }
   }
 
   const handleSave = async () => {
@@ -80,6 +84,7 @@ const BillsList: React.FC = () => {
       dataIndex: 'job_name',
       key: 'job_name',
     },
+    Table.EXPAND_COLUMN,
     // {
     //   title: 'Opis posla',
     //   dataIndex: 'job_description',
@@ -165,7 +170,7 @@ const BillsList: React.FC = () => {
             title="Jeste li sigurni da zelite izbrisati ovaj racun?!"
             onConfirm={() => handleDelete(record.bill_id)}
             onCancel={() => message.error('Racun izbrisan!')}
-            key={record.bill_id + 'delete'}
+            key={record.bill_id}
             cancelButtonProps={{ style: { background: 'red' } }}
             okButtonProps={{ style: { background: 'green' } }}
             cancelText="Ne"
@@ -195,7 +200,7 @@ const BillsList: React.FC = () => {
           // it doesnt like   defaultSortOrder in combination with custom sorter timewaste
           dataSource={filteredBills}
           pagination={{ pageSize: 15 }}
-          rowKey="job_id"
+          rowKey="bill_id"
           expandable={{
             expandedRowRender: (record, index) => (
               <Typography key={index} className="text-center py-4 text-lg ">
@@ -206,13 +211,13 @@ const BillsList: React.FC = () => {
             rowExpandable: (record) => !!record.job_description,
 
             columnWidth: 50, // Adjust width as needed
-            expandIconColumnIndex: 2, // Index of the taskName column
+            // expandIconColumnIndex: 2, // Index of the taskName column depracated
           }}
         />
       </section>
       <Modal title="Izmeni racun" open={isModalOpen} onOk={handleSave} onCancel={() => setIsModalOpen(false)}>
         <Form
-          form={FormBillList}
+          form={Form.useForm<IBillResponse>()[0]}
           layout="vertical"
           initialValues={{
             end_date: currentTask.end_date ? dayjs(currentTask.end_date) : dayjs(moment().toDate()),
