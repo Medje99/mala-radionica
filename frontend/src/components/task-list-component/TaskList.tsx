@@ -148,12 +148,14 @@ export const TasksList = () => {
       </Modal>
 
       {/* Bill Modal */}
-      <Modal open={billModalOpen} footer={null} closeIcon={null} className="billModal">
-        <div className="flex justify-end">
-          <button onClick={closeBillModal} className="text-gray-600 hover:text-gray-800">
-            <CloseOutlined />
-          </button>
-        </div>
+      <Modal
+        open={billModalOpen}
+        onCancel={() => setBillModalOpen(false)}
+        footer={null}
+        closeIcon={null}
+        title="Izmeni posao :"
+        className="flex billModal"
+      >
         <CreateBillForm />
       </Modal>
 
