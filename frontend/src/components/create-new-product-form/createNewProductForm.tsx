@@ -1,5 +1,5 @@
 import { Button, Form, Input, Typography } from 'antd'
-import { IProducts } from '@/model/response/IProductResponse'
+import { IProduct } from '@/model/response/IProductResponse'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import { useEffect } from 'react'
 import { onHandleSubmit } from './actions'
@@ -9,7 +9,7 @@ export const createNewProductForm = () => {
   useEffect(() => {
     setHeaderTitle('Unos proizvoda')
   }, [])
-  const [createNewProductForm] = Form.useForm<IProducts>()
+  const [createNewProductForm] = Form.useForm<IProduct>()
 
   return (
     <Form
