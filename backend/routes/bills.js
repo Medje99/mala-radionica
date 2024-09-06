@@ -105,19 +105,22 @@ router.put("/:bill_id", (req, res) => {
   } = req.body;
 
   // Validate required fields
-  if (
-    !job_name ||
-    !contact_id ||
-    !job_id ||
-    !end_date ||
-    labor_cost === undefined ||
-    parts_cost === undefined
-  ) {
-    return res.status(400).send("All required fields must be provided.");
+  const missingFields = [];
+  if (!job_name) missingFields.push("job_name");
+  if (!contact_id) missingFields.push("contact_id");
+  if (!job_id) missingFields.push("job_id");
+  if (!end_date) missingFields.push("end_date");
+  if (labor_cost === undefined) missingFields.push("labor_cost");
+  if (parts_cost === undefined) missingFields.push("parts_cost");
+
+  if (missingFields.length > 0) {
+    return res
+      .status(400)
+      .json({ error: `Missing required fields: ${missingFields.join(", ")}` });
   }
 
-  // Convert products_used to JSON string
-  const productsUsedJson = JSON.stringify(products_used);
+  // Convert products_used to JSON string if it exists
+  const productsUsedJson = products_used ? JSON.stringify(products_used) : null;
 
   // Update bills table
   const updateBillQuery = `
@@ -140,9 +143,12 @@ router.put("/:bill_id", (req, res) => {
     (err, billResults) => {
       if (err) {
         console.error("Error updating bill:", err);
-        return res.status(500).send("Error updating bill");
+        return res.status(500).json({
+          error: "Internal server error while updating bill",
+          details: err.message,
+        });
       } else if (billResults.affectedRows === 0) {
-        return res.status(404).send("Bill not found");
+        return res.status(404).json({ error: "Bill not found" });
       }
 
       // Update tasks table
@@ -155,13 +161,16 @@ router.put("/:bill_id", (req, res) => {
       db.query(updateTaskQuery, [job_name, job_id], (err, taskResults) => {
         if (err) {
           console.error("Error updating task:", err);
-          return res.status(500).send("Error updating task");
+          return res.status(500).json({
+            error: "Internal server error while updating task",
+            details: err.message,
+          });
         } else if (taskResults.affectedRows === 0) {
-          return res.status(404).send("Task not found");
+          return res.status(404).json({ error: "Task not found" });
         }
 
         console.log("Bill and task updated successfully");
-        res.send("Bill and task updated successfully");
+        res.json({ message: "Bill and task updated successfully" });
       });
     }
   );
