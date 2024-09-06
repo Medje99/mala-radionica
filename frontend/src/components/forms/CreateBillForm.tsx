@@ -12,9 +12,7 @@ import moment from 'moment'
 import { VerticalRightOutlined } from '@ant-design/icons'
 
 const CreateBillForm = ({ callback }: { callback: () => void }) => {
-  //
-
-  //as props takes callback function if non provided it passes empty function
+  // even if optional vscode throws error so we need to pass callback={() => {}} in components that dont have things to pass
 
   const { customerContact, currentTask, setModalIsOpen, setCurrentPage, currentPage } = useGlobalContext()
   const [FormBillCreate] = Form.useForm<IBillResponse>()
