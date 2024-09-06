@@ -151,7 +151,7 @@ export const TasksList = () => {
         closeIcon={null}
         className="flex billModal"
       >
-        <CreateBillForm onSubmit={() => setBillModalOpen(false)} /> {/* Pass the closing logic */}
+        <CreateBillForm callback={() => setBillModalOpen(false)} /> {/* Pass the closing logic */}
       </Modal>
 
       {/* Task Search Bar */}
