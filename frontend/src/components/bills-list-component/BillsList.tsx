@@ -192,6 +192,7 @@ const BillsList: React.FC = () => {
           className="bill ml-12 mr-12  p-2 rounded-xl"
           size="small"
           columns={columns}
+          // it doesnt like   defaultSortOrder in combination with custom sorter timewaste
           dataSource={filteredBills}
           pagination={{ pageSize: 15 }}
           rowKey="job_id"
