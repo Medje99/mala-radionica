@@ -2,32 +2,36 @@ import { useState } from 'react'
 import { PlusOutlined, MinusOutlined, ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons'
 import { Button, Col, Form, Input, Row, Select, Space, Tooltip, Typography } from 'antd'
 import useGetAllProducts from '@/CustomHooks/useGetAllProducts'
+import { IProduct } from '@/model/response/IProductResponse'
 
 const { Option } = Select
 
 const SelectProductsComponent = () => {
-  const [rows, setRows] = useState<{ id: number; inventoryQ: number; name: string }[]>([]) // Start with one row with a default maxQuantity
+  const [rows, setRows] = useState<{ product: IProduct | null; quantity: number }[]>([])
   const { allProducts } = useGetAllProducts()
-
+  const productNameHelper = (item: IProduct) => {
+    return `${item?.manufacturer ?? ''}, ${item?.name ?? ''} #  ${item?.SKU ?? ''}`
+  }
   const handleProductChange = (rowIndex: number, productId: number) => {
     const selectedProduct = allProducts.find((product) => product.id === productId)
-    const maxQuantity = selectedProduct ? selectedProduct.quantity : 0
 
-    const nameModel = selectedProduct?.name + ' ' + selectedProduct?.model ?? ''
-
-    const updatedRows = rows.map((row, index) =>
-      index === rowIndex ? { ...row, inventoryQ: maxQuantity, nameModel } : row,
+    setRows((prevRows) =>
+      prevRows.map((row, index) =>
+        index === rowIndex
+          ? { ...row, product: selectedProduct || null, quantity: selectedProduct ? row.quantity : 0 } // Reset quantity if no product is selected
+          : row,
+      ),
     )
-    setRows(updatedRows)
   }
 
-  const getFields = () => {
+  const renderRows = () => {
     return rows.map((row, index) => (
-      <Row gutter={24} key={index} className="justify-center">
-        <Col span={7}>
+      <Row key={index} justify="space-between" align="middle" className="">
+        {/* Added margin-bottom for spacing between rows */}
+        <Col span={16} className="pl-7">
           <Form.Item
-            name={['products_used', row.id, 'product']}
-            label={`Proizvod  ${index + 1}`}
+            name={['products_used', index, 'product']}
+            label="Proizvod" // Label added back
             rules={[
               {
                 required: true,
@@ -36,9 +40,8 @@ const SelectProductsComponent = () => {
             ]}
           >
             <Select
-              dropdownStyle={{ width: '20em' }}
               showSearch
-              placeholder="Proizvodi"
+              placeholder="Izaberi proizvod"
               allowClear
               optionFilterProp="children"
               filterOption={(input, option) => {
@@ -50,17 +53,17 @@ const SelectProductsComponent = () => {
               }}
             >
               {allProducts.map((item) => (
-                <Option className="wide-option" key={item.id} value={item.id}>
-                  {item?.name ?? ' ' + item?.manufacturer ?? ''}
+                <Option key={item.id} value={item.id} disabled={item.quantity <= 0}>
+                  {productNameHelper(item)}
                 </Option>
               ))}
             </Select>
           </Form.Item>
         </Col>
-        <Col span={4}>
+        <Col span={3}>
           <Form.Item
-            name={['products_used', row.id, 'quantity']}
-            label={`Kolicina: ${index + 1}`}
+            name={['products_used', index, 'quantity']}
+            label={row.product?.quantity ? 'Max: ' + row.product.quantity : 'Kolicina:'}
             rules={[
               {
                 required: true,
@@ -68,8 +71,8 @@ const SelectProductsComponent = () => {
               },
               {
                 validator: (_, value) => {
-                  if (value > row.inventoryQ) {
-                    return Promise.reject(new Error(`Preostali proizvodi: ${row.inventoryQ}!`))
+                  if (row.product && value > row.product.quantity) {
+                    return Promise.reject(new Error(`Preostali proizvodi: ${row.product.quantity}!`))
                   } else if (value < 1) {
                     return Promise.reject(new Error('Izaberi min. 1 proizvod!'))
                   }
@@ -78,13 +81,20 @@ const SelectProductsComponent = () => {
               },
             ]}
           >
-            <Input name="quantity" allowClear placeholder="Kolicina" type="number" min="1" max={row.inventoryQ} />
+            <Input
+              name="quantity"
+              placeholder={!row.product ? ' ' : '0'}
+              type="number"
+              min="1"
+              max={row.product?.quantity || 0}
+              disabled={!row.product} // Disable if no product is selected
+            />
           </Form.Item>
         </Col>
-
-        <Col span={5}>
-          <Form.Item label="Cena proizvoda">
-            <Typography> {row.inventoryQ ? row.inventoryQ : 0} </Typography>
+        <Col span={3}>
+          <Form.Item label="Cena" className="pr-7">
+            {/* Label added back */}
+            <Typography className="text-right">{row.product?.price ? row.product.price.toFixed(0) : '0'}</Typography>
           </Form.Item>
         </Col>
       </Row>
@@ -92,18 +102,24 @@ const SelectProductsComponent = () => {
   }
 
   const addRow = () => {
-    setRows([...rows, { id: rows.length, inventoryQ: 0, name: '' }]) // Add new row with default maxQuantity
+    setRows([...rows, { product: null, quantity: 0 }])
   }
 
   const removeRow = () => {
     if (rows.length > 0) {
-      setRows(rows.slice(0, -1)) // Remove the newest row
+      setRows(rows.slice(0, -1)) // Bug ! remembers last field value even if row is removed tryied a lot idk what is wrong
     }
   }
 
   return (
     <>
-      <Form.Item name="products_used" className="flex flex-col items-center" label="Upotrebljeni delovi:">
+      {/* Add/Slice Row + RenderRows  */}
+      <Typography className="font-bold text-xl mb-4 text-center"> Upotrebljeni delovi: </Typography>
+      {renderRows()}
+
+      {/* Add/Slice Row + RenderRows  */}
+
+      <Form.Item className="flex flex-col items-center">
         <Space className=" product-select-wrapper mt-4 flex flex-row gap-8 mb-4 ">
           <Tooltip title="Dodaj novi proizvod" placement="left">
             <Button type="primary" onClick={addRow} icon={<PlusOutlined />}>
@@ -118,7 +134,6 @@ const SelectProductsComponent = () => {
           </Tooltip>
         </Space>
       </Form.Item>
-      {getFields()}
     </>
   )
 }
