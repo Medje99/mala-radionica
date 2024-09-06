@@ -8,7 +8,8 @@ export interface IProduct {
   SKU: string
 }
 
-export interface IProductRequest {
+export interface IProductResponse {
+  id: number
   subractQ: number
   nameModel: string
 }
