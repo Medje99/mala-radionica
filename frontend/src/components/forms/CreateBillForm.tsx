@@ -11,7 +11,9 @@ import dayjs from 'dayjs'
 import moment from 'moment'
 import { VerticalRightOutlined } from '@ant-design/icons'
 
-const CreateBillForm = ({ onSubmit }: { onSubmit: () => void }) => {
+const CreateBillForm = ({ callback }: { callback: () => void }) => {
+  //
+
   //as props takes callback function if non provided it passes empty function
 
   const { customerContact, currentTask, setModalIsOpen, setCurrentPage, currentPage } = useGlobalContext()
@@ -56,8 +58,8 @@ const CreateBillForm = ({ onSubmit }: { onSubmit: () => void }) => {
         FormBillCreate.resetFields()
         setCurrentPage(0)
 
-        if (onSubmit) {
-          onSubmit() // Call the callback after successful submission to close bill modal in tasklist
+        if (callback) {
+          callback() // Call the callback after successful submission to close bill modal in tasklist
         }
       })
 
