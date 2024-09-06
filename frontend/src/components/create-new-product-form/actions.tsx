@@ -1,7 +1,6 @@
-import { IProducts } from '@/model/response/IProductResponse'
+import { IProduct } from '@/model/response/IProductResponse'
 import ProductsService from '@/service/ProductsService'
 import { message } from 'antd'
-
 import { FormInstance } from 'antd/es/form/hooks/useForm'
 import { AxiosError } from 'axios'
 
@@ -10,7 +9,7 @@ interface ErrorResponse {
   // ... other properties of your error response ...
 }
 
-const onHandleSubmit = (form: FormInstance<IProducts>) => {
+const onHandleSubmit = (form: FormInstance<IProduct>) => {
   form
     .validateFields()
     .then((values: any) => {
