@@ -7,11 +7,10 @@ import { IBillResponse } from '@/model/response/IBillResponse'
 import dayjs from 'dayjs'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import moment from 'moment'
-import SelectProductsComponent from '../forms/SelectProductsComponent'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
 const BillsList: React.FC = () => {
-  const { setHeaderTitle } = useGlobalContext()
+  const { setHeaderTitle, currentTask, setCurrentTask } = useGlobalContext()
   useEffect(() => {
     setHeaderTitle('Zavrseni poslovi')
   }, [])
@@ -36,6 +35,7 @@ const BillsList: React.FC = () => {
 
   const handleEdit = (record: IBillResponse) => {
     setEditingBill(record)
+    setCurrentTask(record)
     FormBillList.setFieldsValue(record)
     setIsModalOpen(true)
   }
@@ -214,9 +214,14 @@ const BillsList: React.FC = () => {
           form={FormBillList}
           layout="vertical"
           initialValues={{
-            end_date: FormBillList.getFieldValue('end_date'),
+            end_date: currentTask.end_date ? dayjs(currentTask.end_date) : dayjs(moment().toDate()),
+            job_name: editingBill.job_name,
           }}
         >
+          <Form.Item name="job_name" label="Naslov posla">
+            <Input name="job_name" />
+          </Form.Item>
+
           <Form.Item label="Završetak" name="end_date" rules={[{ required: false }]}>
             <Space direction="vertical">
               <DatePicker
@@ -224,6 +229,8 @@ const BillsList: React.FC = () => {
                 format="MMM-DD HH:mm"
                 name="end_date"
                 defaultOpenValue={dayjs(FormBillList.getFieldValue('end_date'))}
+                defaultValue={dayjs(FormBillList.getFieldValue('end_date'))}
+                defaultPickerValue={dayjs(FormBillList.getFieldValue('end_date'))}
                 onChange={(date) => FormBillList.setFieldValue('end_date', date)}
               />
             </Space>
@@ -242,7 +249,7 @@ const BillsList: React.FC = () => {
           >
             <Input disabled />
           </Form.Item>
-          <SelectProductsComponent />
+          {/* <SelectProductsComponent />  */}
         </Form>
       </Modal>
 

@@ -96,6 +96,7 @@ router.put("/:bill_id", (req, res) => {
   const {
     contact_id,
     job_id,
+    job_name,
     end_date,
     labor_cost,
     paid,
@@ -105,6 +106,7 @@ router.put("/:bill_id", (req, res) => {
 
   // Validate required fields
   if (
+    !job_name ||
     !contact_id ||
     !job_id ||
     !end_date ||
@@ -117,17 +119,17 @@ router.put("/:bill_id", (req, res) => {
   // Convert products_used to JSON string
   const productsUsedJson = JSON.stringify(products_used);
 
-  const query = `
+  // Update bills table
+  const updateBillQuery = `
     UPDATE bills 
-    SET contact_id = ?, job_id = ?, end_date = ?, labor_cost = ?, paid = ?, parts_cost = ?, products_used = ?
+    SET contact_id = ?, end_date = ?, labor_cost = ?, paid = ?, parts_cost = ?, products_used = ?
     WHERE bill_id = ?
   `;
 
   db.query(
-    query,
+    updateBillQuery,
     [
       contact_id,
-      job_id,
       end_date,
       labor_cost,
       paid,
@@ -135,16 +137,32 @@ router.put("/:bill_id", (req, res) => {
       productsUsedJson,
       billId,
     ],
-    (err, results) => {
+    (err, billResults) => {
       if (err) {
         console.error("Error updating bill:", err);
-        res.status(500).send("Error updating bill");
-      } else if (results.affectedRows === 0) {
-        res.status(404).send("Bill not found");
-      } else {
-        console.log("Bill updated successfully:", results);
-        res.send("Bill updated successfully");
+        return res.status(500).send("Error updating bill");
+      } else if (billResults.affectedRows === 0) {
+        return res.status(404).send("Bill not found");
       }
+
+      // Update tasks table
+      const updateTaskQuery = `
+        UPDATE tasks
+        SET job_name = ?
+        WHERE id = ?
+      `;
+
+      db.query(updateTaskQuery, [job_name, job_id], (err, taskResults) => {
+        if (err) {
+          console.error("Error updating task:", err);
+          return res.status(500).send("Error updating task");
+        } else if (taskResults.affectedRows === 0) {
+          return res.status(404).send("Task not found");
+        }
+
+        console.log("Bill and task updated successfully");
+        res.send("Bill and task updated successfully");
+      });
     }
   );
 });
