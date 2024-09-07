@@ -42,22 +42,39 @@ router.get("/", (req, res) => {
 
 router.post("/", (req, res) => {
   console.log("POST /bill called");
-  const {
-    contact_id,
-    job_id,
-    end_date,
-    labor_cost,
-    paid,
-    parts_cost,
-    products_used,
-  } = req.body;
-  console.log("Received data:", req.body);
 
-  // Convert products_used to a JSON string before inserting
-  const productsUsedJson = JSON.stringify(products_used);
+  // Destructure required fields from request body
+  const { contact_id, job_id, end_date, labor_cost, paid, products_used } =
+    req.body;
+
+  // Check if required data is provided
+  if (!contact_id || !job_id || !labor_cost || !products_used) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  // Calculate total parts cost by summing the price per product
+  const parts_cost = products_used.reduce((acc, product) => {
+    return acc + product.quantity * product.price;
+  }, 0);
+
+  // Calculate total cost
+  const total_cost = parts_cost + labor_cost;
+
+  // Convert `products_used` array to JSON format with necessary details
+  const productsUsedJson = JSON.stringify(
+    products_used.map((product) => ({
+      product_id: product.product_id,
+      name: product.name, // Product name
+      manufacturer: product.manufacturer, // Product manufacturer
+      quantity: product.quantity, // Quantity used
+      total_price: product.quantity * product.price, // Total price for this product
+    }))
+  );
 
   const insertQuery =
-    "INSERT INTO `bills` (`contact_id`, `job_id`, `end_date`, `labor_cost`, `paid`, `parts_cost`, `products_used`) VALUES (?, ?, ?, ?, ?, ?, ?);";
+    "INSERT INTO `bills` (`contact_id`, `job_id`, `end_date`, `labor_cost`, `paid`, `parts_cost`, `products_used`, `total_cost`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+
+  // Execute the insert query
   db.query(
     insertQuery,
     [
@@ -68,25 +85,30 @@ router.post("/", (req, res) => {
       paid,
       parts_cost,
       productsUsedJson,
+      total_cost,
     ],
     (err, result) => {
       if (err) {
         console.error("Error inserting bill:", err);
-        res.status(500).json({ error: `Error inserting bill: ${err.message}` });
-      } else {
-        const selectQuery = "SELECT * FROM bills WHERE bill_id = ?";
-        db.query(selectQuery, [result.insertId], (err, newBill) => {
-          if (err) {
-            console.error("Error retrieving new bill:", err);
-            res
-              .status(500)
-              .json({ error: `Error retrieving new bill: ${err.message}` });
-          } else {
-            console.log("Newly added bill:", newBill[0]);
-            res.json(newBill[0]);
-          }
-        });
+        return res
+          .status(500)
+          .json({ error: `Error inserting bill: ${err.message}` });
       }
+
+      // Retrieve the newly added bill for confirmation
+      const selectQuery = "SELECT * FROM bills WHERE bill_id = ?";
+      db.query(selectQuery, [result.insertId], (err, newBill) => {
+        if (err) {
+          console.error("Error retrieving new bill:", err);
+          return res
+            .status(500)
+            .json({ error: `Error retrieving new bill: ${err.message}` });
+        }
+
+        // Log the newly added bill and return it in the response
+        console.log("Newly added bill:", newBill[0]);
+        res.json(newBill[0]);
+      });
     }
   );
 });
