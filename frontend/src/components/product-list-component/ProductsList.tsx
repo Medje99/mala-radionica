@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import useGetAllProducts from '@/CustomHooks/useGetAllProducts'
-import { IProducts } from '@/model/response/IProductResponse'
+import { IProduct } from '@/model/response/IProductResponse'
 import { Table, Input, Popconfirm, message, Modal, Form, InputNumber, Space, Button, Tooltip } from 'antd'
 import { proizvod, proizvodjac, model, cena, kolicina, SKU } from './constats'
 import ProductsActions from './actions'
@@ -19,10 +19,10 @@ const ProductsList: React.FC = () => {
 
   const { allProducts } = useGetAllProducts()
   const [searchTerm, setSearchTerm] = useState('')
-  const [filteredProducts, setFilteredProducts] = useState<IProducts[]>([])
-  const [editingProduct, setEditingProduct] = useState<IProducts>({} as IProducts)
+  const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([])
+  const [editingProduct, setEditingProduct] = useState<IProduct>({} as IProduct)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [FormProductList] = Form.useForm<IProducts>()
+  const [FormProductList] = Form.useForm<IProduct>()
 
   //Product update list on search/product change another useEffect in AllProducts
 
@@ -50,7 +50,7 @@ const ProductsList: React.FC = () => {
     {
       title: <div className="text-center">Radnje</div>,
       key: 'action',
-      render: (record: IProducts) => (
+      render: (record: IProduct) => (
         <Space size="large" className="flex justify-center gap-12">
           <Tooltip title="Izmeni">
             <Button
@@ -98,7 +98,11 @@ const ProductsList: React.FC = () => {
           className="product ml-12 mr-12 mt-6  border border-pink-300 p-2 rounded-xl "
         />
       </section>
+
+      {/* Task Edit Modal */}
+
       <Modal
+        className="flex"
         title="Uredi proizvod"
         open={isModalOpen}
         onOk={() => handleSave(FormProductList, editingProduct, filteredProducts, setFilteredProducts, setIsModalOpen)}
