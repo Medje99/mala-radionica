@@ -1,3 +1,5 @@
+import { Key } from 'react'
+
 export interface IBillResponse {
   bill_id: number
   contact_id: number
@@ -16,6 +18,10 @@ export interface IBillResponse {
 }
 
 export interface BillProducts {
+  product_id: Key | null | undefined
+  manufacturer: any
+  name: any
+  total_price: any
   product: IBillResponse
   quantity: number
 }
