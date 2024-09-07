@@ -8,6 +8,7 @@ import dayjs from 'dayjs'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import moment from 'moment'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import { CenaUsluge, datumZavrsetka, nazivMusterije, nazivPosla } from './contants'
 
 const BillsList: React.FC = () => {
   const { setHeaderTitle, currentTask, setCurrentTask } = useGlobalContext()
@@ -73,51 +74,11 @@ const BillsList: React.FC = () => {
 
   // table colums
   const columns = [
-    {
-      title: 'Musterija',
-      dataIndex: 'firstName',
-      key: 'firstName',
-    },
-
-    {
-      title: 'Naslov posla',
-      dataIndex: 'job_name',
-      key: 'job_name',
-    },
+    nazivMusterije,
+    nazivPosla,
     Table.EXPAND_COLUMN,
-    // {
-    //   title: 'Opis posla',
-    //   dataIndex: 'job_description',
-    //   key: 'job_description',
-    // },
-    {
-      title: 'Datum zavrsetka',
-      dataIndex: 'end_date',
-      key: 'end_date',
-      sorter: (a: { end_date: string | Date }, b: { end_date: string | Date }) => {
-        if (a.end_date && b.end_date) {
-          return new Date(b.end_date).getTime() - new Date(a.end_date).getTime()
-        } else {
-          return 0 // Handle cases where end_date is null or undefined
-        }
-      },
-      defaultSortOrder: 'ascend', // Set default sort order to new first
-
-      render: (endDate: string | Date) => {
-        if (endDate) {
-          const formattedDate = moment(endDate).fromNow() // Calculate time difference from endDate
-          return formattedDate
-        } else {
-          return 'Nije definisano! ' // Return "N/A" if end_date is null
-        }
-      },
-    },
-
-    {
-      title: 'Cena usluge',
-      dataIndex: 'labor_cost',
-      key: 'labor_cost',
-    },
+    datumZavrsetka,
+    CenaUsluge,
     {
       title: 'Placeno',
       dataIndex: 'paid',
