@@ -42,7 +42,7 @@ const Header = () => {
             <ProductOutlined />
           </Link>
         </Tooltip>
-        <Tooltip title="Lista kontakata">
+        <Tooltip title="Lista kontakta">
           <Link to="/ContactsList" className="text-l font-medium hover:underline underline-offset-8 nav-link">
             <ContactsOutlined />
           </Link>
