@@ -10,10 +10,22 @@
 #tasks-list-container {
   display: flex;
 }
+main {
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+form label {
+  text-transform: capitalize;
+  padding-bottom: 0.6em;
+  font-weight: 500;
+}
 
 .ant-table {
   box-shadow: #00000088 2px 2px 30px 20px;
 }
+
 .center-table-content {
   text-align: center;
 }
@@ -41,11 +53,6 @@
   align-items: center;
 }
 
-#bill-form {
-  display: block;
-  min-width: 25vw;
-}
-
 .action-button {
   margin: auto;
   padding: 5px 30px 5px 30px;
@@ -66,7 +73,6 @@
 }
 
 .ant-form {
-  height: auto;
   min-width: 20vw;
   background-color: rgba(55, 140, 179, 0.164);
   margin: 0 auto;
@@ -107,7 +113,7 @@
 
 /* laeve it for color only  */
 .task {
-  background-color: rgba(62, 220, 23, 0.119);
+  background-color: rgba(84, 159, 66, 0.366);
 }
 
 .bill {
@@ -115,7 +121,7 @@
 }
 
 #musterija-form {
-  background-color: rgba(159, 107, 35, 0.119);
+  background-color: rgba(232, 156, 49, 0.505);
   border-color: rgb(139, 66, 66);
   border-width: 1px;
   border-style: solid;
@@ -152,16 +158,16 @@
   box-shadow: #686c6e 10px 5px 10px;
   border-radius: 1em;
   text-align: center;
-  border: #686c6e 2px;
+  border: #01a4f1 0.2em solid;
   border-style: solid;
   font-style: oblique;
   font-size: large;
   font: black-400;
+  font-weight: 500;
 }
 
 .ant-input-search-button {
-  background-color: #00000000;
-  margin-left: 1em;
+  display: none;
 }
 .ant-input-search-button :hover {
   font-size: x-large;
@@ -170,7 +176,7 @@
 .header-title {
   color: rgb(120, 187, 221);
   font-size: clamp(2rem, 2vw, 2rem);
-  padding-right: 50px;
+
   white-space: nowrap;
   word-break: break-all;
 }
