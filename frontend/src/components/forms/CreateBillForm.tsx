@@ -59,14 +59,14 @@ const CreateBillForm = ({ callback }: { callback: () => void }) => {
         console.log(updatedProductsUsed)
 
         // Check if products were selected
-        if (!updatedProductsUsed || updatedProductsUsed.some((item) => !item.price || !item.quantity)) {
-          message.error('Invalid product data!')
+        // if (!updatedProductsUsed || updatedProductsUsed.some((item) => !item.price || !item.quantity)) {
+        //   message.error('Invalid product data!')
 
-          return
-        }
+        //   return
+        // }
 
         // Calculate the total parts cost
-        const parts_cost = updatedProductsUsed.reduce((acc, item) => acc + item.quantity * item.price, 0)
+        const parts_cost = updatedProductsUsed?.reduce((acc, item) => acc + item.quantity * item.price, 0)
 
         // Calculate the total cost (parts cost + labor cost)
         const total_cost = parts_cost + values.labor_cost
@@ -98,12 +98,12 @@ const CreateBillForm = ({ callback }: { callback: () => void }) => {
           })
           .catch((error) => {
             console.error('Error creating bill:', error)
-            message.error('Error creating bill! Please contact admin.')
+            message.error('Doslo je do greske, kontaktirajte administratora.')
           })
       })
       .catch((error) => {
         console.error('Error validating form:', error)
-        message.error('Form validation failed!')
+        message.error('Proverite sva obavezna polja!')
       })
   }
 
@@ -117,6 +117,7 @@ const CreateBillForm = ({ callback }: { callback: () => void }) => {
         paid: false,
         end_date: currentTask.end_date ? dayjs(currentTask.end_date) : dayjs(moment().toDate()),
         quantity: 1,
+        labor_cost: 0,
       }}
     >
       <Typography className="font-bold text-xl mb-8 text-center">
@@ -134,7 +135,7 @@ const CreateBillForm = ({ callback }: { callback: () => void }) => {
             suffix="RSD"
             style={{ width: '100%' }} // InputNumber now takes full width
             min={0}
-            step={1}
+            step={100}
             className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </Form.Item>
