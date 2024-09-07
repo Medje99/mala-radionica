@@ -73,7 +73,9 @@ const CreateTaskForm = () => {
         end_date: moment(),
       }}
     >
-      <Typography className="font-bold text-xl mb-4 text-center">{'Posao za: ' + customerContact?.fullName}</Typography>
+      <Typography className="font-bold text-xl mb-12  text-center">
+        {'Posao za: ' + customerContact?.fullName}
+      </Typography>
 
       {/* Job Name */}
       <Form.Item label="Naslov posla:" name="job_name" rules={[{ required: true, message: 'Popuni naziv posla!' }]}>

@@ -52,9 +52,9 @@ export const TasksList = () => {
 
     //Actions column
     {
-      title: <div className="text-">Radnje</div>,
+      title: 'Akcije',
       key: 'action',
-      width: 60,
+      width: 30,
       align: 'center',
 
       render: (record: ITaskResponse) => (
@@ -109,7 +109,7 @@ export const TasksList = () => {
   ]
 
   return (
-    <div className=" flex-row task ">
+    <div className=" flex-1 task h-[calc(100vh-3.5rem)]">
       {/*edit FormTaskList*/}
 
       <Modal
@@ -118,7 +118,7 @@ export const TasksList = () => {
         footer={null}
         closeIcon={null}
         title="Izmeni posao :"
-        className="flex editModal"
+        className="flex editModal "
       >
         <Form form={FormTaskList} layout="vertical">
           <Form.Item label="Naziv posla" name="job_name" rules={[{ required: true, message: 'Unesi naziv posla' }]}>
@@ -161,7 +161,7 @@ export const TasksList = () => {
       </Modal>
 
       {/* Task Search Bar */}
-      <Space id="search-container" className="w-full col-span-12 flex task ">
+      <Space id="search-container">
         <Input.Search
           id="search"
           size="large"
@@ -172,15 +172,17 @@ export const TasksList = () => {
 
       {/* task Table */}
 
-      <section className="w-full  flex task">
+      <section className="xl:mx-24 xl:px-0">
         <Table
-          className="py-10 px-5 rounded-xl"
-          // style={{ width: '100%', tableLayout: 'fixed' }}
-          id="tableContainer"
-          virtual
-          scroll={{ y: 600, x: 800 }}
-          rowClassName="border-b border-gray-200"
-          pagination={false}
+          size="small"
+          pagination={{
+            pageSize: 14,
+            showSizeChanger: true,
+            pageSizeOptions: ['10', '15', '30', '50', '200'],
+            showTotal: (total) => `Ukupno ${total} poslova`,
+            showQuickJumper: true,
+            position: ['bottomCenter'],
+          }}
           columns={columns}
           expandable={{
             expandedRowRender: (record) => (

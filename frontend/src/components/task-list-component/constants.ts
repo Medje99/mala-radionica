@@ -4,35 +4,35 @@ export const customer_firstName = {
   title: 'Ime',
   dataIndex: 'firstName',
   key: 'firstName',
-  width: 50,
+  align: 'center',
 }
 
 export const customer_lastName = {
   title: 'Prezime',
   dataIndex: 'lastName',
   key: 'lastName',
-  width: 50,
+  align: 'center',
 }
 
 export const taskName = {
   title: 'Naziv posla',
   dataIndex: 'job_name',
   key: 'job_name',
-  width: 50,
+  align: 'center',
 }
 
 export const taskDescription = {
   title: 'Opis posla',
   dataIndex: 'job_description',
   key: 'job_description',
-  width: 1,
+  align: 'center',
 }
 
 export const creation_date = {
   title: 'Kreirano',
   dataIndex: 'creation_date',
   key: 'creation_date',
-  width: 35,
+  align: 'center',
 
   sorter: (a: { creation_date: string | number | Date }, b: { creation_date: string | number | Date }) => {
     if (a.creation_date && b.creation_date) {

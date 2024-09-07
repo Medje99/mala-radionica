@@ -78,7 +78,7 @@ const CreateContactForm = () => {
 
   return (
     <Form form={FormContactCreate} layout="vertical" id="musterija-form">
-      <Typography className="font-bold text-xl mb-5 text-center">Izaberi ili unesi novu musteriju</Typography>
+      <Typography className="font-bold text-xl mb-12 text-center">Izaberi ili unesi novu musteriju</Typography>
 
       <Form.Item label="Musterija" name="fullName" id="Musterija">
         {newCustomer && selectedCustomer ? null : (
