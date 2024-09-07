@@ -1,34 +1,55 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { PlusOutlined, MinusOutlined, ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons'
 import { Button, Col, Form, Input, Row, Select, Space, Tooltip, Typography } from 'antd'
 import useGetAllProducts from '@/CustomHooks/useGetAllProducts'
-import { IProduct } from '@/model/response/IProductResponse'
-
+import { IProduct, IProductUsed } from '@/model/response/IProductResponse'
+import { FormInstance } from 'antd' // Import FormInstance from antd
+import useFormInstance from 'antd/es/form/hooks/useFormInstance'
 const { Option } = Select
 
-const SelectProductsComponent = () => {
-  const [rows, setRows] = useState<{ product: IProduct | null; quantity: number }[]>([])
+type SelectProductsComponentProps = {
+  form: FormInstance // Add form as a prop here
+  rows: { product: IProductUsed | null; quantity: number }[]
+  addRow: () => void
+  removeRow: () => void
+  setRows: React.Dispatch<React.SetStateAction<{ product: IProductUsed | null; quantity: number }[]>>
+}
+
+//SelectProductsComponent logic ready for SeparationOfConsern CleanUP
+const SelectProductsComponent: React.FC<SelectProductsComponentProps> = ({ rows, addRow, removeRow, setRows }) => {
   const { allProducts } = useGetAllProducts()
+  const [totalPrice, setTotalPrice] = useState(0)
+  const selectProductForm = useFormInstance()
+
+  //productNameHelper
   const productNameHelper = (item: IProduct) => {
     return `${item?.manufacturer ?? ''}, ${item?.name ?? ''} #  ${item?.SKU ?? ''}`
   }
+  //handleProductChange
   const handleProductChange = (rowIndex: number, productId: number) => {
     const selectedProduct = allProducts.find((product) => product.id === productId)
 
-    setRows((prevRows) =>
-      prevRows.map((row, index) =>
+    setRows((prevRows) => {
+      const updatedRows = prevRows.map((row, index) =>
         index === rowIndex
-          ? { ...row, product: selectedProduct || null, quantity: selectedProduct ? row.quantity : 0 } // Reset quantity if no product is selected
+          ? { ...row, product: selectedProduct || null, quantity: selectedProduct ? row.quantity : 0 }
           : row,
-      ),
-    )
-  }
+      )
 
+      selectProductForm.setFieldsValue({
+        // Ensure form is updated with the new row values
+        products_used: updatedRows,
+      })
+
+      return updatedRows
+    })
+  }
+  //renderRows
   const renderRows = () => {
     return rows.map((row, index) => (
       <Row key={index} justify="space-between" align="middle" className="">
         {/* Added margin-bottom for spacing between rows */}
-        <Col span={16} className="pl-7">
+        <Col span={10} className="pl-7">
           <Form.Item
             name={['products_used', index, 'product']}
             label="Proizvod" // Label added back
@@ -39,6 +60,10 @@ const SelectProductsComponent = () => {
               },
             ]}
           >
+            {/* this line of code makes select field render propperly after it has been selected */}
+            <Typography className="hidden">{row.product?.name}</Typography>
+            {/* this line of code makes select field render propperly after it has been selected */}
+
             <Select
               showSearch
               placeholder="Izaberi proizvod"
@@ -49,6 +74,7 @@ const SelectProductsComponent = () => {
                 return optionText.toLowerCase().includes(input.toLowerCase())
               }}
               onChange={(value) => {
+                //Problem here somewhere
                 handleProductChange(index, value)
               }}
             >
@@ -60,7 +86,7 @@ const SelectProductsComponent = () => {
             </Select>
           </Form.Item>
         </Col>
-        <Col span={3}>
+        <Col span={5}>
           <Form.Item
             name={['products_used', index, 'quantity']}
             label={row.product?.quantity ? 'Max: ' + row.product.quantity : 'Kolicina:'}
@@ -87,30 +113,55 @@ const SelectProductsComponent = () => {
               type="number"
               min="1"
               max={row.product?.quantity || 0}
-              disabled={!row.product} // Disable if no product is selected
+              disabled={!row.product}
+              value={row.quantity} // Bind input value to row.quantity
+              onChange={(e) => {
+                const newQuantity = parseInt(e.target.value, 10) || 0 // Get new quantity
+                setRows((prevRows) =>
+                  prevRows.map(
+                    (r, i) => (i === index ? { ...r, quantity: newQuantity } : r), // Update quantity in state
+                  ),
+                )
+              }}
             />
           </Form.Item>
         </Col>
-        <Col span={3}>
-          <Form.Item label="Cena" className="pr-7">
-            {/* Label added back */}
-            <Typography className="text-right">{row.product?.price ? row.product.price.toFixed(0) : '0'}</Typography>
+
+        <Col span={7}>
+          <Form.Item label="Cena" className="pr-5 text-left">
+            {/* Calculate and display the total price for the row */}
+            <Typography className="text-center">
+              <Typography className="text-center">
+                {row.product?.price
+                  ? row.quantity === 1 // Check if quantity is 1
+                    ? `${row.product.price.toLocaleString()} RSD` // Show price only once
+                    : `${row.product.price.toLocaleString()} (${(
+                        row.product.price * row.quantity
+                      ).toLocaleString()} RSD)` // Show both prices
+                  : ' '}
+              </Typography>{' '}
+            </Typography>
           </Form.Item>
         </Col>
       </Row>
     ))
   }
-
-  const addRow = () => {
-    setRows([...rows, { product: null, quantity: 0 }])
+  //calculateTotal
+  const calculateTotal = () => {
+    const total = rows.reduce((acc, row) => {
+      if (row.product?.price) {
+        return acc + row.product.price * row.quantity
+      }
+      return acc
+    }, 0)
+    setTotalPrice(total)
   }
 
-  const removeRow = () => {
-    if (rows.length > 0) {
-      setRows(rows.slice(0, -1)) // Bug ! remembers last field value even if row is removed tryied a lot idk what is wrong
-    }
-  }
+  useEffect(() => {
+    calculateTotal()
+  }, [rows]) // Recalculate whenever 'rows' changes
 
+  //SelectProudctComponent MAIN RETURN
   return (
     <>
       {/* Add/Slice Row + RenderRows  */}
@@ -134,6 +185,16 @@ const SelectProductsComponent = () => {
           </Tooltip>
         </Space>
       </Form.Item>
+      {/* Display total price */}
+      {rows.length > 0 && (
+        <Row justify="end" className="mt-4">
+          <Col>
+            <Typography.Text strong style={{ fontSize: '1.6em', textDecoration: 'underline' }}>
+              Delovi: {totalPrice.toLocaleString()} RSD
+            </Typography.Text>
+          </Col>
+        </Row>
+      )}
     </>
   )
 }
