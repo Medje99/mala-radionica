@@ -134,7 +134,13 @@ const ContactsList: React.FC = () => {
         />
       </section>
 
-      <Modal title="Uredi kontakt" open={isModalOpen} onOk={handleSave} onCancel={() => setIsModalOpen(false)}>
+      <Modal
+        title="Uredi kontakt"
+        className="flex"
+        open={isModalOpen}
+        onOk={handleSave}
+        onCancel={() => setIsModalOpen(false)}
+      >
         <Form form={FormContactList} layout="vertical">
           <Form.Item
             label="First Name"
