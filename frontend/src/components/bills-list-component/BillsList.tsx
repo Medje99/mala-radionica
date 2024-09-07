@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Key } from 'react'
+import React, { useState, useEffect, Key, lazy } from 'react'
 import { Table, Input, Popconfirm, message, Modal, Form, Space, Button, DatePicker, Tooltip, Typography } from 'antd'
 import { Link } from 'react-router-dom'
 import BillService from '@/service/BillService'
@@ -215,17 +215,27 @@ const BillsList: React.FC = () => {
           }}
         />
       </section>
-      <Modal title="Izmeni racun" open={isModalOpen} onOk={handleSave} onCancel={() => setIsModalOpen(false)}>
-        <Form
+
+      <Modal
+        title="Izmeni racun"
+        className="flex"
+        open={isModalOpen}
+        onOk={() => setIsModalOpen(false)}
+        // onOk={handleSave}
+        onCancel={() => setIsModalOpen(false)}
+      >
+        <Typography className="text-center m-20">Poslovi u toku,stize uskoro!</Typography>
+        {/* <Form
           form={Form.useForm<IBillResponse>()[0]}
           layout="vertical"
           initialValues={{
+            labor_cost: editingBill.labor_cost,
             end_date: currentTask.end_date ? dayjs(currentTask.end_date) : dayjs(moment().toDate()),
             job_name: editingBill.job_name,
           }}
         >
           <Form.Item name="job_name" label="Naslov posla">
-            <Input name="job_name" />
+            <Input />
           </Form.Item>
 
           <Form.Item label="Završetak" name="end_date" rules={[{ required: false }]}>
@@ -234,6 +244,7 @@ const BillsList: React.FC = () => {
                 showTime={{ minuteStep: 15 }}
                 format="MMM-DD HH:mm"
                 name="end_date"
+                //FormBillList loads after this fields so that is why this is throwing error they are connected later
                 defaultOpenValue={dayjs(FormBillList.getFieldValue('end_date'))}
                 defaultValue={dayjs(FormBillList.getFieldValue('end_date'))}
                 defaultPickerValue={dayjs(FormBillList.getFieldValue('end_date'))}
@@ -246,7 +257,7 @@ const BillsList: React.FC = () => {
             name="labor_cost"
             rules={[{ required: true, message: 'Molimo unesite cenu usluge' }]}
           >
-            <Input />
+            <Input name="labor_cost" type="number" />
           </Form.Item>
           <Form.Item
             label="Ukupna cena"
@@ -255,8 +266,8 @@ const BillsList: React.FC = () => {
           >
             <Input disabled />
           </Form.Item>
-          {/* <SelectProductsComponent />  */}
-        </Form>
+          {/* <SelectProductsComponent /> 
+          </Form>*/}
       </Modal>
 
       {filteredBills.length === 0 && (
