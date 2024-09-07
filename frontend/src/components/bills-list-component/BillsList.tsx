@@ -8,7 +8,7 @@ import dayjs from 'dayjs'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import moment from 'moment'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
-import { CenaUsluge, datumZavrsetka, nazivMusterije, nazivPosla } from './contants'
+import { firstName, taskName, endDate, laborCost, total_cost, parts_cost } from './contants'
 
 const BillsList: React.FC = () => {
   const { setHeaderTitle, currentTask, setCurrentTask } = useGlobalContext()
@@ -74,12 +74,15 @@ const BillsList: React.FC = () => {
 
   // table colums
   const columns = [
-    nazivMusterije,
-    nazivPosla,
+    firstName,
+    taskName,
     Table.EXPAND_COLUMN,
-    datumZavrsetka,
-    CenaUsluge,
+    endDate,
+    laborCost,
+    parts_cost,
+    total_cost,
     {
+      align: 'center',
       title: 'Placeno',
       dataIndex: 'paid',
       key: 'paid',
@@ -90,7 +93,7 @@ const BillsList: React.FC = () => {
             Placeno
           </Button>
         ) : (
-          <div className="flex items-center">
+          <>
             <Popconfirm
               key={record.bill_id}
               title="Da li ste sigurni da zelite oznaciti kao isplaceno?"
@@ -105,7 +108,7 @@ const BillsList: React.FC = () => {
                 Izmiri dug
               </Button>
             </Popconfirm>
-          </div>
+          </>
         )
       },
 
@@ -118,6 +121,7 @@ const BillsList: React.FC = () => {
       },
     },
     {
+      align: 'center',
       title: 'Actions',
       key: 'action',
       render: (record: IBillResponse) => (
@@ -155,7 +159,7 @@ const BillsList: React.FC = () => {
       </Space>
       <section className="w-full px-24 bill pb-20">
         <Table
-          className="bill ml-12 mr-12  p-2 rounded-xl"
+          className="bill ml-12 mr-12  p-2 rounded-xl center-table-content "
           size="small"
           columns={columns}
           // it doesnt like   defaultSortOrder in combination with custom sorter timewaste
