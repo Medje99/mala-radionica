@@ -40,6 +40,7 @@
 
 #bill-form {
   display: block;
+  min-width: 25vw;
 }
 
 .action-button {
@@ -63,8 +64,7 @@
 
 .ant-form {
   height: auto;
-  min-width: 30vw;
-
+  min-width: 20vw;
   background-color: rgba(55, 140, 179, 0.164);
   margin: 0 auto;
   padding: 4em;
@@ -72,7 +72,7 @@
   border-color: rgb(139, 66, 66);
   border-style: solid;
   border-width: 1px;
-  /* max-height: 89vh; */
+  max-height: 89vh;
   overflow-y: auto;
 }
 
@@ -89,6 +89,10 @@
   box-shadow: rgba(159, 35, 103, 0.678) 0px 0px 15px;
   background-color: rgba(159, 35, 103, 0.119);
 }
+.productEditModal {
+  display: block;
+  min-width: 25vw;
+}
 
 .product {
   background-color: rgba(159, 35, 103, 0.119);
@@ -98,6 +102,7 @@
   background-color: rgba(185, 133, 60, 0.301);
 }
 
+/* laeve it for color only  */
 .task {
   background-color: rgba(62, 220, 23, 0.119);
 }
