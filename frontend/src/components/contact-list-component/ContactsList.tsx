@@ -70,24 +70,29 @@ const ContactsList: React.FC = () => {
       title: 'Ime',
       dataIndex: 'firstName',
       key: 'firstName',
+      align: 'center',
     },
     {
       title: 'Prezime',
       dataIndex: 'lastName',
       key: 'lastName',
+      align: 'center',
     },
     {
       title: 'Mesto',
       dataIndex: 'city',
       key: 'city',
+      align: 'center',
     },
     {
       title: 'Telefon',
       dataIndex: 'phoneNumber',
       key: 'phoneNumber',
+      align: 'center',
     },
     {
-      title: <div className="text-center">Radnje</div>,
+      title: 'Radnje',
+      align: 'center',
       key: 'action',
       render: (record: IContacts) => (
         <Space size="large" className="flex justify-center gap-12">
@@ -118,19 +123,23 @@ const ContactsList: React.FC = () => {
 
   return (
     <div className=" flex-row contact">
-      <Space id="search-container" className="w-full col-span-12 flex contact ">
-        <Input.Search placeholder="Pretrazi kontakte" onChange={(e) => setSearchTerm(e.target.value)} id="search" />
+      <Space id="search-container" className="w-full col-span-12 flex  ">
+        <Input.Search
+          size="large"
+          placeholder="Pretrazi kontakte"
+          onChange={(e) => setSearchTerm(e.target.value)}
+          id="search"
+        />
       </Space>
 
       <section className="w-full px-24">
         <Table
-          id="tableContainer"
+          className="p-7 mt-5 rounded-xl"
           columns={columns}
           dataSource={filteredContacts}
-          pagination={{ pageSize: 15 }}
+          pagination={{ pageSize: 14 }}
           rowKey="id"
           size="small"
-          className="contact ml-12 mr-12 mt-6 p-2 rounded-xl"
         />
       </section>
 
