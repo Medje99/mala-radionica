@@ -174,7 +174,7 @@ const BillsList: React.FC = () => {
                     <strong>Detalji posla:</strong> {record?.job_description}
                   </Typography>
                 )}
-                {record?.products_used.length > 0 && (
+                {record?.products_used?.length > 0 && (
                   <div>
                     <Typography className="text-lg mt-2">
                       <strong>Upotrebljeni delovi:</strong>
