@@ -145,13 +145,19 @@ export const TasksList = () => {
 
       {/* Bill Modal */}
       <Modal
+        // onClose={()=>CreateBillForm.ResetForm()}
         open={billModalOpen}
         onCancel={() => setBillModalOpen(false)}
         footer={null}
         closeIcon={null}
         className="flex billModal"
       >
-        <CreateBillForm callback={() => setBillModalOpen(false)} /> {/* Pass the closing logic */}
+        <CreateBillForm
+          callback={() => {
+            setBillModalOpen(false)
+          }}
+        />
+        {/* Pass the closing logic */}
       </Modal>
 
       {/* Task Search Bar */}
