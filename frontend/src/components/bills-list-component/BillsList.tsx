@@ -153,18 +153,18 @@ const BillsList: React.FC = () => {
   ]
 
   return (
-    <div className=" flex-row bill">
+    <div className=" flex-row bill  overflow-y-auto h-[calc(100vh-4rem)]  ">
       <Space id="search-container" className="w-full col-span-12 flex bill ">
         <Input.Search placeholder="Pretrazi racune" onChange={(e) => setSearchTerm(e.target.value)} id="search" />
       </Space>
-      <section className="w-full px-24 bill pb-20">
+      <section className="px-24 bill">
         <Table
           className="bill ml-12 mr-12  p-2 rounded-xl center-table-content "
           size="small"
           columns={columns}
           // it doesnt like   defaultSortOrder in combination with custom sorter timewaste
           dataSource={filteredBills}
-          pagination={{ pageSize: 15 }}
+          pagination={{ pageSize: 14 }}
           rowKey="bill_id"
           expandable={{
             expandedRowRender: (record, index) => (
