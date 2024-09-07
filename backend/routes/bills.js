@@ -48,7 +48,7 @@ router.post("/", (req, res) => {
     req.body;
 
   // Check if required data is provided
-  if (!contact_id || !job_id || !labor_cost || !products_used) {
+  if (!contact_id || !job_id || !products_used) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
