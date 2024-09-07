@@ -39,7 +39,6 @@ router.get("/", (req, res) => {
     }
   });
 });
-
 router.post("/", (req, res) => {
   console.log("POST /bill called");
 
@@ -48,28 +47,33 @@ router.post("/", (req, res) => {
     req.body;
 
   // Check if required data is provided
-  if (!contact_id || !job_id || !products_used) {
+  if (!contact_id || !job_id) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
   // Calculate total parts cost by summing the price per product
-  const parts_cost = products_used.reduce((acc, product) => {
-    return acc + product.quantity * product.price;
-  }, 0);
+  const parts_cost =
+    Array.isArray(products_used) && products_used.length > 0
+      ? products_used.reduce((acc, product) => {
+          return acc + product.quantity * product.price;
+        }, 0)
+      : 0;
 
   // Calculate total cost
   const total_cost = parts_cost + labor_cost;
 
   // Convert `products_used` array to JSON format with necessary details
-  const productsUsedJson = JSON.stringify(
-    products_used.map((product) => ({
-      product_id: product.product_id,
-      name: product.name, // Product name
-      manufacturer: product.manufacturer, // Product manufacturer
-      quantity: product.quantity, // Quantity used
-      total_price: product.quantity * product.price, // Total price for this product
-    }))
-  );
+  const productsUsedJson = products_used
+    ? JSON.stringify(
+        products_used.map((product) => ({
+          product_id: product.product_id,
+          name: product.name, // Product name
+          manufacturer: product.manufacturer, // Product manufacturer
+          quantity: product.quantity, // Quantity used
+          total_price: product.quantity * product.price, // Total price for this product
+        }))
+      )
+    : null; // Set to null if products_used is not provided or empty
 
   const insertQuery =
     "INSERT INTO `bills` (`contact_id`, `job_id`, `end_date`, `labor_cost`, `paid`, `parts_cost`, `products_used`, `total_cost`) VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
