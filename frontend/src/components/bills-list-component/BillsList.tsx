@@ -168,15 +168,32 @@ const BillsList: React.FC = () => {
           rowKey="bill_id"
           expandable={{
             expandedRowRender: (record, index) => (
-              <Typography key={index} className="text-center py-4 text-lg ">
-                Detalji posla: {record.job_description}
-              </Typography>
+              <div key={index} className="bill flex flex-col items-center p-4">
+                {record?.job_description && (
+                  <Typography className="text-lg">
+                    <strong>Detalji posla:</strong> {record?.job_description}
+                  </Typography>
+                )}
+                {record?.products_used.length > 0 && (
+                  <div>
+                    <Typography className="text-lg mt-2">
+                      <strong>Upotrebljeni delovi:</strong>
+                    </Typography>
+                    <ul>
+                      {record?.products_used.map((part) => (
+                        <li key={part?.product_id}>
+                          {part?.quantity + ' x'} {part?.manufacturer} {part?.name}{' '}
+                          {'(' + part?.total_price / part?.quantity + 'RSD)'}
+                          <strong>{' =' + part?.total_price + ' RSD'}</strong>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
             ),
-
-            rowExpandable: (record) => !!record.job_description,
-
-            columnWidth: 50, // Adjust width as needed
-            // expandIconColumnIndex: 2, // Index of the taskName column depracated
+            rowExpandable: (record) => !!record.job_description || record.products_used.length > 0,
+            columnWidth: 50,
           }}
         />
       </section>
