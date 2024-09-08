@@ -5,8 +5,7 @@ import { FormInstance } from 'antd/es/form/hooks/useForm'
 import { AxiosError } from 'axios'
 
 interface ErrorResponse {
-  error?: string // Or whatever property your backend uses for error messages
-  // ... other properties of your error response ...
+  error?: string
 }
 
 const onHandleSubmit = (form: FormInstance<IProduct>) => {
