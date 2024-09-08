@@ -28,9 +28,8 @@ const Header = () => {
         <Tooltip title="Home">
           <Link to="/" className="text-l font-medium hover:underline underline-offset-8 nav-link">
             <HomeOutlined />
-          </Link>{' '}
+          </Link>
         </Tooltip>
-        {/* )} */}
 
         <Tooltip title="Dodaj proizvod">
           <Link to="/ProductCreate" className="text-l font-medium hover:underline underline-offset-8 nav-link">
