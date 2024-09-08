@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IProducts } from '@/model/response/IProductResponse'
+import { IProduct } from '@/model/response/IProductResponse'
 import ProductsService from '@/service/ProductsService'
 import { FormInstance, message } from 'antd'
 
 const ProductsActions = () => {
   const handleEdit = (
-    record: IProducts,
-    setEditingProduct: React.Dispatch<React.SetStateAction<IProducts>>,
-    form: FormInstance<IProducts>,
+    record: IProduct,
+    setEditingProduct: React.Dispatch<React.SetStateAction<IProduct>>,
+    form: FormInstance<IProduct>,
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
   ) => {
     setEditingProduct({ ...record })
@@ -19,33 +19,33 @@ const ProductsActions = () => {
 
   const handleDelete = (
     id: number,
-    filteredProducts: IProducts[],
-    setFilteredProducts: React.Dispatch<React.SetStateAction<IProducts[]>>,
+    filteredProducts: IProduct[],
+    setFilteredProducts: React.Dispatch<React.SetStateAction<IProduct[]>>,
   ) => {
-    message.success('Product deleted successfully')
+    message.success('Proizvod uspesno obrisan!')
     ProductsService.deleteProduct(id)
     setFilteredProducts(filteredProducts.filter((product) => product.id !== id))
   }
 
   const handleSave = async (
-    form: FormInstance<IProducts>,
-    editingProduct: IProducts | null,
-    filteredProducts: IProducts[],
-    setFilteredProducts: React.Dispatch<React.SetStateAction<IProducts[]>>,
+    form: FormInstance<IProduct>,
+    editingProduct: IProduct | null,
+    filteredProducts: IProduct[],
+    setFilteredProducts: React.Dispatch<React.SetStateAction<IProduct[]>>,
     setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
   ) => {
     try {
       const values = await form.validateFields()
-      const updatedProduct = { ...editingProduct, ...values } as IProducts
+      const updatedProduct = { ...editingProduct, ...values } as IProduct
       ProductsService.updateProduct(updatedProduct)
-      message.success('Product updated successfully')
+      message.success('Proizvod uspesno izmenjen!')
       setFilteredProducts(
         filteredProducts.map((product) => (product.id === updatedProduct.id ? updatedProduct : product)),
       )
       setIsModalOpen(false)
     } catch (error) {
       console.error('Validation failed:', error)
-      message.error('Error updating product')
+      message.error('Greska prilikom izmene proizvoda,molimo kontaktirajte administratora!')
     }
   }
 
