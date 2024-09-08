@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Form, Input, Select, Typography, message } from 'antd' // Import message from antd
-import createTaskFormActions from '../create-task-form-component/actions'
+import contactFormActions from '../create-task-form-component/actions'
 import { useEffect, useState } from 'react'
 import useGetAllContacts from '@/CustomHooks/useGetAllContants'
 import ContactService from '@/service/ContactsService'
@@ -11,7 +11,7 @@ import { separateFullName } from '@/Utilities/getSeparatedFullName'
 import ActionButton from '../CustomButtons/ActionButton'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 
-const { setCustomerSelectOptions, setCustomerFormValues, handleSelectChange } = createTaskFormActions() // createTaskFormActions
+const { setCustomerSelectOptions, setCustomerFormValues, handleSelectChange } = contactFormActions() // createTaskFormActions
 
 // Component main function
 const CreateContactForm = () => {
@@ -119,10 +119,10 @@ const CreateContactForm = () => {
         <Input disabled={!newCustomer} />
       </Form.Item>
 
-      <Form.Item label="Mesto" name="city" rules={[{ required: false, message: 'Unesite mesto' }]}>
+      <Form.Item label="Mesto" name="city">
         <Input disabled={!newCustomer} />
       </Form.Item>
-      <Form.Item label="Adresa" name="address" rules={[{ required: false, message: 'Unesite adresu' }]}>
+      <Form.Item label="Adresa" name="address">
         <Input disabled={!newCustomer} />
       </Form.Item>
       {/* <Form.Item label="Ostalo" name="other" className="mb-4 mr-10 ml-10">

@@ -4,7 +4,7 @@ import React from 'react'
 import { CustomerSelect } from './types'
 import { FormInstance } from 'antd'
 
-const createTaskFormActions = () => {
+const contactFormActions = () => {
   const setCustomerSelectOptions = (
     customers: IContacts[],
     setNewCustomerSelect: React.Dispatch<React.SetStateAction<CustomerSelect[] | undefined>>,
@@ -52,4 +52,4 @@ const createTaskFormActions = () => {
   }
 }
 
-export default createTaskFormActions
+export default contactFormActions
