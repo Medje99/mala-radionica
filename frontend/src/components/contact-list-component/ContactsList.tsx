@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { Table, Input, Popconfirm, message, Modal, Form, Space, Button, Tooltip } from 'antd'
-import { ErrorResponse } from 'react-router-dom'
 import { IContactsResponse } from '@/model/response/IContactResponse'
 import useGetAllContacts from '@/CustomHooks/useGetAllContants'
-import ContactService from '@/service/ContactsService'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
-import { AxiosError } from 'axios'
 import { customer_city, customer_firstName, customer_lastName, customer_phoneNumber } from './constants'
+import { handleEdit, handleDelete, handleSave } from './actions' // Import actions
 
 const ContactsList: React.FC = () => {
   const { setHeaderTitle } = useGlobalContext()
@@ -34,37 +32,6 @@ const ContactsList: React.FC = () => {
     setFilteredContacts(filtered)
   }, [searchTerm, contacts])
 
-  const handleEdit = (record: IContactsResponse) => {
-    setEditingContact(record)
-    FormContactList.setFieldsValue(record)
-    setIsModalOpen(true)
-  }
-
-  const handleDelete = (id: number) => {
-    ContactService.deleteContactCustomer(id)
-      .then(() => {
-        message.success('Kontakt izbrisan')
-        setFilteredContacts(filteredContacts.filter((contact) => contact.id !== id))
-      })
-      .catch((error: AxiosError<ErrorResponse>) => {
-        console.error('Error deleting contact:', error)
-        message.error('Kontakt nije obrisan. ')
-        message.warning('Nije dozvoljeno obrisati kontakt za koji postoji aktivan posao! ')
-      })
-  }
-
-  const handleSave = async () => {
-    const values = await FormContactList.validateFields()
-    const updatedProduct = { ...editingContact, ...values } as IContactsResponse
-    ContactService.updateContactCustomer(updatedProduct)
-    const updatedContacts = filteredContacts.map((contact) =>
-      contact.id === editingContact.id ? { ...contact, ...values } : contact,
-    )
-    setFilteredContacts(updatedContacts)
-    setIsModalOpen(false)
-
-    message.success('Contact updated successfully')
-  }
   const actions = {
     title: 'Radnje',
     align: 'center',
@@ -72,13 +39,17 @@ const ContactsList: React.FC = () => {
     render: (record: IContactsResponse) => (
       <Space size="large" className="flex justify-center gap-12">
         <Tooltip title="Izmeni">
-          <Button type="primary" ghost onClick={() => handleEdit(record)}>
+          <Button
+            type="primary"
+            ghost
+            onClick={() => handleEdit(record, setEditingContact, FormContactList, setIsModalOpen)}
+          >
             <EditOutlined />
           </Button>
         </Tooltip>
         <Popconfirm
           title="Da li ste sigurni da zelite izbrisati ovaj kontakt?"
-          onConfirm={() => handleDelete(record.id)}
+          onConfirm={() => handleDelete(record.id, filteredContacts, setFilteredContacts)}
           onCancel={() => message.error('Brisanje otkazano')}
           okText="Da"
           cancelText="Ne"
@@ -120,7 +91,7 @@ const ContactsList: React.FC = () => {
         title="Uredi kontakt"
         className="flex"
         open={isModalOpen}
-        onOk={handleSave}
+        onOk={() => handleSave(FormContactList, editingContact, filteredContacts, setFilteredContacts, setIsModalOpen)}
         onCancel={() => setIsModalOpen(false)}
       >
         <Form form={FormContactList} layout="vertical">
