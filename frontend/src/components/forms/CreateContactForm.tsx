@@ -80,10 +80,11 @@ const CreateContactForm = () => {
     <Form form={FormContactCreate} layout="vertical" id="musterija-form">
       <Typography className="font-bold text-xl mb-12 text-center">Izaberi ili unesi novu musteriju</Typography>
 
-      <Form.Item label="Musterija" name="fullName" id="Musterija">
-        {/* this line of code makes select field render propperly after it has been selected otherwise it displays nothin */}
-        <p className="hidden">{selectedCustomer?.fullName}</p>
-        {/* this line of code makes select field render propperly after it has been selected otherwise it displays nothin */}
+      <Form.Item label="Musterija" name="fullName">
+        {/*this sometimes fixes select not showing sometime breaks it.. wtf*/}
+        {/* <p className="hidden">{selectedCustomer?.fullName}</p> */}
+        {/*this sometimes fixes select not showing sometime breaks it.. wtf*/}
+
         {newCustomer && selectedCustomer ? null : (
           <Select
             showSearch
@@ -108,14 +109,7 @@ const CreateContactForm = () => {
         )}
       </Form.Item>
 
-      <Form.Item
-        label="Broj telefona:"
-        name="phoneNumber"
-        rules={[
-          { required: false, message: 'Unesite broj telefona' },
-          { pattern: /^\d+$/, message: 'Samo brojevi!' },
-        ]}
-      >
+      <Form.Item label="Broj telefona:" name="phoneNumber" rules={[{ pattern: /^\d+$/, message: 'Samo brojevi!' }]}>
         <Input disabled={!newCustomer} />
       </Form.Item>
 
