@@ -4,7 +4,7 @@ import contactFormActions from '../create-task-form-component/actions'
 import { useEffect, useState } from 'react'
 import useGetAllContacts from '@/CustomHooks/useGetAllContants'
 import ContactService from '@/service/ContactsService'
-import { IContacts } from '@/model/response/IContactResponse'
+import { IContactsResponse } from '@/model/response/IContactResponse'
 import { concateFullName } from '@/Utilities/setFullName'
 import { CustomerSelect } from '../create-task-form-component/types'
 import { separateFullName } from '@/Utilities/getSeparatedFullName'
@@ -18,7 +18,7 @@ const CreateContactForm = () => {
   const { setContextCustomer, setCurrentPage, currentPage } = useGlobalContext() // context passing to form 2
   const [newCustomer, setNewCustomer] = useState(false) // definined default false
   const { customers } = useGetAllContacts() // getting customer full list via get request
-  const [FormContactCreate] = Form.useForm<IContacts>() // create form instance useState for all fields and elements abstracted
+  const [FormContactCreate] = Form.useForm<IContactsResponse>() // create form instance useState for all fields and elements abstracted
   const [ContactSelect, setContactSelect] = useState<string | undefined>('') //contactSelect one from select dropdown
   const [contactSerchCriteria, setContactSearchCriteria] = useState<string>(ContactSelect as string) //contact name,lastname input if no match
   const [searchMatch, searchMatchQuerry] = useState<CustomerSelect[]>() // if no match set true

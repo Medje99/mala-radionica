@@ -1,3 +1,5 @@
+import { IContact } from '@/model/response/IContactResponse'
+import { ITask } from '@/model/response/ITaskResponse'
 import { Typography } from 'antd'
 import { createContext, useContext, useState } from 'react'
 
@@ -8,8 +10,8 @@ interface GlobalContext {
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>
   formTitle: string | React.ReactElement
   setFormTitle: React.Dispatch<React.SetStateAction<string>>
-  customerContact: ICustomerContact | undefined
-  setContextCustomer: React.Dispatch<React.SetStateAction<ICustomerContact | undefined>>
+  customerContact: IContact | undefined
+  setContextCustomer: React.Dispatch<React.SetStateAction<IContact | undefined>>
   currentTask: ITask
   setCurrentTask: React.Dispatch<React.SetStateAction<ITask>>
   setHeaderTitle: React.Dispatch<React.SetStateAction<string>>
@@ -17,17 +19,6 @@ interface GlobalContext {
   end_date: ITask['end_date']
   setEndDate: React.Dispatch<React.SetStateAction<ITask['end_date']>>
   formTitleString: string
-}
-
-export interface ICustomerContact {
-  id: number | undefined
-  fullName: string
-}
-
-export interface ITask {
-  end_date?: Date | null
-  task_id?: number
-  task_name?: string
 }
 
 const GlobalContext = createContext<GlobalContext | null>(null)
@@ -44,7 +35,7 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(0)
   const [formTitle, setFormTitle] = useState('Izaberi ili dodaj musteriju')
-  const [customerContact, setCustomerContact] = useState<ICustomerContact>()
+  const [customerContact, setCustomerContact] = useState<IContact>()
   const [currentTask, setCurrentTask] = useState<ITask>({} as ITask)
   const [headerTitle, setHeaderTitle] = useState('')
   const [end_date, setEndDate] = useState<ITask['end_date']>()

@@ -4,7 +4,7 @@ import CreateBillForm from './forms/CreateBillForm'
 import CreateContactForm from './forms/CreateContactForm'
 import CreateTaskForm from './forms/CreateTaskForm'
 
-export function MultiStepForm() {
+export default function MultiStepForm() {
   const {
     currentPage,
     setFormTitle: setFormTitle,

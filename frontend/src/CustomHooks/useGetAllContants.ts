@@ -1,9 +1,9 @@
-import { IContacts } from '@/model/response/IContactResponse'
+import { IContactsResponse } from '@/model/response/IContactResponse'
 import ContactService from '@/service/ContactsService'
 import { useEffect, useState } from 'react'
 
 const useGetAllContacts = () => {
-  const [customers, setCustomers] = useState<IContacts[]>([])
+  const [customers, setCustomers] = useState<IContactsResponse[]>([])
 
   useEffect(() => {
     ContactService.getAllCustomers()

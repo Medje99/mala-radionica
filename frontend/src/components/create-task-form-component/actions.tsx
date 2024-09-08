@@ -1,4 +1,4 @@
-import { IContacts } from '@/model/response/IContactResponse'
+import { IContactsResponse } from '@/model/response/IContactResponse'
 import { concateFullName } from '@/Utilities/setFullName'
 import React from 'react'
 import { CustomerSelect } from './types'
@@ -6,7 +6,7 @@ import { FormInstance } from 'antd'
 
 const contactFormActions = () => {
   const setCustomerSelectOptions = (
-    customers: IContacts[],
+    customers: IContactsResponse[],
     setNewCustomerSelect: React.Dispatch<React.SetStateAction<CustomerSelect[] | undefined>>,
   ) => {
     const selectLabel = customers.map((item) => ({
@@ -17,8 +17,8 @@ const contactFormActions = () => {
   }
 
   const setCustomerFormValues = (
-    pickedCustomer: IContacts | undefined,
-    form: FormInstance<IContacts>,
+    pickedCustomer: IContactsResponse | undefined,
+    form: FormInstance<IContactsResponse>,
     setNewCustomer: React.Dispatch<React.SetStateAction<boolean>>,
   ) => {
     if (pickedCustomer) {

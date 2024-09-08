@@ -1,4 +1,4 @@
-import { MultiStepForm } from './MultiStepForm'
+import MultiStepForm from './MultiStepForm'
 import TasksList from './task-list-component/TaskList'
 
 const CreateTaskSection = () => {

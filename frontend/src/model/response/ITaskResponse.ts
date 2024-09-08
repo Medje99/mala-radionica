@@ -8,3 +8,9 @@ export interface ITaskResponse {
   creation_date: Date
   end_date: Date
 }
+
+export interface ITask {
+  end_date?: Date | null
+  task_id?: number
+  task_name?: string
+}

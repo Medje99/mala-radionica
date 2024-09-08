@@ -1,22 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { baseUrl } from '@/constants/Constants'
-import { IContacts } from '@/model/response/IContactResponse'
+import { IContactsResponse } from '@/model/response/IContactResponse'
 import axios from 'axios'
 
 const getAllCustomers = async () => {
-  return await axios.get<IContacts[]>(baseUrl + '/contacts')
+  return await axios.get<IContactsResponse[]>(baseUrl + '/contacts')
 }
 
-const createContactCustomer = async (data: IContacts) => {
-  return await axios.post<IContacts>(baseUrl + '/contacts', data)
+const createContactCustomer = async (data: IContactsResponse) => {
+  return await axios.post<IContactsResponse>(baseUrl + '/contacts', data)
 }
 
-const updateContactCustomer = async (data: IContacts) => {
-  return await axios.put<IContacts>(baseUrl + '/contacts/' + data.id, data)
+const updateContactCustomer = async (data: IContactsResponse) => {
+  return await axios.put<IContactsResponse>(baseUrl + '/contacts/' + data.id, data)
 }
 
 const deleteContactCustomer = async (id: number) => {
-  return await axios.delete<IContacts>(baseUrl + '/contacts/' + id).catch((error) => {
+  return await axios.delete<IContactsResponse>(baseUrl + '/contacts/' + id).catch((error) => {
     throw axios.isAxiosError(error) ? error.response?.data : error
   })
 }

@@ -1,4 +1,4 @@
-export interface IContacts {
+export interface IContactsResponse {
   address: string
   city: string
   firstName: string
@@ -6,5 +6,10 @@ export interface IContacts {
   lastName: string
   other: string | null
   phoneNumber: string
+  fullName: string
+}
+
+export interface IContact {
+  id: number | undefined
   fullName: string
 }

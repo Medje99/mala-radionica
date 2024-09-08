@@ -5,8 +5,9 @@ import { customer_firstName, customer_lastName, taskName, creation_date } from '
 import useGetUnfinishedTasks from '@/CustomHooks/useGetUnfinishedTasks'
 import TasksActions from './actions'
 import CreateBillForm from '../forms/CreateBillForm' // Import CreateBillForm
-import { ICustomerContact, useGlobalContext } from '@/contexts/GlobalContextProvider'
+import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import { DeleteOutlined, EditOutlined, FileDoneOutlined } from '@ant-design/icons'
+import { IContact } from '@/model/response/IContactResponse'
 
 export const TasksList = () => {
   const { setContextCustomer: setCustomerContact, setCurrentTask, setHeaderTitle } = useGlobalContext()
@@ -92,7 +93,7 @@ export const TasksList = () => {
                 setCustomerContact({
                   id: record.contact_id,
                   fullName: `${record.firstName} ${record.lastName}`,
-                } as ICustomerContact)
+                } as IContact)
                 setCurrentTask({
                   task_id: record.id,
                   task_name: record.job_name,
