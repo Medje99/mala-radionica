@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import useGetAllProducts from '@/CustomHooks/useGetAllProducts'
 import { IProduct } from '@/model/response/IProductResponse'
-import { Input, Popconfirm, message, Modal, Form, InputNumber, Space, Button, Tooltip } from 'antd'
+import { Input, Popconfirm, message, Modal, Form, InputNumber, Space, Button, Tooltip, Table } from 'antd'
 import { proizvod, proizvodjac, model, cena, kolicina, SKU } from './constats'
 import ProductsActions from './actions'
 import { Link } from 'react-router-dom'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
-import SearchableTable from '../searchableTable'
 
 const { handleEdit, handleDelete, handleSave } = ProductsActions()
 
@@ -19,7 +18,7 @@ const ProductsList: React.FC = () => {
   }, [])
 
   const { allProducts } = useGetAllProducts()
-  const [searchTerm] = useState('')
+  const [searchTerm, setSearchTerm] = useState('')
   const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([])
   const [editingProduct, setEditingProduct] = useState<IProduct>({} as IProduct)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -86,7 +85,24 @@ const ProductsList: React.FC = () => {
 
   return (
     <div className=" flex-row product">
-      <SearchableTable data={allProducts} columns={columns} />
+      <Space id="search-container" className="col-span-12 flex ">
+        <Input.Search
+          size="large"
+          placeholder="Pretraži proizvode"
+          onChange={(e) => setSearchTerm(e.target.value)}
+          id="search"
+        />
+      </Space>
+      <section className="w-full px-24 ">
+        <Table
+          size="small"
+          columns={columns} //don't like align center
+          dataSource={filteredProducts}
+          pagination={{ pageSize: 14 }} // Adjust page size as needed
+          rowKey="id" // Use 'id' as the row key
+          className="product p-7 mt-5 rounded-xl"
+        />
+      </section>
 
       {/* Task Edit Modal */}
 
