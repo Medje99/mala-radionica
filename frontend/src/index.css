@@ -7,9 +7,6 @@
   height: 94vh;
 }
 
-#tasks-list-container {
-  display: flex;
-}
 main {
   flex-direction: row;
   justify-content: space-around;
@@ -26,13 +23,6 @@ form label {
   box-shadow: #00000088 2px 2px 30px 20px;
 }
 
-.center-table-content {
-  text-align: center;
-}
-
-#tableContainer {
-  /* padding makes x scroll appear ! add margin to inside elements */
-}
 .ant-btn {
   color: rgb(255, 255, 255);
   background-color: #01a4f1;
@@ -138,13 +128,6 @@ form label {
   font-size: large;
 }
 
-.ant-input-search {
-  display: flex;
-  padding: 1vh;
-
-  padding-inline: 11vw;
-}
-
 /* DO NOT TOUCH THIS BLOCK */
 
 #search-container {
@@ -153,42 +136,26 @@ form label {
 }
 
 #search {
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
-  box-shadow: #686c6e 10px 5px 10px;
-  border-radius: 1em;
+  margin-left: 17%;
+  width: 66%;
+  padding: em;
+  margin-top: 2em;
   text-align: center;
-  border: #01a4f1 0.2em solid;
-  border-style: solid;
-  font-style: oblique;
-  font-size: large;
-  font: black-400;
-  font-weight: 500;
 }
 
-.ant-input-search-button {
+/* .ant-input-search-button {
   display: none;
-}
-.ant-input-search-button :hover {
-  font-size: x-large;
-}
+} */
 
 .header-title {
   color: rgb(120, 187, 221);
   font-size: clamp(2rem, 2vw, 2rem);
-
   white-space: nowrap;
   word-break: break-all;
 }
 
 .action-button {
   box-shadow: #1297da 0px 0px 10px;
-
   background-color: #0c62b3a4;
   /* border: #00448380 2px solid; */
-}
-
-.ant-table-row-expand-icon-cell {
-  font-size: larger;
-  margin-right: 10px;
 }
