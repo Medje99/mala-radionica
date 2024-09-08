@@ -81,6 +81,9 @@ const CreateContactForm = () => {
       <Typography className="font-bold text-xl mb-12 text-center">Izaberi ili unesi novu musteriju</Typography>
 
       <Form.Item label="Musterija" name="fullName" id="Musterija">
+        {/* this line of code makes select field render propperly after it has been selected otherwise it displays nothin */}
+        <p className="hidden">{selectedCustomer?.fullName}</p>
+        {/* this line of code makes select field render propperly after it has been selected otherwise it displays nothin */}
         {newCustomer && selectedCustomer ? null : (
           <Select
             showSearch

@@ -61,7 +61,7 @@ const SelectProductsComponent: React.FC<SelectProductsComponentProps> = ({ rows,
             ]}
           >
             {/* this line of code makes select field render propperly after it has been selected */}
-            <Typography className="hidden">{row.product?.name}</Typography>
+            <p className="hidden">{row.product?.name}</p>
             {/* this line of code makes select field render propperly after it has been selected */}
 
             <Select
