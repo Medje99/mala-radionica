@@ -203,7 +203,7 @@ const BillsList: React.FC = () => {
                 )}
               </div>
             ),
-            rowExpandable: (record) => !!record.job_description || record.products_used.length > 0,
+            rowExpandable: (record) => !!record.job_description || record.products_used?.length > 0,
             columnWidth: 50,
           }}
         />
@@ -263,7 +263,7 @@ const BillsList: React.FC = () => {
           </Form>*/}
       </Modal>
 
-      {filteredBills.length === 0 && (
+      {filteredBills?.length === 0 && (
         <Link to="/Tasks" className="text-center">
           <h1 className="lg:leading-tighter text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl xl:text-[3.4rem] 2xl:text-[3.75rem]">
             Add Bill
