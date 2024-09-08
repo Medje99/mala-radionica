@@ -1,7 +1,7 @@
 import MultiStepForm from './MultiStepForm'
-import TasksList from './task-list-component/TaskList'
+import TasksList from './task-list-components/TaskList'
 
-const CreateTaskSection = () => {
+const HomePage = () => {
   return (
     <main className="flex xl:flex-row flex-col h-h-[calc(100vh-10rem)]">
       <section className="w-4/12 xl:p-10 lg:p-5 overflow-y-auto max-h-[calc(100vh-4rem)]">
@@ -15,4 +15,4 @@ const CreateTaskSection = () => {
   )
 }
 
-export default CreateTaskSection
+export default HomePage

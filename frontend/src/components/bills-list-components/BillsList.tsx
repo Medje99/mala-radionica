@@ -70,7 +70,7 @@ const BillsList: React.FC = () => {
     BillService.updateBill(updatedBill)
     const updatedBills = filteredBills.map((bill) => (bill.bill_id === record.bill_id ? { ...bill, paid: true } : bill))
     setFilteredBills(updatedBills)
-    message.success('Racun oznacen kao placen!')
+    message.success('Racun oznacen kao placen')
   }
 
   // table colums

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Form, Switch, InputNumber, Typography, message, DatePicker, Select } from 'antd'
+import { Form, Switch, InputNumber, Typography, message, DatePicker } from 'antd'
 import { useEffect, useState } from 'react'
 import ActionButton from '../CustomButtons/ActionButton' // recives function , button title, button class , and aditional styles
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
@@ -44,67 +44,54 @@ const CreateBillForm = ({ callback }: { callback: () => void }) => {
   }, [isPaid])
 
   const submitLogic = () => {
-    FormBillCreate.validateFields()
+    FormBillCreate.validateFields().then(async (values) => {
+      console.log(values, 'values')
+      // Ensure quantity and price are numbers
+      const updatedProductsUsed = values.products_used?.map((item) => ({
+        product_id: item.product?.id, // Product ID
+        name: item.product?.name, // Product name
+        manufacturer: item.product?.manufacturer, // Product manufacturer
+        quantity: Number(item.quantity), // Ensure quantity is a number
+        price: Number(item.product?.price), // Ensure price is a number
+      }))
+      console.log(updatedProductsUsed)
 
-      .then(async (values) => {
-        console.log(values, 'values')
-        // Ensure quantity and price are numbers
-        const updatedProductsUsed = values.products_used?.map((item) => ({
-          product_id: item.product?.id, // Product ID
-          name: item.product?.name, // Product name
-          manufacturer: item.product?.manufacturer, // Product manufacturer
-          quantity: Number(item.quantity), // Ensure quantity is a number
-          price: Number(item.product?.price), // Ensure price is a number
-        }))
-        console.log(updatedProductsUsed)
+      // Calculate the total parts cost
+      const parts_cost = updatedProductsUsed?.reduce((acc, item) => acc + item.quantity * item.price, 0)
 
-        // Check if products were selected
-        // if (!updatedProductsUsed || updatedProductsUsed.some((item) => !item.price || !item.quantity)) {
-        //   message.error('Invalid product data!')
+      // Calculate the total cost (parts cost + labor cost)
+      const total_cost = parts_cost + values.labor_cost
 
-        //   return
-        // }
+      // Prepare the final values to send to the backend
+      const updatedValues = {
+        ...values,
+        products_used: updatedProductsUsed, // Send product details including price
+        contact_id: customerContact?.id ?? 0,
+        job_id: currentTask.task_id ?? 0,
+        parts_cost, // Add parts cost
+        total_cost, // Add total cost
+      }
 
-        // Calculate the total parts cost
-        const parts_cost = updatedProductsUsed?.reduce((acc, item) => acc + item.quantity * item.price, 0)
+      // Send the bill data to the backend
+      BillService.createBill(updatedValues as IBillResponse)
+        .then(() => {
+          values.products_used && BillService.productQUpdate(updatedProductsUsed)
+          message.success('Bill created successfully!')
+          setModalIsOpen(false)
+          FormBillCreate.resetFields()
+          setCurrentPage(0)
 
-        // Calculate the total cost (parts cost + labor cost)
-        const total_cost = parts_cost + values.labor_cost
-
-        // Prepare the final values to send to the backend
-        const updatedValues = {
-          ...values,
-          products_used: updatedProductsUsed, // Send product details including price
-          contact_id: customerContact?.id ?? 0,
-          job_id: currentTask.task_id ?? 0,
-          parts_cost, // Add parts cost
-          total_cost, // Add total cost
-        }
-
-        // Send the bill data to the backend
-        BillService.createBill(updatedValues)
-          .then(() => {
-            values.products_used && BillService.productQUpdate(updatedProductsUsed)
-            message.success('Bill created successfully!')
-            setModalIsOpen(false)
-            FormBillCreate.resetFields()
-            setCurrentPage(0)
-
-            if (callback) {
-              callback()
-              console.log('Resetfields')
-              FormBillCreate.resetFields() // Close the modal after submission
-            }
-          })
-          .catch((error) => {
-            console.error('Error creating bill:', error)
-            message.error('Doslo je do greske, kontaktirajte administratora.')
-          })
-      })
-      .catch((error) => {
-        console.error('Error validating form:', error)
-        message.error('Proverite sva obavezna polja!')
-      })
+          if (callback) {
+            callback()
+            console.log('Resetfields')
+            FormBillCreate.resetFields() // Close the modal after submission
+          }
+        })
+        .catch((error) => {
+          console.error('Error creating bill:', error)
+          message.error('Doslo je do greske, kontaktirajte administratora.')
+        })
+    })
   }
 
   return (

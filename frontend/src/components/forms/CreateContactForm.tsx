@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Form, Input, Select, Typography, message } from 'antd' // Import message from antd
-import contactFormActions from '../create-task-form-component/actions'
+import contactFormActions from '../create-task-form-components/actions'
 import { useEffect, useState } from 'react'
 import useGetAllContacts from '@/CustomHooks/useGetAllContants'
 import ContactService from '@/service/ContactsService'
 import { IContactsResponse } from '@/model/response/IContactResponse'
 import { concateFullName } from '@/Utilities/setFullName'
-import { CustomerSelect } from '../create-task-form-component/types'
+import { CustomerSelect } from '../create-task-form-components/types'
 import { separateFullName } from '@/Utilities/getSeparatedFullName'
 import ActionButton from '../CustomButtons/ActionButton'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
