@@ -17,9 +17,9 @@ export const createNewProductForm = () => {
       form={createNewProductForm}
       title="Unos proizvoda"
       layout="vertical"
-      className=" rounded-lg md:mt-24  md:w-[30%] lg:w-[20%] flex flex-col  items-center"
+      className=" rounded-lg md:mt-24  md:w-[30%] lg:w-[30%] flex flex-col items-center"
     >
-      <Typography.Title level={2} className="text-center mb-8">
+      <Typography.Title level={2} className="text-center">
         Unos proizvoda
       </Typography.Title>
 

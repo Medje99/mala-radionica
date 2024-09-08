@@ -7,6 +7,13 @@ export const firstName = {
   align: 'center',
 }
 
+export const lastName = {
+  title: 'Prezime',
+  dataIndex: 'lastName',
+  key: 'lastName',
+  align: 'center',
+}
+
 export const taskName = {
   title: 'Posao',
   dataIndex: 'job_name',
