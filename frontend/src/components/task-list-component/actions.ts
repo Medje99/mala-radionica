@@ -22,7 +22,7 @@ const TasksActions = () => {
     filteredTasks: ITaskResponse[],
     setFilteredTasks: React.Dispatch<React.SetStateAction<ITaskResponse[]>>,
   ) => {
-    message.success('Task deleted successfully')
+    message.success('Posao uspesno obrisan!')
     TaskService.deleteTask(id)
     setFilteredTasks(filteredTasks.filter((task) => task.id !== id))
   }
@@ -38,13 +38,13 @@ const TasksActions = () => {
       const values = await form.validateFields()
       const updatedTask = { ...editingTask, ...values } as ITaskResponse
       TaskService.updateTask(updatedTask)
-      message.success('Task updated successfully')
+      message.success('Posao uspesno izmenjen!')
       setFilteredTasks(filteredTasks.map((task) => (task.id === updatedTask.id ? updatedTask : task)))
       form.resetFields()
       setIsModalOpen(false)
     } catch (error) {
       console.error('Validation failed:', error)
-      message.error('Validation failed. Please check your inputs.')
+      message.error('Validacija nije uspesna, popunite sva polja i pokusajte ponovo.')
     }
   }
 
