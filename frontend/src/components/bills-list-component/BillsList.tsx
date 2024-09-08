@@ -8,7 +8,7 @@ import dayjs from 'dayjs'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import moment from 'moment'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
-import { firstName, taskName, endDate, laborCost, total_cost, parts_cost } from './contants'
+import { firstName, taskName, endDate, laborCost, total_cost, parts_cost, lastName } from './contants'
 
 const BillsList: React.FC = () => {
   const { setHeaderTitle, currentTask, setCurrentTask } = useGlobalContext()
@@ -27,6 +27,7 @@ const BillsList: React.FC = () => {
       const searchText = searchTerm.toLowerCase()
       return (
         bill.firstName?.toString().toLowerCase().includes(searchText) ||
+        bill.lastName?.toString().toLowerCase().includes(searchText) ||
         bill.job_name?.toString().toLowerCase().includes(searchText) ||
         bill.job_description?.toString().toLowerCase().includes(searchText)
       )
@@ -75,6 +76,7 @@ const BillsList: React.FC = () => {
   // table colums
   const columns = [
     firstName,
+    lastName,
     taskName,
     Table.EXPAND_COLUMN,
     endDate,
@@ -154,12 +156,20 @@ const BillsList: React.FC = () => {
 
   return (
     <div className=" flex-row bill  overflow-y-auto h-[calc(100vh-4rem)]  ">
-      <Space id="search-container" className="w-full col-span-12 flex bill ">
-        <Input.Search placeholder="Pretrazi racune" onChange={(e) => setSearchTerm(e.target.value)} id="search" />
+      <Space id="search-container" className="">
+        <Input
+          className="focus:ring-2 focus:ring-blue-500 focus:outline-none appearance-none w-full text-sm leading-6 text-slate-900 placeholder-slate-400 rounded-md py-2 pl-10 ring-1 ring-slate-200 shadow-sm"
+          type="text"
+          aria-label="Pretrazi racune"
+          placeholder="Pretrazi racune"
+          id="search"
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
       </Space>
-      <section className="px-24 bill">
+
+      <section className="mx-24">
         <Table
-          className="bill ml-12 mr-12  p-2 rounded-xl center-table-content "
+          className="p-7 mt-5 rounded-xl"
           size="small"
           columns={columns}
           // it doesnt like   defaultSortOrder in combination with custom sorter timewaste
@@ -176,18 +186,19 @@ const BillsList: React.FC = () => {
                 )}
                 {record?.products_used?.length > 0 && (
                   <div>
-                    <Typography className="text-lg mt-2">
+                    <Typography className="text-lg">
                       <strong>Upotrebljeni delovi:</strong>
+
+                      <ul>
+                        {record?.products_used.map((part) => (
+                          <li key={part?.product_id}>
+                            {part?.quantity + ' x'} {part?.manufacturer} {part?.name}{' '}
+                            {'(' + part?.total_price / part?.quantity + 'RSD)'}
+                            <strong>{' =' + part?.total_price + ' RSD'}</strong>
+                          </li>
+                        ))}
+                      </ul>
                     </Typography>
-                    <ul>
-                      {record?.products_used.map((part) => (
-                        <li key={part?.product_id}>
-                          {part?.quantity + ' x'} {part?.manufacturer} {part?.name}{' '}
-                          {'(' + part?.total_price / part?.quantity + 'RSD)'}
-                          <strong>{' =' + part?.total_price + ' RSD'}</strong>
-                        </li>
-                      ))}
-                    </ul>
                   </div>
                 )}
               </div>

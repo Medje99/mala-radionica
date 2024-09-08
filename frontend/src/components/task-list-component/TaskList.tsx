@@ -109,7 +109,7 @@ export const TasksList = () => {
   ]
 
   return (
-    <div className=" flex- task h-[calc(100vh-3.5rem)]">
+    <div className=" flex-row task h-[calc(100vh-3.5rem)]">
       {/*edit FormTaskList*/}
 
       <Modal
