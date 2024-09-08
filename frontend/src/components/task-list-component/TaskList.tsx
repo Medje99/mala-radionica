@@ -109,7 +109,7 @@ export const TasksList = () => {
   ]
 
   return (
-    <div className=" flex-1 task h-[calc(100vh-3.5rem)]">
+    <div className=" flex- task h-[calc(100vh-3.5rem)]">
       {/*edit FormTaskList*/}
 
       <Modal
@@ -161,19 +161,22 @@ export const TasksList = () => {
       </Modal>
 
       {/* Task Search Bar */}
-      <Space id="search-container">
-        <Input.Search
+      <Space id="search-container" className="">
+        <Input
+          className="focus:ring-2 focus:ring-blue-500 focus:outline-none appearance-none w-full text-sm leading-6 text-slate-900 placeholder-slate-400 rounded-md py-2 pl-10 ring-1 ring-slate-200 shadow-sm"
+          type="text"
+          aria-label="Pretrazi aktivne poslove"
+          placeholder="Pretrazi aktivne poslove"
           id="search"
-          size="large"
-          placeholder="Pretrazi poslove"
           onChange={(e) => setSearchTerm(e.target.value)}
         />
       </Space>
 
       {/* task Table */}
 
-      <section className="xl:mx-24 xl:px-0">
+      <section className="mx-24">
         <Table
+          className="p-7 mt-5 rounded-xl "
           size="small"
           pagination={{
             pageSize: 14,
