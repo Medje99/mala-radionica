@@ -73,7 +73,7 @@ export const TasksList = () => {
           <Popconfirm
             title="Da li ste sigurni da zelite izbrisati ovaj posao?"
             onConfirm={() => handleDelete(record.id, filteredTasks, setFilteredTasks)}
-            onCancel={() => message.error('Delete canceled')}
+            onCancel={() => message.warning('Brisanje posla otkazano!')}
             okText="Da"
             cancelText="Ne!"
             okButtonProps={{ style: { background: 'green' } }}

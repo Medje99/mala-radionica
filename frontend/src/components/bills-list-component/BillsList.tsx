@@ -62,7 +62,7 @@ const BillsList: React.FC = () => {
     setFilteredBills(updatedBills)
     setIsModalOpen(false)
 
-    message.success('Racun izmenjen uspesno')
+    message.success('Racun uspesno izmenjen! ')
   }
 
   const markAsPaid = async (record: IBillResponse) => {
@@ -70,7 +70,7 @@ const BillsList: React.FC = () => {
     BillService.updateBill(updatedBill)
     const updatedBills = filteredBills.map((bill) => (bill.bill_id === record.bill_id ? { ...bill, paid: true } : bill))
     setFilteredBills(updatedBills)
-    message.success('Racun oznacen kao placen')
+    message.success('Racun oznacen kao placen!')
   }
 
   // table colums
@@ -100,7 +100,7 @@ const BillsList: React.FC = () => {
               key={record.bill_id}
               title="Da li ste sigurni da zelite oznaciti kao isplaceno?"
               onConfirm={() => markAsPaid(record)}
-              onCancel={() => message.error('Otkazano!')}
+              onCancel={() => message.warning('Otkazano!')}
               okText="Da"
               cancelText="Ne"
               okButtonProps={{ style: { background: 'green' } }}
@@ -136,7 +136,7 @@ const BillsList: React.FC = () => {
           <Popconfirm
             title="Jeste li sigurni da zelite izbrisati ovaj racun?!"
             onConfirm={() => handleDelete(record.bill_id)}
-            onCancel={() => message.error('Racun izbrisan!')}
+            onCancel={() => message.success('Racun uspesno izbrisan!')}
             key={record.bill_id}
             cancelButtonProps={{ style: { background: 'red' } }}
             okButtonProps={{ style: { background: 'green' } }}

@@ -57,7 +57,7 @@ const CreateTaskForm = () => {
 
         .catch((error) => {
           console.error('Error creating contact:', error)
-          message.error('Greška prilikom kreiranja unosa .Kontaktirajte administratora.') // Show error message
+          message.error('Greška prilikom kreiranja unosa .Kontaktirajte administratora.')
         })
     })
   }

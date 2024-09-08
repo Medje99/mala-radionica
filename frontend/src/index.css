@@ -143,9 +143,9 @@ form label {
   text-align: center;
 }
 
-/* .ant-input-search-button {
+.ant-input-search-button {
   display: none;
-} */
+}
 
 .header-title {
   color: rgb(120, 187, 221);
