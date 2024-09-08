@@ -7,6 +7,7 @@ import ContactService from '@/service/ContactsService'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { AxiosError } from 'axios'
+import SearchableTable from '../searchableTable'
 
 const ContactsList: React.FC = () => {
   const { setHeaderTitle } = useGlobalContext()
@@ -123,26 +124,7 @@ const ContactsList: React.FC = () => {
 
   return (
     <div className=" flex-row contact">
-      <Space id="search-container" className="w-full col-span-12 flex  ">
-        <Input.Search
-          size="large"
-          placeholder="Pretrazi kontakte"
-          onChange={(e) => setSearchTerm(e.target.value)}
-          id="search"
-        />
-      </Space>
-
-      <section className="w-full px-24">
-        <Table
-          className="p-7 mt-5 rounded-xl"
-          columns={columns}
-          dataSource={filteredContacts}
-          pagination={{ pageSize: 14 }}
-          rowKey="id"
-          size="small"
-        />
-      </section>
-
+      <SearchableTable data={contacts} columns={columns} />
       <Modal
         title="Uredi kontakt"
         className="flex"
