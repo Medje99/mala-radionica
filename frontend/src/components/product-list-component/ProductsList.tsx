@@ -100,7 +100,7 @@ const ProductsList: React.FC = () => {
           dataSource={filteredProducts}
           pagination={{ pageSize: 14 }} // Adjust page size as needed
           rowKey="id" // Use 'id' as the row key
-          className="product p-7 mt-5 rounded-xl"
+          className=" p-7 mt-5 rounded-xl"
         />
       </section>
 
