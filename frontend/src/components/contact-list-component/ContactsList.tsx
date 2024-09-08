@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Table, Typography, Input, Popconfirm, message, Modal, Form, Space, Button, Tooltip } from 'antd'
-import { ErrorResponse, Link } from 'react-router-dom'
-import { IContacts } from '@/model/response/IContactResponse'
+import { Table, Input, Popconfirm, message, Modal, Form, Space, Button, Tooltip } from 'antd'
+import { ErrorResponse } from 'react-router-dom'
+import { IContactsResponse } from '@/model/response/IContactResponse'
 import useGetAllContacts from '@/CustomHooks/useGetAllContants'
 import ContactService from '@/service/ContactsService'
 import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { AxiosError } from 'axios'
-import SearchableTable from '../searchableTable'
+import { customer_city, customer_firstName, customer_lastName, customer_phoneNumber } from './constants'
 
 const ContactsList: React.FC = () => {
   const { setHeaderTitle } = useGlobalContext()
@@ -16,10 +16,10 @@ const ContactsList: React.FC = () => {
   }, [])
   const { customers: contacts } = useGetAllContacts()
   const [searchTerm, setSearchTerm] = useState('')
-  const [filteredContacts, setFilteredContacts] = useState<IContacts[]>([])
-  const [editingContact, setEditingContact] = useState<IContacts>({} as IContacts)
+  const [filteredContacts, setFilteredContacts] = useState<IContactsResponse[]>([])
+  const [editingContact, setEditingContact] = useState<IContactsResponse>({} as IContactsResponse)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [FormContactList] = Form.useForm<IContacts>()
+  const [FormContactList] = Form.useForm<IContactsResponse>()
 
   useEffect(() => {
     const filtered = contacts.filter((contact) => {
@@ -34,7 +34,7 @@ const ContactsList: React.FC = () => {
     setFilteredContacts(filtered)
   }, [searchTerm, contacts])
 
-  const handleEdit = (record: IContacts) => {
+  const handleEdit = (record: IContactsResponse) => {
     setEditingContact(record)
     FormContactList.setFieldsValue(record)
     setIsModalOpen(true)
@@ -55,7 +55,7 @@ const ContactsList: React.FC = () => {
 
   const handleSave = async () => {
     const values = await FormContactList.validateFields()
-    const updatedProduct = { ...editingContact, ...values } as IContacts
+    const updatedProduct = { ...editingContact, ...values } as IContactsResponse
     ContactService.updateContactCustomer(updatedProduct)
     const updatedContacts = filteredContacts.map((contact) =>
       contact.id === editingContact.id ? { ...contact, ...values } : contact,
@@ -65,66 +65,57 @@ const ContactsList: React.FC = () => {
 
     message.success('Contact updated successfully')
   }
-
-  const columns = [
-    {
-      title: 'Ime',
-      dataIndex: 'firstName',
-      key: 'firstName',
-      align: 'center',
-    },
-    {
-      title: 'Prezime',
-      dataIndex: 'lastName',
-      key: 'lastName',
-      align: 'center',
-    },
-    {
-      title: 'Mesto',
-      dataIndex: 'city',
-      key: 'city',
-      align: 'center',
-    },
-    {
-      title: 'Telefon',
-      dataIndex: 'phoneNumber',
-      key: 'phoneNumber',
-      align: 'center',
-    },
-    {
-      title: 'Radnje',
-      align: 'center',
-      key: 'action',
-      render: (record: IContacts) => (
-        <Space size="large" className="flex justify-center gap-12">
-          <Tooltip title="Izmeni">
-            <Button type="primary" ghost onClick={() => handleEdit(record)}>
-              <EditOutlined />
+  const actions = {
+    title: 'Radnje',
+    align: 'center',
+    key: 'action',
+    render: (record: IContactsResponse) => (
+      <Space size="large" className="flex justify-center gap-12">
+        <Tooltip title="Izmeni">
+          <Button type="primary" ghost onClick={() => handleEdit(record)}>
+            <EditOutlined />
+          </Button>
+        </Tooltip>
+        <Popconfirm
+          title="Da li ste sigurni da zelite izbrisati ovaj kontakt?"
+          onConfirm={() => handleDelete(record.id)}
+          onCancel={() => message.error('Brisanje otkazano')}
+          okText="Da"
+          cancelText="Ne"
+          okButtonProps={{ style: { background: 'green' } }}
+          cancelButtonProps={{ style: { background: 'red' } }}
+        >
+          <Tooltip title="Obrisi">
+            <Button danger ghost>
+              <DeleteOutlined />
             </Button>
           </Tooltip>
-          <Popconfirm
-            title="Da li ste sigurni da zelite izbrisati ovaj kontakt?"
-            onConfirm={() => handleDelete(record.id)}
-            onCancel={() => message.error('Brisanje otkazano')}
-            okText="Da"
-            cancelText="Ne"
-            okButtonProps={{ style: { background: 'green' } }}
-            cancelButtonProps={{ style: { background: 'red' } }}
-          >
-            <Tooltip title="Obrisi">
-              <Button danger ghost>
-                <DeleteOutlined />
-              </Button>
-            </Tooltip>
-          </Popconfirm>
-        </Space>
-      ),
-    },
-  ]
+        </Popconfirm>
+      </Space>
+    ),
+  }
+  const columns = [customer_firstName, customer_lastName, customer_city, customer_phoneNumber, actions]
 
   return (
     <div className=" flex-row contact">
-      <SearchableTable data={contacts} columns={columns} />
+      <Space id="search-container" className="col-span-12 flex ">
+        <Input.Search
+          size="large"
+          placeholder="Pretraži proizvode"
+          onChange={(e) => setSearchTerm(e.target.value)}
+          id="search"
+        />
+      </Space>
+      <section className="w-full px-24 ">
+        <Table
+          size="small"
+          columns={columns} //don't like align center
+          dataSource={filteredContacts}
+          pagination={{ pageSize: 14 }} // Adjust page size as needed
+          rowKey="id" // Use 'id' as the row key
+          className="p-7 mt-5 rounded-xl"
+        />
+      </section>
       <Modal
         title="Uredi kontakt"
         className="flex"
@@ -140,39 +131,20 @@ const ContactsList: React.FC = () => {
           >
             <Input />
           </Form.Item>
-          <Form.Item
-            label="Last Name"
-            name="lastName"
-            rules={[{ required: false, message: 'Please enter the last name' }]}
-          >
+          <Form.Item label="Last Name" name="lastName">
             <Input />
           </Form.Item>
           <Form.Item label="City" name="city" rules={[{ required: false, message: 'Please enter the city' }]}>
             <Input />
           </Form.Item>
-          <Form.Item
-            label="Phone Number"
-            name="phoneNumber"
-            rules={[{ required: false, message: 'Please enter the phone number' }]}
-          >
+          <Form.Item label="Phone Number" name="phoneNumber">
             <Input />
           </Form.Item>
           <Form.Item label="Address" name="address">
             <Input />
           </Form.Item>
-          <Form.Item label="Other" name="other">
-            <Input />
-          </Form.Item>
         </Form>
       </Modal>
-
-      {filteredContacts.length === 0 && (
-        <Link to="/ContactCreate" className="text-center">
-          <h1 className="lg:leading-tighter text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl xl:text-[3.4rem] 2xl:text-[3.75rem]">
-            Add Contact
-          </h1>
-        </Link>
-      )}
     </div>
   )
 }
