@@ -2,13 +2,14 @@
 import { Form, Switch, InputNumber, Typography, message, DatePicker } from 'antd'
 import { useEffect, useState } from 'react'
 import ActionButton from '../CustomButtons/ActionButton' // recives function , button title, button class , and aditional styles
-import { useGlobalContext } from '@/contexts/GlobalContextProvider'
+
 import SelectProductsComponent from './SelectProductsComponent'
 import BillService from '@/service/BillService'
 import { IBillResponse } from '@/model/response/IBillResponse'
 import dayjs from 'dayjs'
 import moment from 'moment'
 import { VerticalRightOutlined } from '@ant-design/icons'
+import { useGlobalContext } from '../GlobalContextProvider'
 
 const CreateBillForm = ({ callback }: { callback: () => void }) => {
   // even if optional vscode throws error so we need to pass callback={() => {}} in components that dont have things to pass
