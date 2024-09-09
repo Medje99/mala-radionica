@@ -2,79 +2,79 @@ const express = require("express"); // Import express
 const router = express.Router(); // Create a router instance
 const db = require("./db"); // Import your database connection
 
-router.get("/", (req, res) => {
-  console.log("GET /tasks called");
+// router.get("/", (req, res) => {
+//   console.log("GET /tasks called");
 
-  const selectQuery = `
-    SELECT 
-      t.*, 
-      c.firstName, 
-      c.lastName,
-      b.bill_id
-    FROM 
-      tasks t
-    LEFT JOIN 
-      contacts c ON t.contact_id = c.id
-    LEFT JOIN 
-      bills b ON t.id = b.job_id;
-  `;
+//   const selectQuery = `
+//     SELECT
+//       t.*,
+//       c.firstName,
+//       c.lastName,
+//       b.bill_id
+//     FROM
+//       tasks t
+//     LEFT JOIN
+//       contacts c ON t.contact_id = c.id
+//     LEFT JOIN
+//       bills b ON t.id = b.job_id;
+//   `;
 
-  db.query(selectQuery, (err, results) => {
-    if (err) {
-      console.error("Error retrieving tasks:", err);
-      res.status(500).json({ error: "Error retrieving tasks" });
-    } else {
-      console.log("Retrieved tasks:", results);
-      res.json(results);
-    }
-  });
-});
+//   db.query(selectQuery, (err, results) => {
+//     if (err) {
+//       console.error("Error retrieving tasks:", err);
+//       res.status(500).json({ error: "Error retrieving tasks" });
+//     } else {
+//       console.log("Retrieved tasks:", results);
+//       res.json(results);
+//     }
+//   });
+// });
 
-router.get("/:id", (req, res) => {
-  console.log("GET /tasks/:id called");
+// router.get("/:id", (req, res) => {
+//   console.log("GET /tasks/:id called");
 
-  const taskId = req.params.id;
+//   const taskId = req.params.id;
 
-  const selectQuery = `
-    SELECT 
-      t.*, 
-      b.bill_id, 
-      b.end_date, 
-      b.labor_cost, 
-      b.paid, 
-      b.parts_cost, 
-      b.products_used,
-      c.firstName,
-      c.lastName
-    FROM 
-      tasks t 
-    LEFT JOIN 
-      bills b ON t.id = b.job_id 
-    LEFT JOIN 
-      contacts c ON t.contact_id = c.id
-    WHERE 
-      t.id = ?;
-  `;
-  db.query(selectQuery, [taskId], (err, results) => {
-    if (err) {
-      console.error("Error retrieving task:", err);
-      res.status(500).json({ error: "Error retrieving task" });
-    } else if (results.length === 0) {
-      res.status(404).json({ error: `Task with id ${taskId} not found` });
-    } else {
-      // Parse products_used from JSON string to an array of objects
-      const taskWithBill = results.map((task) => ({
-        ...task,
-        products_used: task.products_used
-          ? JSON.parse(task.products_used)
-          : null, // Parse products_used field
-      }));
+//   const selectQuery = `
+//     SELECT
+//       t.*,
+//       b.bill_id,
+//       b.end_date,
+//       b.labor_cost,
+//       b.paid,
+//       b.parts_cost,
+//       b.products_used,
+//       c.firstName,
+//       c.lastName
+//     FROM
+//       tasks t
+//     LEFT JOIN
+//       bills b ON t.id = b.job_id
+//     LEFT JOIN
+//       contacts c ON t.contact_id = c.id
+//     WHERE
+//       t.id = ?;
+//   `;
+//   db.query(selectQuery, [taskId], (err, results) => {
+//     if (err) {
+//       console.error("Error retrieving task:", err);
+//       res.status(500).json({ error: "Error retrieving task" });
+//     } else if (results.length === 0) {
+//       res.status(404).json({ error: `Task with id ${taskId} not found` });
+//     } else {
+//       // Parse products_used from JSON string to an array of objects
+//       const taskWithBill = results.map((task) => ({
+//         ...task,
+//         products_used: task.products_used
+//           ? JSON.parse(task.products_used)
+//           : null, // Parse products_used field
+//       }));
 
-      console.log("Retrieved task with bill:", taskWithBill[0]);
-      res.json(taskWithBill[0]);
-    }
-  });
-});
+//       console.log("Retrieved task with bill:", taskWithBill[0]);
+//       res.json(taskWithBill[0]);
+//     }
+//   });
+// });
 
 router.post("/", (req, res) => {
   console.log("POST /task called" + req.body);
