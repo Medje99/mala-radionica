@@ -1,8 +1,8 @@
-import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import { useEffect } from 'react'
 import CreateBillForm from './forms/CreateBillForm'
 import CreateContactForm from './forms/CreateContactForm'
 import CreateTaskForm from './forms/CreateTaskForm'
+import { useGlobalContext } from './GlobalContextProvider'
 
 export default function MultiStepForm() {
   const {
