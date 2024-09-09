@@ -3,14 +3,14 @@ import { ITaskResponse } from '@/model/response/ITaskResponse'
 import axios from 'axios'
 
 const createTask = async (data: ITaskResponse) => {
-  return await axios.post<ITaskResponse>(baseUrl + '/tasks', data)
+  return await axios.post<ITaskResponse[]>(baseUrl + '/tasks', data)
 }
 
 // const getAllTasks = async () => {
 //   return await axios.get<ITaskResponse[]>(baseUrl + '/tasks') // Adjusted endpoint to plural '/tasks'
 // }
 
-const getUnfinishedTasks = async () => {
+const getAllTasks = async () => {
   return await axios.get<ITaskResponse[]>(baseUrl + '/unfinishedTasks') // Adjusted endpoint to plural '/tasks'
 }
 
@@ -27,8 +27,7 @@ const deleteTask = async (id: number) => {
 }
 
 const TaskService = {
-  // getAllTasks,
-  getUnfinishedTasks,
+  getAllTasks,
   createTask,
   getTaskById,
   updateTask,
