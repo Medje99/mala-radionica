@@ -20,7 +20,8 @@ form label {
 }
 
 .ant-table {
-  box-shadow: #00000088 2px 2px 30px 20px;
+  box-shadow: #00000088 2px 2px 10px 25px;
+  background-color: rgba(228, 228, 228, 0.958);
 }
 
 .ant-btn {
@@ -41,6 +42,7 @@ form label {
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-width: 70vw;
 }
 
 .action-button {
@@ -53,40 +55,45 @@ form label {
   font-size: 1.5em;
 }
 
-/* .product-select-wrapper {
+.product-select-wrapper {
   display: inline-flex;
-} */
+}
 
 .backB {
   /* backbutton in form */
   font-size: 2em;
+  color: #47575f;
 }
 
 .ant-form {
-  min-width: 20vw;
-  background-color: rgba(55, 140, 179, 0.164);
-  margin: 0 auto;
-  padding: 4em;
-  border-radius: 10px;
-  border-color: rgb(139, 66, 66);
-  border-style: solid;
-  border-width: 1px;
+  min-width: 16vw;
+  min-height: 68vh;
+  background-color: rgb(228, 228, 228);
+  padding-left: 4em;
+  padding-right: 4em;
+  padding-top: 4em;
+  padding-bottom: 4em;
+  border-radius: 1em;
   max-height: 89vh;
   overflow-y: auto;
+  box-shadow: #00000088 2px 2px 10px 25px;
 }
 
 #create-new-product-form {
-  box-shadow: rgba(159, 35, 103, 0.678) 0px 0px 15px;
-  background-color: rgba(159, 35, 103, 0.119);
+  justify-content: center;
+  margin-left: 33%;
+  background-color: rgba(255, 255, 255, 0.711);
 }
 
 #select-products-component {
   /* products insert COMPONENT not product input form!   */
   display: block;
   padding-top: 1em;
-  margin-bottom: 1em;
-  box-shadow: rgba(159, 35, 103, 0.678) 0px 0px 15px;
-  background-color: rgba(159, 35, 103, 0.119);
+  margin-bottom: 2em;
+  padding: 3em;
+  border-radius: 1em;
+  box-shadow: rgba(10, 10, 10, 0.678) 0px 0px 15px;
+  background-color: rgba(228, 228, 228, 0.958);
 }
 .productEditModal {
   display: block;
@@ -97,33 +104,27 @@ form label {
   background-color: rgba(159, 35, 103, 0.119);
 }
 
-.contact {
-  background-color: rgba(185, 133, 60, 0.301);
-}
+/* .contact {
+  background-color: rgba(4, 4, 4, 0.132);
+} */
 
 /* laeve it for color only  */
-.task {
-  background-color: rgba(84, 159, 66, 0.366);
-}
+/* .task {
+  background-color: rgba(63, 63, 62, 0.366);
+} */
 
 .bill {
   background-color: rgba(55, 140, 179, 0.164);
 }
 
 #musterija-form {
-  background-color: rgba(232, 156, 49, 0.505);
-  border-color: rgb(139, 66, 66);
-  border-width: 1px;
-  border-style: solid;
+  background-color: rgba(228, 228, 228, 0.958);
   font-style: oblique;
   font-size: large;
 }
 
 #task-form {
-  background-color: rgba(62, 220, 23, 0.119);
-  border-color: rgb(139, 66, 66);
-  border-width: 1px;
-  border-style: solid;
+  background-color: rgba(228, 228, 228, 0.958);
   font-style: oblique;
   font-size: large;
 }
@@ -131,14 +132,18 @@ form label {
 /* DO NOT TOUCH THIS BLOCK */
 
 #search-container {
+  border: none;
   display: block;
+
   /* border-radius: 2em; */
 }
 
 #search {
-  margin-left: 17%;
-  width: 66%;
-  padding: em;
+  border: none;
+  box-shadow: #ffffffc9 2px 2px 10px 10px;
+  margin-left: 7%;
+  width: 86%;
+  padding: 0.7em;
   margin-top: 2em;
   text-align: center;
 }
@@ -148,6 +153,8 @@ form label {
 }
 
 .header-title {
+  width: 0;
+  font-weight: 900;
   color: rgb(120, 187, 221);
   font-size: clamp(2rem, 2vw, 2rem);
   white-space: nowrap;
@@ -155,7 +162,33 @@ form label {
 }
 
 .action-button {
-  box-shadow: #1297da 0px 0px 10px;
-  background-color: #0c62b3a4;
-  /* border: #00448380 2px solid; */
+  box-shadow: #1e1c1cc9 2px 2px 10px 10px;
+  background-color: #081a2aa4;
+  padding-inline: 3em;
+  padding: 1.5em;
+  border: 10px;
+}
+.ant-message {
+  top: 20px; /* Adjust as needed */
+  left: 50%;
+  transform: translateX(-50%); /* Center horizontally */
+}
+
+Button {
+  color: rgba(10, 10, 10, 0.678);
+  background-color: bisque;
+  box-shadow: #8a8484c9 2px 2px 2px 2px;
+  background-color: #081a2aa4;
+  padding-inline: 3em;
+  padding: 1.5em;
+  border: 10px;
+}
+Button:hover {
+  color: black;
+  background-color: bisque;
+  box-shadow: #8a8484c9 2px 2px 2px 2px;
+  background-color: #081a2aa4;
+  padding-inline: 3em;
+  padding: 1.5em;
+  border: 10px;
 }

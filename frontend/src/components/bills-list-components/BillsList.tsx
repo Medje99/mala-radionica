@@ -155,7 +155,7 @@ const BillsList: React.FC = () => {
   ]
 
   return (
-    <div className=" flex-row bill  overflow-y-auto h-[calc(100vh-4rem)]  ">
+    <div className=" flex-row bill  overflow-y-auto h-[calc(100vh-6rem)]  ">
       <Space id="search-container" className="">
         <Input
           className="focus:ring-2 focus:ring-blue-500 focus:outline-none appearance-none w-full text-sm leading-6 text-slate-900 placeholder-slate-400 rounded-md py-2 pl-10 ring-1 ring-slate-200 shadow-sm"

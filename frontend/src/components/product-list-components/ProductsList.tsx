@@ -84,7 +84,7 @@ const ProductsList: React.FC = () => {
   ]
 
   return (
-    <div className=" flex-row product">
+    <div className=" flex-row product h-[calc(100vh-6rem)]   overflow-y-auto  ">
       <Space id="search-container" className="col-span-12 flex ">
         <Input.Search
           size="large"
@@ -93,14 +93,14 @@ const ProductsList: React.FC = () => {
           id="search"
         />
       </Space>
-      <section className="w-full px-24 ">
+      <section className="w-full px-24">
         <Table
           size="small"
           columns={columns} //don't like align center
           dataSource={filteredProducts}
           pagination={{ pageSize: 14 }} // Adjust page size as needed
           rowKey="id" // Use 'id' as the row key
-          className=" p-7 mt-5 rounded-xl"
+          className=" p-7 mt-5 rounded-xl "
         />
       </section>
 
@@ -125,7 +125,7 @@ const ProductsList: React.FC = () => {
           <Form.Item
             label="Naziv proizvoda"
             name="name"
-            rules={[{ required: true, message: 'Please enter the product name' }]}
+            rules={[{ required: true, message: 'Popuni naziv posla!' }]}
             className="mb-4"
           >
             <Input className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
@@ -162,6 +162,7 @@ const ProductsList: React.FC = () => {
             name="quantity"
             rules={[{ required: true, message: 'Molimo unesite kolicinu proizvoda' }]}
             className="mb-4"
+            required
           >
             <InputNumber
               style={{ width: '100%' }}

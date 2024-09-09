@@ -110,7 +110,7 @@ export const TasksList = () => {
   ]
 
   return (
-    <div className=" flex-row task h-[calc(100vh-3.5rem)]">
+    <div className=" flex-row task h-[calc(100vh-6rem)]  overflow-y-auto">
       {/*edit FormTaskList*/}
 
       <Modal
@@ -121,7 +121,7 @@ export const TasksList = () => {
         title="Izmeni posao :"
         className="flex editModal "
       >
-        <Form form={FormTaskList} layout="vertical">
+        <Form form={FormTaskList}>
           <Form.Item label="Naziv posla" name="job_name" rules={[{ required: true, message: 'Unesi naziv posla' }]}>
             <Input />
           </Form.Item>
@@ -162,7 +162,7 @@ export const TasksList = () => {
       </Modal>
 
       {/* Task Search Bar */}
-      <Space id="search-container" className="">
+      <Space id="search-container" className=" ">
         <Input
           className="focus:ring-2 focus:ring-blue-500 focus:outline-none appearance-none w-full text-sm leading-6 text-slate-900 placeholder-slate-400 rounded-md py-2 pl-10 ring-1 ring-slate-200 shadow-sm"
           type="text"
@@ -175,9 +175,9 @@ export const TasksList = () => {
 
       {/* task Table */}
 
-      <section className="mx-24">
+      <section className="mx-15 mt-10 ">
         <Table
-          className="p-7 mt-5 rounded-xl "
+          className="p-7 mt-5  "
           size="small"
           pagination={{
             pageSize: 14,

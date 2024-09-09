@@ -68,7 +68,7 @@ const ContactsList: React.FC = () => {
   const columns = [customer_firstName, customer_lastName, customer_city, customer_phoneNumber, actions]
 
   return (
-    <div className=" flex-row contact">
+    <div className=" flex-row contact h-[calc(100vh-6rem)]">
       <Space id="search-container" className="col-span-12 flex ">
         <Input.Search
           size="large"

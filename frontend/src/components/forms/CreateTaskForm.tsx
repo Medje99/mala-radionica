@@ -102,7 +102,7 @@ const CreateTaskForm = () => {
             />
           </Space>
         </Form.Item>
-        <Form.Item label={!isFinished ? 'Posao aktivan' : 'Status posla:'} className="ml-7">
+        <Form.Item label={!isFinished ? 'Posao aktivan' : 'Status:'} className="ml-8">
           <Switch checked={isFinished} onChange={() => setIsFinished(!isFinished)} className="mr-10" />
         </Form.Item>
         {isFinished && (
@@ -125,7 +125,7 @@ const CreateTaskForm = () => {
         <ActionButton
           onClickHandler={onClickHandler}
           title={isFinished ? 'Naplata' : 'Dodaj na listu poslova'}
-          className={`transition-all duration-500 transform ${
+          className={`transition-all duration-500 transform action-button ${
             animating ? 'opacity-0 rotate-45' : 'opacity-100 rotate-0'
           }`}
         />

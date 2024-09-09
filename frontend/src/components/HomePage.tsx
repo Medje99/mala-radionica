@@ -3,12 +3,12 @@ import TasksList from './task-list-components/TaskList'
 
 const HomePage = () => {
   return (
-    <main className="flex xl:flex-row flex-col h-h-[calc(100vh-10rem)]">
-      <section className="w-4/12 xl:p-10 lg:p-5 overflow-y-auto max-h-[calc(100vh-4rem)]">
+    <main className="flex xl:flex-row flex-col ">
+      <section className="w-1/4 xl:p-10  lg:p-5 overflow-y-auto  ">
         <MultiStepForm />
       </section>
 
-      <section className="w-8/12">
+      <section className="w-3/4 ">
         <TasksList />
       </section>
     </main>

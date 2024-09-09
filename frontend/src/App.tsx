@@ -8,10 +8,11 @@ import ContactsList from './components/contact-list-components/ContactsList'
 import TaskList from './components/task-list-components/TaskList'
 import BillsList from './components/bills-list-components/BillsList'
 import { ContextProvider } from './contexts/GlobalContextProvider'
+import Footer from './components/footer'
 
 function App() {
   return (
-    <>
+    <div className="flex flex-col h-screen w-screen bg-gradient-to-r from-cyan-500 to-blue-500 ">
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -21,7 +22,8 @@ function App() {
         <Route path="/Tasks" element={<TaskList />} />
         <Route path="/Bills" element={<BillsList />} />
       </Routes>
-    </>
+      <Footer />
+    </div>
   )
 }
 
