@@ -22,9 +22,15 @@ const TasksActions = () => {
     filteredTasks: ITaskResponse[],
     setFilteredTasks: React.Dispatch<React.SetStateAction<ITaskResponse[]>>,
   ) => {
-    message.success('Posao uspesno obrisan!')
     TaskService.deleteTask(id)
-    setFilteredTasks(filteredTasks.filter((task) => task.id !== id))
+      .then(() => {
+        message.success('Posao uspesno obrisan!')
+        setFilteredTasks(filteredTasks.filter((task) => task.id !== id))
+      })
+      .catch((error) => {
+        console.error('Error deleting task:', error)
+        message.error('Greška prilikom brisanja posla.')
+      })
   }
 
   const handleSave = async (
@@ -37,11 +43,18 @@ const TasksActions = () => {
     try {
       const values = await form.validateFields()
       const updatedTask = { ...editingTask, ...values } as ITaskResponse
+
       TaskService.updateTask(updatedTask)
-      message.success('Posao uspesno izmenjen!')
-      setFilteredTasks(filteredTasks.map((task) => (task.id === updatedTask.id ? updatedTask : task)))
-      form.resetFields()
-      setIsModalOpen(false)
+        .then(() => {
+          message.success('Posao uspesno izmenjen!')
+          setFilteredTasks(filteredTasks.map((task) => (task.id === updatedTask.id ? updatedTask : task)))
+          form.resetFields()
+          setIsModalOpen(false)
+        })
+        .catch((error) => {
+          console.error('Error updating task:', error)
+          message.error('Greška prilikom ažuriranja posla.')
+        })
     } catch (error) {
       console.error('Validation failed:', error)
       message.error('Validacija nije uspesna, popunite sva polja i pokusajte ponovo.')
