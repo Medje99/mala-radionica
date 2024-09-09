@@ -1,5 +1,5 @@
 import { message } from 'antd'
-import BillService from '@/service/BillService'
+import BillService from '@/services/BillService'
 import { IBillResponse } from '@/model/response/IBillResponse'
 import { FormInstance } from 'antd/es/form/Form'
 import { useEffect, useState } from 'react'

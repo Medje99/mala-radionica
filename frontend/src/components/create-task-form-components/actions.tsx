@@ -3,7 +3,7 @@ import { concateFullName } from '@/Utilities/setFullName'
 import React, { useEffect, useState } from 'react'
 import { CustomerSelect } from './types'
 import { FormInstance } from 'antd'
-import ContactService from '@/service/ContactsService'
+import ContactService from '@/services/ContactsService'
 
 const contactFormActions = () => {
   const setCustomerSelectOptions = (

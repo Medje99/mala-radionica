@@ -2,7 +2,7 @@
 import { Form, Input, Select, Typography, message } from 'antd' // Import message from antd
 import contactFormActions from '../create-task-form-components/actions'
 import { useEffect, useState } from 'react'
-import ContactService from '@/service/ContactsService'
+import ContactService from '@/services/ContactsService'
 import { IContactsResponse } from '@/model/response/IContactResponse'
 import { concateFullName } from '@/Utilities/setFullName'
 import { CustomerSelect } from '../create-task-form-components/types'

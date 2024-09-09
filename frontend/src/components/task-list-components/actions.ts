@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ITaskResponse } from '@/model/response/ITaskResponse'
-import TaskService from '@/service/TaskService'
+import TaskService from '@/services/TaskService'
 import { FormInstance, message } from 'antd'
 import { useState, useEffect } from 'react'
 import { useGlobalContext } from '../GlobalContextProvider'

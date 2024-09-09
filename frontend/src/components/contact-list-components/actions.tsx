@@ -1,5 +1,5 @@
 import { IContactsResponse } from '@/model/response/IContactResponse'
-import ContactService from '@/service/ContactsService'
+import ContactService from '@/services/ContactsService'
 import { message, FormInstance } from 'antd'
 import { AxiosError } from 'axios'
 import { useState, useEffect } from 'react'

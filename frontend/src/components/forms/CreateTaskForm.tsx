@@ -2,7 +2,7 @@ import { Form, Input, DatePicker, Switch, Space, message, Typography } from 'ant
 import { useEffect, useState } from 'react'
 import ActionButton from '../CustomButtons/ActionButton'
 import { useGlobalContext } from '../GlobalContextProvider'
-import TaskService from '@/service/TaskService'
+import TaskService from '@/services/TaskService'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
 import moment from 'moment'
 import dayjs from 'dayjs'

@@ -1,5 +1,5 @@
 import { IProduct } from '@/model/response/IProductResponse'
-import ProductsService from '@/service/ProductsService'
+import ProductsService from '@/services/ProductsService'
 import { FormInstance, message } from 'antd'
 import { useEffect, useState } from 'react'
 
