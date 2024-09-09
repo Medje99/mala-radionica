@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
 import { Table, Input, Popconfirm, message, Modal, Form, Space, Button, Tooltip, Typography } from 'antd'
 import { customer_firstName, customer_lastName, taskName, creation_date } from './constants'
-import CreateBillForm from '../forms/CreateBillForm' // Import CreateBillForm
-import { useGlobalContext } from '../GlobalContextProvider'
 import { DeleteOutlined, EditOutlined, FileDoneOutlined } from '@ant-design/icons'
 import { IContact } from '@/model/response/IContactResponse'
 import { useGetAllTasks, handleEdit, handleDelete, handleSave } from './actions'
+import { useGlobalContext } from '@/components/GlobalContextProvider'
+import CreateBillForm from '@/components/forms/CreateBillForm'
 
 export const TasksList = () => {
   const { setContextCustomer, setCurrentTask, setHeaderTitle, setCurrentPage } = useGlobalContext()
@@ -179,12 +179,9 @@ export const TasksList = () => {
           className="p-7 mt-5  "
           size="small"
           pagination={{
-            pageSize: 14,
-            showSizeChanger: true,
-            pageSizeOptions: ['10', '15', '30', '50', '200'],
-            showTotal: (total) => `Ukupno ${total} poslova`,
-            showQuickJumper: true,
-            position: ['bottomCenter'],
+            pageSize: 13,
+            showSizeChanger: false,
+            showTotal: (total) => `Ukupno ${total} aktivnih  poslova`,
           }}
           columns={columns}
           expandable={{

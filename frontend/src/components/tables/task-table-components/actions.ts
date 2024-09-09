@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useGlobalContext } from '@/components/GlobalContextProvider'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
 import TaskService from '@/services/TaskService'
 import { FormInstance, message } from 'antd'
 import { useState, useEffect } from 'react'
-import { useGlobalContext } from '../GlobalContextProvider'
 
 const useGetAllTasks = () => {
   const [tasks, setTasks] = useState<ITaskResponse[]>([])

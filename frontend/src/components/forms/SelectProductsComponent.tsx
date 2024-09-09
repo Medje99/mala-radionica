@@ -4,7 +4,7 @@ import { Button, Col, Form, Input, Row, Select, Space, Tooltip, Typography } fro
 import { IProduct, IProductUsed } from '@/model/response/IProductResponse'
 import { FormInstance } from 'antd' // Import FormInstance from antd
 import useFormInstance from 'antd/es/form/hooks/useFormInstance'
-import { useGetAllProducts } from '.././product-list-components/actions'
+import { useGetAllProducts } from '../tables/products-table-components/actions'
 
 const { Option } = Select
 

@@ -1,5 +1,5 @@
 import MultiStepForm from './MultiStepForm'
-import TasksList from './task-list-components/TaskList'
+import TasksList from './tables/task-table-components/TaskList'
 
 const HomePage = () => {
   return (

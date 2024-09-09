@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Modal } from 'antd'
-import CreateContactForm from '../forms/CreateContactForm'
-import { useGlobalContext } from '../GlobalContextProvider'
-import CreateTaskForm from '../forms/CreateTaskForm'
-import CreateBillForm from '../forms/CreateBillForm'
+import CreateContactForm from '../CreateContactForm'
+import { useGlobalContext } from '../../GlobalContextProvider'
+import CreateTaskForm from '../CreateTaskForm'
+import CreateBillForm from '../CreateBillForm'
 import { useEffect } from 'react'
 
 export const ModalBody = () => {

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { IBillResponse } from '@/model/response/IBillResponse'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { firstName, taskName, endDate, laborCost, total_cost, parts_cost, lastName } from './contants'
-import { useGlobalContext } from '../GlobalContextProvider'
+import { useGlobalContext } from '@/components/GlobalContextProvider'
 import { useGetAllBills, markAsPaid, handleEdit, handleDelete } from './actions'
 
 const BillsList: React.FC = () => {
@@ -103,7 +103,7 @@ const BillsList: React.FC = () => {
           <Popconfirm
             title="Jeste li sigurni da zelite izbrisati ovaj racun?!"
             onConfirm={() => handleDelete(record.bill_id, setFilteredBills)}
-            onCancel={() => message.success('Racun uspesno izbrisan!')}
+            onCancel={() => message.warning('Radnja otkazana!')}
             key={record.bill_id}
             cancelButtonProps={{ style: { background: 'red' } }}
             okButtonProps={{ style: { background: 'green' } }}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Table, Input, Popconfirm, message, Modal, Form, Space, Button, Tooltip } from 'antd'
 import { IContactsResponse } from '@/model/response/IContactResponse'
-import { useGlobalContext } from '../GlobalContextProvider'
+import { useGlobalContext } from '../../GlobalContextProvider'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { customer_city, customer_firstName, customer_lastName, customer_phoneNumber } from './constants'
 import { handleEdit, handleDelete, handleSave, useGetAllContacts } from './actions' // Import actions

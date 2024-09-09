@@ -4,7 +4,7 @@ import { Input, Popconfirm, message, Modal, Form, InputNumber, Space, Button, To
 import { proizvod, proizvodjac, model, cena, kolicina, SKU } from './constats'
 import { useGetAllProducts, handleEdit, handleDelete, handleSave } from './actions'
 import { Link } from 'react-router-dom'
-import { useGlobalContext } from '../GlobalContextProvider'
+import { useGlobalContext } from '../../GlobalContextProvider'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
 const ProductsList: React.FC = () => {

@@ -1,14 +1,14 @@
-import Header from './components/Header'
+import Header from '../src/components/header'
 import './index.css'
 import HomePage from './components/HomePage'
 import { Route, Routes } from 'react-router-dom'
 import CreateNewProductFormComponent from './components/forms/create-product-form/createNewProductForm'
-import ProductsList from './components/product-list-components/ProductsList'
-import ContactsList from './components/contact-list-components/ContactsList'
-import TaskList from './components/task-list-components/TaskList'
-import BillsList from './components/bills-list-components/BillsList'
+import ProductsList from './components/tables/products-table-components/ProductsList'
+import ContactsList from './components/tables/contacts-table-components/ContactsList'
+import TaskList from '../src/components/tables/task-table-components/TaskList'
+import BillsList from '../src/components/tables/bills-table-components/BillsList'
 import Footer from './components/footer'
-import { ContextProvider } from './components/GlobalContextProvider'
+import { ContextProvider } from '../src/components/GlobalContextProvider'
 
 function App() {
   return (
