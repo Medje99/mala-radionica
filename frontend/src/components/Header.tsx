@@ -1,4 +1,3 @@
-import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import {
   ContactsOutlined,
   DatabaseOutlined,
@@ -10,6 +9,7 @@ import {
 import { Tooltip, Typography } from 'antd'
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useGlobalContext } from './GlobalContextProvider'
 
 const Header = () => {
   const { headerTitle, setHeaderTitle, formTitleString } = useGlobalContext()

@@ -1,8 +1,8 @@
 import { Button, Form, Input, Typography } from 'antd'
 import { IProduct } from '@/model/response/IProductResponse'
-import { useGlobalContext } from '@/contexts/GlobalContextProvider'
 import { useEffect } from 'react'
 import { onHandleSubmit } from './actions'
+import { useGlobalContext } from '@/components/GlobalContextProvider'
 
 export const createNewProductForm = () => {
   const { setHeaderTitle } = useGlobalContext()

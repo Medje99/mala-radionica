@@ -4,11 +4,9 @@ import { Link } from 'react-router-dom'
 import BillService from '@/service/BillService'
 import useGetAllBills from '@/CustomHooks/useGetAllBills'
 import { IBillResponse } from '@/model/response/IBillResponse'
-import dayjs from 'dayjs'
-import { useGlobalContext } from '@/contexts/GlobalContextProvider'
-import moment from 'moment'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { firstName, taskName, endDate, laborCost, total_cost, parts_cost, lastName } from './contants'
+import { useGlobalContext } from '../GlobalContextProvider'
 
 const BillsList: React.FC = () => {
   const { setHeaderTitle, currentTask, setCurrentTask } = useGlobalContext()

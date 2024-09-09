@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import TaskService from '@/service/TaskService'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
-import { useGlobalContext } from '@/contexts/GlobalContextProvider'
+import { useGlobalContext } from '@/components/GlobalContextProvider'
 
 const useGetUnfinishedTasks = () => {
   const [UnfinishedOnes, setUnfinishedTasks] = useState<ITaskResponse[]>([])

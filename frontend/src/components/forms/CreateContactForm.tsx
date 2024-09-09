@@ -9,7 +9,7 @@ import { concateFullName } from '@/Utilities/setFullName'
 import { CustomerSelect } from '../create-task-form-components/types'
 import { separateFullName } from '@/Utilities/getSeparatedFullName'
 import ActionButton from '../CustomButtons/ActionButton'
-import { useGlobalContext } from '@/contexts/GlobalContextProvider'
+import { useGlobalContext } from '../GlobalContextProvider'
 
 const { setCustomerSelectOptions, setCustomerFormValues, handleSelectChange } = contactFormActions() // createTaskFormActions
 

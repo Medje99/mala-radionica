@@ -5,7 +5,7 @@ import { Input, Popconfirm, message, Modal, Form, InputNumber, Space, Button, To
 import { proizvod, proizvodjac, model, cena, kolicina, SKU } from './constats'
 import ProductsActions from './actions'
 import { Link } from 'react-router-dom'
-import { useGlobalContext } from '@/contexts/GlobalContextProvider'
+import { useGlobalContext } from '../GlobalContextProvider'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
 const { handleEdit, handleDelete, handleSave } = ProductsActions()

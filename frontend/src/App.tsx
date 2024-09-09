@@ -7,8 +7,8 @@ import ProductsList from './components/product-list-components/ProductsList'
 import ContactsList from './components/contact-list-components/ContactsList'
 import TaskList from './components/task-list-components/TaskList'
 import BillsList from './components/bills-list-components/BillsList'
-import { ContextProvider } from './contexts/GlobalContextProvider'
 import Footer from './components/footer'
+import { ContextProvider } from './components/GlobalContextProvider'
 
 function App() {
   return (

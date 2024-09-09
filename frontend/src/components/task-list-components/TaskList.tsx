@@ -5,7 +5,7 @@ import { customer_firstName, customer_lastName, taskName, creation_date } from '
 import useGetUnfinishedTasks from '@/CustomHooks/useGetUnfinishedTasks'
 import TasksActions from './actions'
 import CreateBillForm from '../forms/CreateBillForm' // Import CreateBillForm
-import { useGlobalContext } from '@/contexts/GlobalContextProvider'
+import { useGlobalContext } from '../GlobalContextProvider'
 import { DeleteOutlined, EditOutlined, FileDoneOutlined } from '@ant-design/icons'
 import { IContact } from '@/model/response/IContactResponse'
 
