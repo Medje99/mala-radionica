@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { baseUrl } from '@/constants/Constants'
+import { baseUrl } from '@/Constants'
 import { IContactsResponse } from '@/model/response/IContactResponse'
 import axios from 'axios'
 

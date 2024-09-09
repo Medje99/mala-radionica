@@ -1,4 +1,4 @@
-import { baseUrl } from '@/constants/Constants'
+import { baseUrl } from '@/Constants'
 import axios from 'axios'
 import { IBillResponse } from '@/model/response/IBillResponse'
 
