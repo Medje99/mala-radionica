@@ -2,46 +2,41 @@ import { useState, useEffect } from 'react'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
 import { Table, Input, Popconfirm, message, Modal, Form, Space, Button, Tooltip, Typography } from 'antd'
 import { customer_firstName, customer_lastName, taskName, creation_date } from './constants'
-import useGetUnfinishedTasks from '@/CustomHooks/useGetUnfinishedTasks'
-import TasksActions from './actions'
 import CreateBillForm from '../forms/CreateBillForm' // Import CreateBillForm
 import { useGlobalContext } from '../GlobalContextProvider'
 import { DeleteOutlined, EditOutlined, FileDoneOutlined } from '@ant-design/icons'
 import { IContact } from '@/model/response/IContactResponse'
+import { useGetAllTasks, handleEdit, handleDelete, handleSave } from './actions'
 
 export const TasksList = () => {
-  const { setContextCustomer: setCustomerContact, setCurrentTask, setHeaderTitle } = useGlobalContext()
-  const { UnfinishedOnes } = useGetUnfinishedTasks()
-  const { handleEdit, handleDelete, handleSave } = TasksActions()
+  const { setContextCustomer, setCurrentTask, setHeaderTitle, setCurrentPage } = useGlobalContext()
+  useEffect(() => {
+    setHeaderTitle('Aktivni poslovi')
+  }, [])
+  //Task set title header
+
+  const { tasks } = useGetAllTasks()
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredTasks, setFilteredTasks] = useState<ITaskResponse[]>([])
   const [editingTask, setEditingTask] = useState<ITaskResponse>({} as ITaskResponse)
   const [isEditModalOpen, setEditModalOpen] = useState(false)
   const [billModalOpen, setBillModalOpen] = useState(false)
-
-  //Task set title
-  useEffect(() => {
-    setHeaderTitle('Aktivni poslovi')
-  }, [])
-
   const [FormTaskList] = Form.useForm<ITaskResponse>()
 
-  ////Task update list on search/product change main useEffect in UnfinishedOnes !
+  ////Task update list on search/product change main useEffect in useGetUnfinishedTasks !
   useEffect(() => {
-    if (UnfinishedOnes) {
-      const filtered = UnfinishedOnes.filter((task) => {
-        const searchText = searchTerm.toLowerCase()
-        return (
-          task.job_name?.toLowerCase().includes(searchText) ||
-          task.job_description?.toLowerCase().includes(searchText) ||
-          task.firstName?.toLowerCase().includes(searchText) ||
-          task.job_description?.toLowerCase().includes(searchText) ||
-          task.lastName?.toLowerCase().includes(searchText)
-        )
-      })
-      setFilteredTasks(filtered)
-    }
-  }, [searchTerm, UnfinishedOnes])
+    const filtered = tasks?.filter((task) => {
+      const searchText = searchTerm.toLowerCase()
+      return (
+        task.job_name?.toLowerCase().includes(searchText) ||
+        task.job_description?.toLowerCase().includes(searchText) ||
+        task.firstName?.toLowerCase().includes(searchText) ||
+        task.job_description?.toLowerCase().includes(searchText) ||
+        task.lastName?.toLowerCase().includes(searchText)
+      )
+    })
+    setFilteredTasks(filtered)
+  }, [searchTerm, tasks])
 
   //Columns imported clean
   const columns = [
@@ -90,7 +85,7 @@ export const TasksList = () => {
               type="primary"
               ghost
               onClick={() => {
-                setCustomerContact({
+                setContextCustomer({
                   id: record.contact_id,
                   fullName: `${record.firstName} ${record.lastName}`,
                 } as IContact)
@@ -148,7 +143,9 @@ export const TasksList = () => {
       <Modal
         // onClose={()=>CreateBillForm.ResetForm()}
         open={billModalOpen}
-        onCancel={() => setBillModalOpen(false)}
+        onCancel={() => {
+          setBillModalOpen(false)
+        }}
         footer={null}
         closeIcon={null}
         className="flex billModal"
@@ -156,6 +153,8 @@ export const TasksList = () => {
         <CreateBillForm
           callback={() => {
             setBillModalOpen(false)
+            setCurrentPage(0)
+            //just to refresh tasklist ... task-> actions has a useEffect that triggers re-render on page change
           }}
         />
         {/* Pass the closing logic */}

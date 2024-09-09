@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { PlusOutlined, MinusOutlined, ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons'
 import { Button, Col, Form, Input, Row, Select, Space, Tooltip, Typography } from 'antd'
-import useGetAllProducts from '@/CustomHooks/useGetAllProducts'
 import { IProduct, IProductUsed } from '@/model/response/IProductResponse'
 import { FormInstance } from 'antd' // Import FormInstance from antd
 import useFormInstance from 'antd/es/form/hooks/useFormInstance'
+import { useGetAllProducts } from '.././product-list-components/actions'
+
 const { Option } = Select
 
 type SelectProductsComponentProps = {

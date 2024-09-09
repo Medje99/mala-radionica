@@ -1,12 +1,11 @@
 import React, { useState, useEffect, Key } from 'react'
 import { Table, Input, Popconfirm, message, Modal, Form, Space, Button, Tooltip, Typography } from 'antd'
 import { Link } from 'react-router-dom'
-import useGetAllBills from '@/CustomHooks/useGetAllBills'
 import { IBillResponse } from '@/model/response/IBillResponse'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { firstName, taskName, endDate, laborCost, total_cost, parts_cost, lastName } from './contants'
 import { useGlobalContext } from '../GlobalContextProvider'
-import { markAsPaid, handleEdit, handleDelete } from './actions'
+import { useGetAllBills, markAsPaid, handleEdit, handleDelete } from './actions'
 
 const BillsList: React.FC = () => {
   const { setHeaderTitle, currentTask, setCurrentTask } = useGlobalContext() // working on edditing

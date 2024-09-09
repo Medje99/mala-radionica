@@ -2,7 +2,6 @@
 import { Form, Input, Select, Typography, message } from 'antd' // Import message from antd
 import contactFormActions from '../create-task-form-components/actions'
 import { useEffect, useState } from 'react'
-import useGetAllContacts from '@/CustomHooks/useGetAllContants'
 import ContactService from '@/service/ContactsService'
 import { IContactsResponse } from '@/model/response/IContactResponse'
 import { concateFullName } from '@/Utilities/setFullName'
@@ -11,7 +10,7 @@ import { separateFullName } from '@/Utilities/getSeparatedFullName'
 import ActionButton from '../CustomButtons/ActionButton'
 import { useGlobalContext } from '../GlobalContextProvider'
 
-const { setCustomerSelectOptions, setCustomerFormValues, handleSelectChange } = contactFormActions() // createTaskFormActions
+const { setCustomerSelectOptions, setCustomerFormValues, handleSelectChange, useGetAllContacts } = contactFormActions() // createTaskFormActions
 
 // Component main function
 const CreateContactForm = () => {
