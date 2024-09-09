@@ -5,7 +5,6 @@ const db = require("./db"); // Import your database connection
 //unfinished tasks
 router.get("/", (req, res) => {
   console.log("GET /unfinishedTasks called");
-
   const selectQuery = `
     SELECT 
       t.*,
@@ -20,14 +19,13 @@ router.get("/", (req, res) => {
     WHERE 
       b.job_id IS NULL;
   `;
-
   db.query(selectQuery, (err, results) => {
     if (err) {
       console.error("Error retrieving unfinished tasks:", err);
-      res.status(500).json({ error: "Error retrieving unfinished tasks" });
+      res.status(500).send("Error retrieving unfinished tasks");
     } else {
-      console.log("Retrieved unfinished tasks:", results);
       res.json(results);
+      console.log("Retrieved unfinished tasks:", results);
     }
   });
 });
