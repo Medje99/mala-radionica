@@ -9,7 +9,7 @@ router.get("/", (req, res) => {
       console.error("Error retrieving products:", err);
       res.status(500).send("Error retrieving products");
     } else {
-      //console.log("Retrieved products:", results);
+      console.log("Retrieved products:", results);
       res.json(results);
     }
   });
