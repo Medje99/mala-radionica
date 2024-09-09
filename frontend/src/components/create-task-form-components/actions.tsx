@@ -1,8 +1,9 @@
 import { IContactsResponse } from '@/model/response/IContactResponse'
 import { concateFullName } from '@/Utilities/setFullName'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { CustomerSelect } from './types'
 import { FormInstance } from 'antd'
+import ContactService from '@/service/ContactsService'
 
 const contactFormActions = () => {
   const setCustomerSelectOptions = (
@@ -35,7 +36,6 @@ const contactFormActions = () => {
     }
   }
 
-  // Handles selection changes
   const handleSelectChange = (
     pickedCustomer: string,
     setCurrentCustomer: React.Dispatch<React.SetStateAction<string | undefined>>,
@@ -44,11 +44,27 @@ const contactFormActions = () => {
     setCurrentCustomer(pickedCustomer)
     setInputValue('')
   }
+  const useGetAllContacts = () => {
+    const [customers, setCustomers] = useState<IContactsResponse[]>([])
+
+    useEffect(() => {
+      ContactService.getAllCustomers()
+        .then((response) => {
+          setCustomers(response.data)
+        })
+        .catch((error) => {
+          console.error('Error fetching contacts:', error)
+        })
+    }, [])
+
+    return { customers }
+  }
 
   return {
     setCustomerSelectOptions,
     setCustomerFormValues,
     handleSelectChange,
+    useGetAllContacts,
   }
 }
 

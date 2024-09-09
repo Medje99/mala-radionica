@@ -2,6 +2,31 @@ import { message } from 'antd'
 import BillService from '@/service/BillService'
 import { IBillResponse } from '@/model/response/IBillResponse'
 import { FormInstance } from 'antd/es/form/Form'
+import { useEffect, useState } from 'react'
+
+export const useGetAllBills = () => {
+  const [bills, setBills] = useState<IBillResponse[]>([])
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchBills = async () => {
+      try {
+        const response = await BillService.getAllBills()
+        setBills(response.data)
+      } catch (err) {
+        console.error('Failed to fetch bills:', err)
+        setError('Failed to fetch bills')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchBills()
+  }, [])
+
+  return { bills, loading, error }
+}
 
 export const handleEdit = (
   record: IBillResponse,
