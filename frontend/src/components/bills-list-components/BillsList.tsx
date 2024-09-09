@@ -1,24 +1,25 @@
-import React, { useState, useEffect, Key, lazy } from 'react'
-import { Table, Input, Popconfirm, message, Modal, Form, Space, Button, DatePicker, Tooltip, Typography } from 'antd'
+import React, { useState, useEffect, Key } from 'react'
+import { Table, Input, Popconfirm, message, Modal, Form, Space, Button, Tooltip, Typography } from 'antd'
 import { Link } from 'react-router-dom'
-import BillService from '@/service/BillService'
 import useGetAllBills from '@/CustomHooks/useGetAllBills'
 import { IBillResponse } from '@/model/response/IBillResponse'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { firstName, taskName, endDate, laborCost, total_cost, parts_cost, lastName } from './contants'
 import { useGlobalContext } from '../GlobalContextProvider'
+import { markAsPaid, handleEdit, handleDelete } from './actions'
 
 const BillsList: React.FC = () => {
-  const { setHeaderTitle, currentTask, setCurrentTask } = useGlobalContext()
+  const { setHeaderTitle, currentTask, setCurrentTask } = useGlobalContext() // working on edditing
   useEffect(() => {
     setHeaderTitle('Zavrseni poslovi')
   }, [])
   const { bills } = useGetAllBills()
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredBills, setFilteredBills] = useState<IBillResponse[]>([])
-  const [editingBill, setEditingBill] = useState<IBillResponse>({} as IBillResponse)
+  // const [editingBill, setEditingBill] = useState<IBillResponse>({} as IBillResponse) //working on edditing
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [FormBillList] = Form.useForm<IBillResponse>()
+  // const [FormBillList] = Form.useForm<IBillResponse>()
+
   useEffect(() => {
     setFilteredBills(bills)
     const filtered = bills.filter((bill) => {
@@ -33,45 +34,6 @@ const BillsList: React.FC = () => {
     setFilteredBills(filtered)
   }, [searchTerm, bills])
 
-  const handleEdit = (record: IBillResponse) => {
-    setEditingBill(record)
-    setCurrentTask(record)
-    FormBillList.setFieldsValue(record)
-    setIsModalOpen(true)
-  }
-
-  const handleDelete = async (bill_id: number) => {
-    try {
-      await BillService.deleteBill(bill_id)
-      setFilteredBills(filteredBills.filter((bill) => bill.bill_id !== bill_id))
-      message.success('Racun izbrisan uspesno!')
-    } catch (error) {
-      message.error('Greška prilikom brisanja racuna! Kontaktirajte administratora.')
-    }
-  }
-
-  const handleSave = async () => {
-    const values = await FormBillList.validateFields()
-    const updatedBill = { ...editingBill, ...values } as IBillResponse
-    BillService.updateBill(updatedBill)
-    const updatedBills = filteredBills.map((bill) =>
-      bill.bill_id === editingBill.bill_id ? { ...bill, ...values } : bill,
-    )
-    setFilteredBills(updatedBills)
-    setIsModalOpen(false)
-
-    message.success('Racun uspesno izmenjen! ')
-  }
-
-  const markAsPaid = async (record: IBillResponse) => {
-    const updatedBill = { ...record, paid: true } as IBillResponse
-    BillService.updateBill(updatedBill)
-    const updatedBills = filteredBills.map((bill) => (bill.bill_id === record.bill_id ? { ...bill, paid: true } : bill))
-    setFilteredBills(updatedBills)
-    message.success('Racun oznacen kao placen')
-  }
-
-  // table colums
   const columns = [
     firstName,
     lastName,
@@ -81,6 +43,8 @@ const BillsList: React.FC = () => {
     laborCost,
     parts_cost,
     total_cost,
+
+    //mark as paid
     {
       align: 'center',
       title: 'Placeno',
@@ -97,7 +61,7 @@ const BillsList: React.FC = () => {
             <Popconfirm
               key={record.bill_id}
               title="Da li ste sigurni da zelite oznaciti kao isplaceno?"
-              onConfirm={() => markAsPaid(record)}
+              onConfirm={() => markAsPaid(record, filteredBills, setFilteredBills)}
               onCancel={() => message.warning('Otkazano!')}
               okText="Da"
               cancelText="Ne"
@@ -120,20 +84,26 @@ const BillsList: React.FC = () => {
         return record.paid === value // Parse value to number for comparison
       },
     },
+    //actions
     {
       align: 'center',
       title: 'Actions',
       key: 'action',
       render: (record: IBillResponse) => (
         <Space size="large">
-          <Tooltip title="Izmeni">
-            <Button type="primary" ghost onClick={() => handleEdit(record)} key={record.bill_id}>
+          {/* <Tooltip title="Izmeni">
+            <Button
+              type="primary"
+              ghost
+              onClick={() => handleEdit(record, setEditingBill, setCurrentTask, FormBillList, setIsModalOpen)}
+              key={record.bill_id}
+            >
               <EditOutlined />
             </Button>
-          </Tooltip>
+          </Tooltip> */}
           <Popconfirm
             title="Jeste li sigurni da zelite izbrisati ovaj racun?!"
-            onConfirm={() => handleDelete(record.bill_id)}
+            onConfirm={() => handleDelete(record.bill_id, setFilteredBills)}
             onCancel={() => message.success('Racun uspesno izbrisan!')}
             key={record.bill_id}
             cancelButtonProps={{ style: { background: 'red' } }}
@@ -165,12 +135,12 @@ const BillsList: React.FC = () => {
         />
       </Space>
 
+      {/* BillTable container */}
       <section className="mx-24">
         <Table
           className="p-7 mt-5 rounded-xl"
           size="small"
-          columns={columns}
-          // it doesnt like   defaultSortOrder in combination with custom sorter timewaste
+          columns={columns} // it doesnt like   defaultSortOrder in combination with custom sorter
           dataSource={filteredBills}
           pagination={{ pageSize: 14 }}
           rowKey="bill_id"
