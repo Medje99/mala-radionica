@@ -1,7 +1,7 @@
 import { Key } from 'react'
 
 export interface IBillResponse {
-  id: any
+  id: number
   name: string
   manufacturer: string
   price: number

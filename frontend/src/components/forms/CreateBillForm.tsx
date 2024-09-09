@@ -49,11 +49,11 @@ const CreateBillForm = ({ callback }: { callback: () => void }) => {
       console.log(values, 'values')
       // Ensure quantity and price are numbers
       const updatedProductsUsed = values.products_used?.map((item) => ({
-        product_id: item.product?.id, // Product ID
-        name: item.product?.name, // Product name
-        manufacturer: item.product?.manufacturer, // Product manufacturer
-        quantity: Number(item.quantity), // Ensure quantity is a number
-        price: Number(item.product?.price), // Ensure price is a number
+        product_id: item.product?.id,
+        name: item.product?.name,
+        manufacturer: item.product?.manufacturer,
+        quantity: Number(item.quantity),
+        price: Number(item.product?.price),
       }))
       console.log(updatedProductsUsed)
 
@@ -67,8 +67,8 @@ const CreateBillForm = ({ callback }: { callback: () => void }) => {
       const updatedValues = {
         ...values,
         products_used: updatedProductsUsed, // Send product details including price
-        contact_id: customerContact?.id ?? 0,
-        job_id: currentTask.task_id ?? 0,
+        contact_id: customerContact?.id,
+        job_id: currentTask.task_id,
         parts_cost, // Add parts cost
         total_cost, // Add total cost
       }

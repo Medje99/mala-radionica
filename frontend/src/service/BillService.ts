@@ -2,31 +2,50 @@ import { baseUrl } from '@/constants/Constants'
 import axios from 'axios'
 import { IBillResponse } from '@/model/response/IBillResponse'
 
-// for existing task
+// billing task post
 const createBill = async (data: IBillResponse) => {
-  return await axios.post<IBillResponse>(baseUrl + '/bills', data)
+  return await axios.post<IBillResponse>(baseUrl + '/bills', data).catch((error) => {
+    throw axios.isAxiosError(error) ? error.response?.data : error
+  })
 }
-// ok
+
+// get bill list
 const getAllBills = async () => {
-  return await axios.get<IBillResponse[]>(baseUrl + '/bills') // Adjusted endpoint to plural '/bills'
+  return await axios.get<IBillResponse[]>(baseUrl + '/bills').catch((error) => {
+    throw axios.isAxiosError(error) ? error.response?.data : error
+  })
 }
 
+//to be implemented
 const getBillById = async (id: number) => {
-  return await axios.get<IBillResponse>(`${baseUrl}/bills/${id}`) // Adjusted endpoint to plural '/bills'
+  return await axios.get<IBillResponse>(`${baseUrl}/bills/${id}`).catch((error) => {
+    throw axios.isAxiosError(error) ? error.response?.data : error
+  })
 }
 
+//to be implemented
 const updateBill = async (data: IBillResponse) => {
-  return await axios.put<IBillResponse>(`${baseUrl}/bills/${data.bill_id}`, data).then((response) => {
-    return response.data
-  }) // Using bill_id as the identifier
+  return await axios
+    .put<IBillResponse>(`${baseUrl}/bills/${data.bill_id}`, data)
+    .then((response) => {
+      return response.data
+    })
+    .catch((error) => {
+      throw axios.isAxiosError(error) ? error.response?.data : error
+    })
 }
 
+// delete bill service
 const deleteBill = async (id: number) => {
-  return await axios.delete(`${baseUrl}/bills/${id}`)
+  return await axios.delete(`${baseUrl}/bills/${id}`).catch((error) => {
+    throw axios.isAxiosError(error) ? error.response?.data : error
+  })
 }
 
 const markAsPaid = async (id: number) => {
-  return await axios.put(`${baseUrl}/bills/${id}`)
+  return await axios.put(`${baseUrl}/bills/${id}`).catch((error) => {
+    throw axios.isAxiosError(error) ? error.response?.data : error
+  })
 }
 
 const productQUpdate = async (data: any) => {
