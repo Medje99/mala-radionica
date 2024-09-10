@@ -1,4 +1,4 @@
-import { Form, Input, DatePicker, Switch, Space, message, Typography } from 'antd'
+import { Form, Input, DatePicker, Switch, Space, message, Typography, Col } from 'antd'
 import { useEffect, useState } from 'react'
 import ActionButton from '../CustomButtons/ActionButton'
 import { useGlobalContext } from '../GlobalContextProvider'
@@ -89,25 +89,29 @@ const CreateTaskForm = () => {
 
       {/* Creation Date */}
       <div className="flex flex-row">
-        <Form.Item label="Posao zapocet:" name="creation_date">
-          <Space direction="vertical">
-            <DatePicker
-              id="creation_date"
-              showTime={{ minuteStep: 15 }}
-              format="MMM-DD HH:mm"
-              name="creation_date"
-              defaultOpenValue={dayjs(TaskForm.getFieldValue('creation_date'))}
-              defaultValue={dayjs(TaskForm.getFieldValue('creation_date'))}
-              onChange={(date) => TaskForm.setFieldValue('creation_date', date)}
-            />
-          </Space>
-        </Form.Item>
-        <Form.Item label={!isFinished ? 'Posao aktivan' : 'Status:'} className="ml-8">
-          <Switch checked={isFinished} onChange={() => setIsFinished(!isFinished)} className="mr-10" />
-        </Form.Item>
-        {isFinished && (
-          <Form.Item label="Zavrsen" name="end_date">
+        <Col span={8}>
+          <Form.Item label="Zapocet:" name="creation_date" className="mt-5">
             <Space direction="vertical">
+              <DatePicker
+                id="creation_date"
+                showTime={{ minuteStep: 15 }}
+                format="MMM-DD HH:mm"
+                name="creation_date"
+                defaultOpenValue={dayjs(TaskForm.getFieldValue('creation_date'))}
+                defaultValue={dayjs(TaskForm.getFieldValue('creation_date'))}
+                onChange={(date) => TaskForm.setFieldValue('creation_date', date)}
+              />
+            </Space>
+          </Form.Item>
+        </Col>
+        <Col span={8}>
+          <Form.Item label={!isFinished ? 'Aktivan' : 'Status:'} className="ml-6 mt-5">
+            <Switch checked={isFinished} onChange={() => setIsFinished(!isFinished)} className="mr-10" />
+          </Form.Item>
+        </Col>
+        <Col span={8}>
+          {isFinished && (
+            <Form.Item label="Zavrsen" name="end_date" className="mt-5">
               <DatePicker
                 showTime={{ minuteStep: 15 }}
                 format="MMM-DD HH:mm"
@@ -116,9 +120,9 @@ const CreateTaskForm = () => {
                 defaultValue={dayjs(TaskForm.getFieldValue('end_date'))}
                 onChange={(date) => TaskForm.setFieldValue('end_date', date)}
               />
-            </Space>
-          </Form.Item>
-        )}
+            </Form.Item>
+          )}
+        </Col>
       </div>
       <div className="flex flex-row justify-between mt-5">
         <VerticalRightOutlined className="ml-10 backB" onClick={() => setCurrentPage(currentPage - 1)} title="Nazad" />
