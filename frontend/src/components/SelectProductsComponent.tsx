@@ -4,7 +4,7 @@ import { Button, Col, Form, Input, Row, Select, Space, Tooltip, Typography } fro
 import { IProduct, IProductUsed } from '@/model/response/IProductResponse'
 import { FormInstance } from 'antd' // Import FormInstance from antd
 import useFormInstance from 'antd/es/form/hooks/useFormInstance'
-import { useGetAllProducts } from '../tables/products-table-components/actions'
+import { useGetAllProducts } from './tables/products-table-components/actions'
 
 const { Option } = Select
 
@@ -50,7 +50,7 @@ const SelectProductsComponent: React.FC<SelectProductsComponentProps> = ({ rows,
     return rows.map((row, index) => (
       <Row key={index} justify="space-between" align="middle" className="">
         {/* Added margin-bottom for spacing between rows */}
-        <Col span={10} className="pl-7">
+        <Col span={10}>
           <Form.Item
             name={['products_used', index, 'product']}
             label="Proizvod" // Label added back
@@ -66,6 +66,7 @@ const SelectProductsComponent: React.FC<SelectProductsComponentProps> = ({ rows,
             {/* this line of code makes select field render propperly after it has been selected */}
 
             <Select
+              dropdownStyle={{ minWidth: 300, maxHeight: 300, overflowY: 'auto' }}
               showSearch
               placeholder="Izaberi proizvod"
               allowClear
@@ -87,7 +88,7 @@ const SelectProductsComponent: React.FC<SelectProductsComponentProps> = ({ rows,
             </Select>
           </Form.Item>
         </Col>
-        <Col span={5}>
+        <Col span={6}>
           <Form.Item
             name={['products_used', index, 'quantity']}
             label={row.product?.quantity ? 'Max: ' + row.product.quantity : 'Kolicina:'}
@@ -128,8 +129,8 @@ const SelectProductsComponent: React.FC<SelectProductsComponentProps> = ({ rows,
           </Form.Item>
         </Col>
 
-        <Col span={7}>
-          <Form.Item label="Cena" className="pr-5 text-left">
+        <Col span={5}>
+          <Form.Item label="Cena" className=" text-left">
             {/* Calculate and display the total price for the row */}
             <Typography className="text-center">
               <Typography className="text-center">
