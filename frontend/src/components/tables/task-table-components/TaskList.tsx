@@ -176,10 +176,11 @@ export const TasksList = () => {
 
       <section className="mx-15 mt-10 ">
         <Table
-          className="p-7 mt-5  "
+          className="px-20 pt-24 "
           size="small"
           pagination={{
-            pageSize: 13,
+            hideOnSinglePage: true,
+            pageSize: 15,
             showSizeChanger: false,
             showTotal: (total) => `Ukupno ${total} aktivnih  poslova`,
           }}
