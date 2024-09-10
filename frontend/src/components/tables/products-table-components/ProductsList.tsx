@@ -81,7 +81,7 @@ const ProductsList: React.FC = () => {
   ]
 
   return (
-    <div className=" flex-row product h-[calc(100vh-6rem)]   overflow-y-auto  ">
+    <div className=" flex-row product h-[calc(100vh-6rem)]   overflow-y-auto  bg-gradient-to-r from-amber-200 to-yellow-500">
       <Space id="search-container" className="col-span-12 flex ">
         <Input.Search
           size="large"

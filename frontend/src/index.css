@@ -24,7 +24,7 @@ form label {
 }
 
 .ant-table {
-  box-shadow: #0000007a 2px 2px 10px 25px;
+  box-shadow: #fffffff3 0px 0px 20px 3px;
 }
 
 .ant-btn {
@@ -77,7 +77,7 @@ form label {
   border-radius: 1em;
   max-height: 89vh;
   overflow-y: auto;
-  box-shadow: #00000073 2px 2px 10px 25px;
+  box-shadow: #fffffff3 0px 0px 20px 3px;
 }
 
 #create-new-product-form {
@@ -88,22 +88,17 @@ form label {
 
 #select-products-component {
   /* products insert COMPONENT not product input form!   */
-  /* display: block;
-  padding-top: 1em;
-  margin-bottom: 2em;
-  padding: 3em; */
-  /* border-radius: 1em;
-  box-shadow: rgba(10, 10, 10, 0.678) 0px 0px 15px; */
-  background-color: rgba(228, 228, 228, 0.958);
+
+  padding-top: 3em;
 }
 .productEditModal {
   display: block;
   min-width: 25vw;
 }
-
+/* 
 .product {
   background-color: rgba(159, 35, 103, 0.119);
-}
+} */
 
 /* .contact {
   background-color: rgba(4, 4, 4, 0.132);
@@ -114,12 +109,12 @@ form label {
   background-color: rgba(63, 63, 62, 0.366);
 } */
 
-.bill {
-  background-color: rgba(55, 140, 179, 0.164);
-}
+/* .bill {
+  background-color: rgba(228, 228, 228, 0.795);
+} */
 
 #musterija-form {
-  background-color: rgba(228, 228, 228, 0.958);
+  background-color: rgba(244, 241, 241, 0.958);
   font-style: oblique;
   font-size: large;
 }
@@ -141,11 +136,12 @@ form label {
 
 #search {
   border: none;
-  box-shadow: #ffffffc9 2px 2px 10px 10px;
+  box-shadow: #fffffff3 0px 0px 20px 3px;
   margin-left: 7%;
   width: 86%;
   padding: 0.7em;
-  margin-top: 5em;
+  margin-top: 2em;
+  /* causes y scroll */
   text-align: center;
 }
 
@@ -162,42 +158,48 @@ form label {
   word-break: break-all;
 }
 
+.ant-table-content {
+  max-height: 70vh;
+  overflow-y: scroll;
+}
+
+a {
+  font-size: x-large;
+  color: #68cfff;
+}
+a:hover {
+  color: #00a6f3;
+  border-radius: white 2px solid;
+  padding: 0.1em;
+  border-bottom: #68cfff 2px solid;
+}
+
 .action-button {
-  box-shadow: #1e1c1cc9 2px 2px 10px 10px;
-  background-color: #081a2aa4;
+  box-shadow: #ffffffc9 2px 2px 10px 10px;
   padding-inline: 3em;
   padding: 1.5em;
   border: 10px;
 }
 .ant-message {
-  top: 20px; /* Adjust as needed */
-  left: 50%;
-  transform: translateX(-50%); /* Center horizontally */
+  top: 2em; /* Adjust as needed */
 }
 
 Button {
-  color: rgba(10, 10, 10, 0.678);
-  background-color: bisque;
-  box-shadow: #8a8484c9 2px 2px 2px 2px;
-  background-color: #081a2aa4;
   padding-inline: 3em;
   padding: 1.5em;
   border: 10px;
 }
 Button:hover {
-  color: black;
-  background-color: bisque;
   box-shadow: #8a8484c9 2px 2px 2px 2px;
-  background-color: #081a2aa4;
+  /* background-color: #081a2aa4; */
   /* padding-inline: 3em;
   padding: 1.5em; */
   border: 10px;
 }
 .ant-select-dropdown {
-  box-shadow: #8a8484c9 2px 2px 2px 2px;
-  width: 14em;
-  padding-inline: 10em;
-  padding: 1.5em;
-  border: 10px;
-  margin: 20em;
+  box-shadow: #ffffff 2px 2px 10px 10px;
+  /* width: 5em; */
+  /* padding-inline: 6em; */
+  /* padding: 1.5em; */
+  border: 15px;
 }

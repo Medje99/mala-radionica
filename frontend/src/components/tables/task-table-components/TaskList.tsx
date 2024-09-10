@@ -105,7 +105,7 @@ export const TasksList = () => {
   ]
 
   return (
-    <div className=" flex-row task h-[calc(100vh-6rem)]  overflow-y-auto">
+    <div className=" flex-row task h-[calc(100vh-6rem)]  overflow-y-auto bg-gradient-to-r from-teal-400 to-gray-800">
       {/*edit FormTaskList*/}
 
       <Modal
@@ -174,13 +174,16 @@ export const TasksList = () => {
 
       {/* task Table */}
 
-      <section className="mx-15 mt-10 ">
+      <section
+        className=" display: grid
+  place-items: center"
+      >
         <Table
-          className="px-20 pt-24 "
+          className="px-12 pt-20"
           size="small"
           pagination={{
             hideOnSinglePage: true,
-            pageSize: 15,
+            pageSize: 18,
             showSizeChanger: false,
             showTotal: (total) => `Ukupno ${total} aktivnih  poslova`,
           }}

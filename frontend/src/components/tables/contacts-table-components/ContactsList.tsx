@@ -69,7 +69,7 @@ const ContactsList: React.FC = () => {
   const columns = [customer_firstName, customer_lastName, customer_city, customer_phoneNumber, actions]
 
   return (
-    <div className=" flex-row contact h-[calc(100vh-6rem)]">
+    <div className=" flex-row contact h-[calc(100vh-6rem)] bg-gradient-to-r from-orange-400 to-rose-400">
       <Space id="search-container" className="col-span-12 flex ">
         <Input.Search
           size="large"

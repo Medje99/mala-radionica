@@ -33,7 +33,7 @@ export const ModalBody = () => {
       case 1:
         return <CreateTaskForm />
       case 2:
-        return <CreateBillForm />
+        return <CreateBillForm callback={() => {}} />
       default:
         return null
     }

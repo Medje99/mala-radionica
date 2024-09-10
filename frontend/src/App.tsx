@@ -12,7 +12,7 @@ import { ContextProvider } from '../src/components/GlobalContextProvider'
 
 function App() {
   return (
-    <div className="flex flex-col h-screen w-screen bg-gradient-to-r from-cyan-500 to-blue-500 ">
+    <div className="flex flex-col bg-gradient-to-r from-gray-700 to-black ">
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
