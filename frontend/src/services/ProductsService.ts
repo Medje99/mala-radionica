@@ -20,33 +20,33 @@ const deleteProduct = async (id: number) => {
   return await axios.delete<IProduct[]>(baseUrl + '/Products/' + id)
 }
 
-// const getProductById = async (id: string | number) => {
-//   try {
-//     const response = await axios.get<IProducts>(`${baseUrl}/Products/${id}`)
-//     return response.data
-//   } catch (error) {
-//     console.error('Error fetching product:', error)
-//     throw error // You can handle the error as needed
-//   }
-// }
+const getProductById = async (id: string | number) => {
+  try {
+    const response = await axios.get<IProduct>(`${baseUrl}/Products/${id}`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching product:', error)
+    throw error // You can handle the error as needed
+  }
+}
 
-// const updateMultipleProducts = async (productsToUpdate: { id: number; quantity: number }[]) => {
-//   try {
-//     const response = await axios.put<IProducts[]>(`${baseUrl}/Products/updateMultiple`, productsToUpdate)
-//     return response.data
-//   } catch (error) {
-//     console.error('Error updating multiple products:', error)
-//     throw error
-//   }
-// }
+const updateMultipleProducts = async (productsToUpdate: { id: number; quantity: number }[]) => {
+  try {
+    const response = await axios.put<IProduct[]>(`${baseUrl}/Products/updateMultiple`, productsToUpdate)
+    return response.data
+  } catch (error) {
+    console.error('Error updating multiple products:', error)
+    throw error
+  }
+}
 
 const ProductsService = {
   getAllProducts,
   createProductEntry,
   updateProduct,
   deleteProduct,
-  // getProductById,
-  // updateMultipleProducts,
+  getProductById,
+  updateMultipleProducts,
 }
 
 export default ProductsService
