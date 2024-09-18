@@ -13,6 +13,12 @@ export const customer_lastName = {
   key: 'lastName',
   align: 'center',
 }
+export const customer_phoneNumber = {
+  title: 'Telefon',
+  dataIndex: 'phoneNumber',
+  key: 'phoneNumber',
+  align: 'center',
+}
 
 export const taskName = {
   title: 'Naziv posla',
