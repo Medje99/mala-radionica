@@ -194,7 +194,7 @@ router.put("/:bill_id", (req, res) => {
         } else if (taskResults.affectedRows === 0) {
           return res.status(404).json({ error: "Task not found" });
         }
-
+        console.log(taskResults);
         console.log("Bill and task updated successfully");
         res.json({ message: "Bill and task updated successfully" });
       });

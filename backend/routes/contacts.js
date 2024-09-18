@@ -29,7 +29,7 @@ router.post("/", (req, res) => {
       if (err) {
         console.error("Error inserting contact:", err);
         res
-          .status(500)
+          .status(400)
           .json({ error: `Error inserting contact: ${err.message}` });
       } else {
         const selectQuery = "SELECT * FROM contacts WHERE id = ?";
