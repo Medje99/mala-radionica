@@ -17,11 +17,11 @@ const getAllBills = async () => {
 }
 
 //to be implemented
-const getBillById = async (id: number) => {
-  return await axios.get<IBillResponse>(`${baseUrl}/bills/${id}`).catch((error) => {
-    throw axios.isAxiosError(error) ? error.response?.data : error
-  })
-}
+// const getBillById = async (id: number) => {
+//   return await axios.get<IBillResponse>(`${baseUrl}/bills/${id}`).catch((error) => {
+//     throw axios.isAxiosError(error) ? error.response?.data : error
+//   })
+// }
 
 //to be implemented
 const updateBill = async (data: IBillResponse) => {
@@ -29,6 +29,7 @@ const updateBill = async (data: IBillResponse) => {
     .put<IBillResponse>(`${baseUrl}/bills/${data.bill_id}`, data)
     .then((response) => {
       return response.data
+      console.log('Updated bill ' + response.data)
     })
     .catch((error) => {
       throw axios.isAxiosError(error) ? error.response?.data : error
@@ -49,6 +50,7 @@ const markAsPaid = async (id: number) => {
 }
 
 const productQUpdate = async (data: any) => {
+  console.log('Podaci koje BillService salje quantitySubtract: ' + data[0], data[1])
   return await axios.post<any>(baseUrl + '/quantitySubtract', data).catch((error) => {
     throw axios.isAxiosError(error) ? error.response?.data : error
   })
@@ -58,7 +60,7 @@ const BillService = {
   markAsPaid,
   createBill,
   getAllBills,
-  getBillById,
+  // getBillById,
   updateBill,
   deleteBill,
   productQUpdate,

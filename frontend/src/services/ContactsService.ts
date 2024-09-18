@@ -4,7 +4,9 @@ import { IContactsResponse } from '@/model/response/IContactResponse'
 import axios from 'axios'
 
 const getAllCustomers = async () => {
-  return await axios.get<IContactsResponse[]>(baseUrl + '/contacts')
+  return await axios.get<IContactsResponse[]>(baseUrl + '/contacts').catch((error) => {
+    throw axios.isAxiosError(error) ? error.response?.data : error
+  })
 }
 
 const createContactCustomer = async (data: IContactsResponse) => {
@@ -12,7 +14,9 @@ const createContactCustomer = async (data: IContactsResponse) => {
 }
 
 const updateContactCustomer = async (data: IContactsResponse) => {
-  return await axios.put<IContactsResponse>(baseUrl + '/contacts/' + data.id, data)
+  return await axios.put<IContactsResponse>(baseUrl + '/contacts/' + data.id, data).catch((error) => {
+    throw axios.isAxiosError(error) ? error.response?.data : error
+  })
 }
 
 const deleteContactCustomer = async (id: number) => {
