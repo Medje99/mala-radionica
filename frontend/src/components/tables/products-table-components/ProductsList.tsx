@@ -95,7 +95,12 @@ const ProductsList: React.FC = () => {
           size="small"
           columns={columns} //don't like align center
           dataSource={filteredProducts}
-          pagination={{ pageSize: 14 }} // Adjust page size as needed
+          pagination={{
+            pageSize: 13,
+
+            showSizeChanger: false,
+            showTotal: (total) => `Ukupno ${total} proizvoda`,
+          }} // Adjust page size as needed
           rowKey="id" // Use 'id' as the row key
           className=" p-7 mt-5 rounded-xl "
         />

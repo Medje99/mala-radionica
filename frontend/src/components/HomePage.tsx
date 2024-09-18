@@ -8,7 +8,7 @@ const HomePage = () => {
         <MultiStepForm />
       </section>
 
-      <section className="w-5/6 ">
+      <section className="w-4/6 ">
         <TasksList />
       </section>
     </main>

@@ -24,7 +24,7 @@ form label {
 }
 
 .ant-table {
-  box-shadow: #fffffff3 0px 0px 20px 5px;
+  box-shadow: #fffffff3 0px 0px 10px 2px;
 }
 
 .ant-btn {
@@ -65,19 +65,19 @@ form label {
 .backB {
   /* backbutton in form */
   font-size: 2em;
-  color: #47575f;
+  /* color: #47575f; */
 }
 
 .ant-form {
   min-width: 16vw;
   min-height: 68vh;
-  background-color: rgb(228, 228, 228);
+  /* background-color: rgb(228, 228, 228); */
   padding: 2em;
-  padding-top: 4em;
+  /* padding-top: 4em; */
   border-radius: 1em;
   max-height: 89vh;
   overflow-y: auto;
-  box-shadow: #fffffff3 0px 0px 20px 3px;
+  box-shadow: #fffffff3 0px 0px 10px 3px;
 }
 
 #create-new-product-form {
@@ -89,7 +89,8 @@ form label {
 #select-products-component {
   /* products insert COMPONENT not product input form!   */
 
-  padding-top: 3em;
+  /* padding-top: 3em; */
+  /* overflow-y: scroll; */
 }
 .productEditModal {
   display: block;
@@ -114,6 +115,11 @@ form label {
 } */
 
 #musterija-form {
+  background-color: rgba(244, 241, 241, 0.958);
+  font-style: oblique;
+  font-size: large;
+}
+#bill-form {
   background-color: rgba(244, 241, 241, 0.958);
   font-style: oblique;
   font-size: large;
@@ -197,7 +203,7 @@ Button:hover {
   border: 10px;
 }
 .ant-select-dropdown {
-  box-shadow: #ffffff 2px 2px 10px 10px;
+  box-shadow: #ffffff 2px 2px 10px 2px;
   /* width: 5em; */
   /* padding-inline: 6em; */
   /* padding: 1.5em; */
