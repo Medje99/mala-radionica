@@ -78,6 +78,7 @@ const ContactsList: React.FC = () => {
           id="search"
         />
       </Space>
+      {/* //search */}
       <section className="w-full px-24 ">
         <Table
           size="small"

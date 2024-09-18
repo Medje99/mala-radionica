@@ -86,7 +86,7 @@ const BillsList: React.FC = () => {
     //actions
     {
       align: 'center',
-      title: 'Actions',
+      title: 'Radnje',
       key: 'action',
       render: (record: IBillResponse) => (
         <Space size="large">
