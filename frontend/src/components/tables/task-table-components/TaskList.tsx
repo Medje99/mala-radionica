@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
 import { Table, Input, Popconfirm, message, Modal, Form, Space, Button, Tooltip, Typography } from 'antd'
-import { customer_firstName, customer_lastName, taskName, creation_date } from './constants'
+import { customer_firstName, customer_lastName, creation_date, customer_phoneNumber, taskName } from './constants'
 import { DeleteOutlined, EditOutlined, FileDoneOutlined } from '@ant-design/icons'
 import { IContact } from '@/model/response/IContactResponse'
 import { useGetAllTasks, handleEdit, handleDelete, handleSave } from './actions'
 import { useGlobalContext } from '@/components/GlobalContextProvider'
-import CreateBillForm from '@/components/forms/CreateBillForm'
+import CreateBillForm from '@/components/forms/create-task-form-components/CreateBillForm'
 
 export const TasksList = () => {
   const { setContextCustomer, setCurrentTask, setHeaderTitle, setCurrentPage } = useGlobalContext()
@@ -42,6 +42,7 @@ export const TasksList = () => {
   const columns = [
     customer_firstName,
     customer_lastName,
+    customer_phoneNumber,
     taskName,
     Table.EXPAND_COLUMN,
     creation_date,
@@ -179,7 +180,7 @@ export const TasksList = () => {
   place-items: center"
       >
         <Table
-          className="px-12 pt-20"
+          className="px-12 pt-8"
           size="small"
           pagination={{
             hideOnSinglePage: true,
