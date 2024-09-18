@@ -6,12 +6,12 @@ import { useState, useEffect } from 'react'
 import { ErrorResponse } from 'react-router-dom' // Adjust path if needed
 
 const useGetAllContacts = () => {
-  const [contacts, setCustomers] = useState<IContactsResponse[]>([])
+  const [contacts, setContacts] = useState<IContactsResponse[]>([])
 
   useEffect(() => {
-    ContactService.getAllCustomers()
+    ContactService.getAllContacts()
       .then((response) => {
-        setCustomers(response.data)
+        setContacts(response.data)
       })
       .catch((error) => {
         console.error('Error fetching contacts:', error)
@@ -37,7 +37,7 @@ const handleDelete = (
   filteredContacts: IContactsResponse[],
   setFilteredContacts: React.Dispatch<React.SetStateAction<IContactsResponse[]>>,
 ) => {
-  ContactService.deleteContactCustomer(id)
+  ContactService.deleteContact(id)
     .then(() => {
       message.success('Kontakt izbrisan')
       setFilteredContacts(filteredContacts.filter((contact) => contact.id !== id))
@@ -59,7 +59,7 @@ const handleSave = async (
   try {
     const values = await form.validateFields()
     const updatedContact = { ...editingContact, ...values } as IContactsResponse
-    await ContactService.updateContactCustomer(updatedContact) // Wait for update to complete
+    await ContactService.updateContact(updatedContact) // Wait for update to complete
 
     // Update the state after successful save need
     const updatedContacts = filteredContacts.map((contact) =>

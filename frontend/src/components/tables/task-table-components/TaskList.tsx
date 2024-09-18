@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
 import { Table, Input, Popconfirm, message, Modal, Form, Space, Button, Tooltip, Typography } from 'antd'
-import { customer_firstName, customer_lastName, creation_date, customer_phoneNumber, taskName } from './constants'
+import { contact_firstName, contact_lastName, creation_date, contact_phoneNumber, taskName } from './constants'
 import { DeleteOutlined, EditOutlined, FileDoneOutlined } from '@ant-design/icons'
 import { IContact } from '@/model/response/IContactResponse'
 import { useGetAllTasks, handleEdit, handleDelete, handleSave } from './actions'
@@ -9,7 +9,7 @@ import { useGlobalContext } from '@/components/GlobalContextProvider'
 import CreateBillForm from '@/components/forms/create-task-form-components/CreateBillForm'
 
 export const TasksList = () => {
-  const { setContextCustomer, setCurrentTask, setHeaderTitle, setCurrentPage } = useGlobalContext()
+  const { setContextContact: setContextcontact, setCurrentTask, setHeaderTitle, setCurrentPage } = useGlobalContext()
   useEffect(() => {
     setHeaderTitle('Aktivni poslovi')
   }, [])
@@ -40,9 +40,9 @@ export const TasksList = () => {
 
   //Columns imported clean
   const columns = [
-    customer_firstName,
-    customer_lastName,
-    customer_phoneNumber,
+    contact_firstName,
+    contact_lastName,
+    contact_phoneNumber,
     taskName,
     Table.EXPAND_COLUMN,
     creation_date,
@@ -86,7 +86,7 @@ export const TasksList = () => {
               type="primary"
               ghost
               onClick={() => {
-                setContextCustomer({
+                setContextcontact({
                   id: record.contact_id,
                   fullName: `${record.firstName} ${record.lastName}`,
                 } as IContact)

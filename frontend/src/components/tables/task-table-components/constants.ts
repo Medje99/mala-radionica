@@ -1,19 +1,19 @@
 import moment from 'moment'
 
-export const customer_firstName = {
+export const contact_firstName = {
   title: 'Ime',
   dataIndex: 'firstName',
   key: 'firstName',
   align: 'center',
 }
 
-export const customer_lastName = {
+export const contact_lastName = {
   title: 'Prezime',
   dataIndex: 'lastName',
   key: 'lastName',
   align: 'center',
 }
-export const customer_phoneNumber = {
+export const contact_phoneNumber = {
   title: 'Telefon',
   dataIndex: 'phoneNumber',
   key: 'phoneNumber',

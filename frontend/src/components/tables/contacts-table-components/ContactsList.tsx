@@ -3,7 +3,7 @@ import { Table, Input, Popconfirm, message, Modal, Form, Space, Button, Tooltip 
 import { IContactsResponse } from '@/model/response/IContactResponse'
 import { useGlobalContext } from '../../GlobalContextProvider'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
-import { customer_city, customer_firstName, customer_lastName, customer_phoneNumber } from './constants'
+import { contact_city, contact_firstName, contact_lastName, contact_phoneNumber } from './constants'
 import { handleEdit, handleDelete, handleSave, useGetAllContacts } from './actions' // Import actions
 
 const ContactsList: React.FC = () => {
@@ -66,14 +66,14 @@ const ContactsList: React.FC = () => {
       </Space>
     ),
   }
-  const columns = [customer_firstName, customer_lastName, customer_city, customer_phoneNumber, actions]
+  const columns = [contact_firstName, contact_lastName, contact_city, contact_phoneNumber, actions]
 
   return (
     <div className=" flex-row contact h-[calc(100vh-6rem)] bg-gradient-to-r from-orange-400 to-rose-400">
       <Space id="search-container" className="col-span-12 flex ">
         <Input.Search
           size="large"
-          placeholder="Pretraži proizvode"
+          placeholder="Pretraži kontakte"
           onChange={(e) => setSearchTerm(e.target.value)}
           id="search"
         />

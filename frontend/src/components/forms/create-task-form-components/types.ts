@@ -1,4 +1,4 @@
-export interface CustomerSelect {
+export interface ContactSelect {
   value: string
   label: string
 }

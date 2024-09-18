@@ -1,8 +1,10 @@
 import { Button, Form, Input, Typography } from 'antd'
 import { IProduct } from '@/model/response/IProductResponse'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { onHandleSubmit } from './actions'
 import { useGlobalContext } from '@/components/GlobalContextProvider'
+import ProductsService from '@/services/ProductsService'
+import { useGetAllProducts } from '@/components/tables/products-table-components/actions'
 
 export const createNewProductForm = () => {
   const { setHeaderTitle } = useGlobalContext()
@@ -10,6 +12,24 @@ export const createNewProductForm = () => {
     setHeaderTitle('Unos proizvoda')
   }, [])
   const [createNewProductForm] = Form.useForm<IProduct>()
+  const { allProducts } = useGetAllProducts()
+  const [modelList, setModelList] = useState<any[]>([])
+
+  useEffect(() => {
+    ProductsService.getAllProducts()
+      .then((response) => {
+        setProducts(response.data)
+        setModelList(
+          response.data.map((product) => ({
+            value: product.model,
+            label: product.model,
+          })),
+        )
+      })
+      .catch((error) => {
+        console.error('Error fetching products:', error)
+      })
+  }, [])
 
   return (
     <div className=" flex-row product bg-gradient-to-r from-purple-500 to-pink-500 h-[calc(100vh-6rem)]">
@@ -35,7 +55,7 @@ export const createNewProductForm = () => {
         </Form.Item>
 
         <div className="flex flex-col md:flex-row w-full md:w-3/4 lg:w-2/3 gap-6 md:gap-8">
-          <Form.Item className="mb-4 w-full md:w-1/2" label="Proizvodjac" name="manufacturer" labelCol={{ span: 24 }}>
+          <Form.Item className="mb-4 w-full md:w-1/2" label="Proizvođač" name="manufacturer" labelCol={{ span: 24 }}>
             <Input className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </Form.Item>
           <Form.Item className="mb-4 w-full md:w-1/2" label="Model" name="model" labelCol={{ span: 24 }}>
@@ -58,9 +78,9 @@ export const createNewProductForm = () => {
             />
           </Form.Item>
           <Form.Item
-            rules={[{ required: true, message: 'Molimo unesite kolicinu!' }]}
+            rules={[{ required: true, message: 'Molimo unesite količinu!' }]}
             className="mb-4 w-full md:w-1/3"
-            label="Kolicina"
+            label="Količina"
             name="quantity"
             labelCol={{ span: 24 }}
           >

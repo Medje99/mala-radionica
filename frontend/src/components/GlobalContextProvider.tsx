@@ -10,8 +10,8 @@ interface GlobalContext {
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>
   formTitle: string | React.ReactElement
   setFormTitle: React.Dispatch<React.SetStateAction<string>>
-  customerContact: IContact | undefined
-  setContextCustomer: React.Dispatch<React.SetStateAction<IContact | undefined>>
+  Contact: IContact | undefined
+  setContextContact: React.Dispatch<React.SetStateAction<IContact | undefined>>
   currentTask: ITask
   setCurrentTask: React.Dispatch<React.SetStateAction<ITask>>
   setHeaderTitle: React.Dispatch<React.SetStateAction<string>>
@@ -35,7 +35,7 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
   const [modalIsOpen, setModalIsOpen] = useState(false)
   const [currentPage, setCurrentPage] = useState(0)
   const [formTitle, setFormTitle] = useState('Izaberi ili dodaj musteriju')
-  const [customerContact, setCustomerContact] = useState<IContact>()
+  const [Contact, setContextContact] = useState<IContact>()
   const [currentTask, setCurrentTask] = useState<ITask>({} as ITask)
   const [headerTitle, setHeaderTitle] = useState('')
   const [end_date, setEndDate] = useState<ITask['end_date']>()
@@ -54,8 +54,8 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
         ),
         formTitleString: formTitle,
         setFormTitle: setFormTitle,
-        customerContact,
-        setContextCustomer: setCustomerContact,
+        Contact,
+        setContextContact,
         currentTask,
         setCurrentTask: setCurrentTask,
         headerTitle,

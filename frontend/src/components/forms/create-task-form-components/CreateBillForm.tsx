@@ -33,7 +33,7 @@ const CreateBillForm = ({ callback }: { callback: () => void }) => {
   }
   //SelectProductRelated States
 
-  const { customerContact, currentTask, setCurrentPage, currentPage } = useGlobalContext() // customer_id, task_id_
+  const { Contact, currentTask, setCurrentPage, currentPage } = useGlobalContext() // contact_id, task_id_
   const [FormBillCreate] = Form.useForm<IBillResponse>()
   const [isPaid, setIsPaid] = useState(false)
   const [animating, setAnimating] = useState(false)
@@ -71,7 +71,7 @@ const CreateBillForm = ({ callback }: { callback: () => void }) => {
       const updatedValues = {
         ...values,
         products_used: billed_product, // Send product details including price
-        contact_id: customerContact?.id,
+        contact_id: Contact?.id,
         job_id: currentTask.task_id,
         parts_cost, // Add parts cost
         total_cost, // Add total cost
@@ -111,9 +111,7 @@ const CreateBillForm = ({ callback }: { callback: () => void }) => {
         labor_cost: 0,
       }}
     >
-      <Typography className="font-bold text-xl mb-8 text-center">
-        {'Naplata za: ' + customerContact?.fullName}
-      </Typography>
+      <Typography className="font-bold text-xl mb-8 text-center">{'Naplata za: ' + Contact?.fullName}</Typography>
 
       <div className="flex justify-center">
         <Form.Item

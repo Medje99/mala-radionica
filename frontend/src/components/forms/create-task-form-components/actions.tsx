@@ -1,68 +1,68 @@
 import { IContactsResponse } from '@/model/response/IContactResponse'
 import { concateFullName } from '@/Utilities/setFullName'
 import React, { useEffect, useState } from 'react'
-import { CustomerSelect } from './types'
+import { ContactSelect } from './types'
 import { FormInstance } from 'antd'
 import ContactService from '@/services/ContactsService'
 
 const contactFormActions = () => {
-  const setCustomerSelectOptions = (
-    customers: IContactsResponse[],
-    setNewCustomerSelect: React.Dispatch<React.SetStateAction<CustomerSelect[] | undefined>>,
+  const setContactSelectOptions = (
+    contacts: IContactsResponse[], // prop list of all contact
+    setNewContactSelect: React.Dispatch<React.SetStateAction<ContactSelect[] | undefined>>, // prop
   ) => {
-    const selectLabel = customers.map((item) => ({
+    const selectLabel = contacts.map((item) => ({
       label: concateFullName(item.firstName, item.lastName),
       value: concateFullName(item.firstName, item.lastName),
     }))
-    setNewCustomerSelect(selectLabel)
+    setNewContactSelect(selectLabel)
   }
 
-  const setCustomerFormValues = (
-    pickedCustomer: IContactsResponse | undefined,
+  const setContactFormValues = (
+    pickedContact: IContactsResponse | undefined,
     form: FormInstance<IContactsResponse>,
-    setNewCustomer: React.Dispatch<React.SetStateAction<boolean>>,
+    setNewContact: React.Dispatch<React.SetStateAction<boolean>>,
   ) => {
-    if (pickedCustomer) {
-      setNewCustomer(false)
+    if (pickedContact) {
+      setNewContact(false)
       form.setFieldsValue({
-        phoneNumber: pickedCustomer?.phoneNumber || '',
-        city: pickedCustomer?.city || '',
-        address: pickedCustomer?.address || '',
-        other: pickedCustomer?.other || '',
+        phoneNumber: pickedContact?.phoneNumber || '',
+        city: pickedContact?.city || '',
+        address: pickedContact?.address || '',
+        other: pickedContact?.other || '',
       })
     } else {
-      setNewCustomer(true)
+      setNewContact(true)
       form.resetFields(['phoneNumber', 'city', 'address', 'other'])
     }
   }
 
   const handleSelectChange = (
-    pickedCustomer: string,
-    setCurrentCustomer: React.Dispatch<React.SetStateAction<string | undefined>>,
+    pickedContact: string,
+    setCurrentContact: React.Dispatch<React.SetStateAction<string | undefined>>,
     setInputValue: React.Dispatch<React.SetStateAction<string>>,
   ) => {
-    setCurrentCustomer(pickedCustomer)
+    setCurrentContact(pickedContact)
     setInputValue('')
   }
   const useGetAllContacts = () => {
-    const [customers, setCustomers] = useState<IContactsResponse[]>([])
+    const [allContacts, setAllContacts] = useState<IContactsResponse[]>([])
 
     useEffect(() => {
-      ContactService.getAllCustomers()
+      ContactService.getAllContacts()
         .then((response) => {
-          setCustomers(response.data)
+          setAllContacts(response.data)
         })
         .catch((error) => {
           console.error('Error fetching contacts:', error)
         })
     }, [])
 
-    return { customers }
+    return { allContacts }
   }
 
   return {
-    setCustomerSelectOptions,
-    setCustomerFormValues,
+    setContactSelectOptions,
+    setContactFormValues,
     handleSelectChange,
     useGetAllContacts,
   }

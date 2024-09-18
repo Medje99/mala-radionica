@@ -6,12 +6,14 @@ import TaskService from '@/services/TaskService'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
 import dayjs from 'dayjs'
 import { VerticalRightOutlined } from '@ant-design/icons'
+import { creation_date } from '@/components/tables/task-table-components/constants'
+import { endDate } from '@/components/tables/bills-table-components/contants'
 
 const CreateTaskForm = () => {
   const {
     currentPage,
     setCurrentPage,
-    customerContact,
+    Contact,
     setFormTitle: setFormTitle,
     setCurrentTask,
     setModalIsOpen,
@@ -35,7 +37,7 @@ const CreateTaskForm = () => {
     TaskForm.validateFields().then((values) => {
       const fullData = {
         ...values,
-        contact_id: customerContact?.id ?? 0,
+        contact_id: Contact?.id ?? 0,
       }
 
       TaskService.createTask(fullData)
@@ -62,10 +64,15 @@ const CreateTaskForm = () => {
   }
 
   return (
-    <Form id="task-form" form={TaskForm} layout="vertical" className="rounded-lg">
-      <Typography className="font-bold text-xl mb-12  text-center">
-        {'Posao za: ' + customerContact?.fullName}
-      </Typography>
+    <Form
+      id="task-form"
+      form={TaskForm}
+      layout="vertical"
+      className="rounded-lg"
+      initialValues={{ creation_date: dayjs(Date.now()), end_date: dayjs(Date.now()) }}
+    >
+      <div className="flex flex-row justify-between mt-5" />
+      <Typography className="font-bold text-xl mb-12  text-center">{'Posao za: ' + Contact?.fullName}</Typography>
 
       {/* Job Name */}
       <Form.Item label="Naslov posla:" name="job_name" rules={[{ required: true, message: 'Popuni naziv posla!' }]}>
