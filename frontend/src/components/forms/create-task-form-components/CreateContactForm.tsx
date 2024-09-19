@@ -5,7 +5,6 @@ import ContactService from '@/services/ContactsService'
 import { IContactsResponse } from '@/model/response/IContactResponse'
 import { concateFullName } from '@/Utilities/setFullName'
 import { separateFullName } from '@/Utilities/getSeparatedFullName'
-import { VLI } from './types'
 import ActionButton from '../../CustomButtons/ActionButton'
 import { useGlobalContext } from '../../GlobalContextProvider'
 import { AxiosError } from 'axios'
@@ -18,8 +17,15 @@ const CreateContactForm = () => {
   const { allContacts } = useGetAllContacts()
   const [contactForm] = Form.useForm<IContactsResponse>()
   const [selectedLabel, setSelectedLabel] = useState<string | undefined>('')
-  const [searchTerm, setContactSearchTerm] = useState<string>(selectedLabel as string)
-  const [fullVLI, setFullVLI] = useState<VLI[]>()
+  const [searchTerm, setContactSearchTerm] = useState<string>('')
+  const [fullVLI, setFullVLI] = useState<
+    {
+      value: string
+      label: string
+      id: number
+    }[]
+  >()
+  const filteredVLIs = fullVLI?.filter((item) => item.value.toLowerCase().includes(searchTerm.toLowerCase()))
 
   useEffect(() => {
     setFullVLI(
@@ -34,7 +40,6 @@ const CreateContactForm = () => {
   const deducedSelectedCustomer = allContacts.find(
     (item) => concateFullName(item.firstName, item.lastName) === selectedLabel,
   )
-  const filteredVLIs = fullVLI?.filter((item) => item.value.toLowerCase().includes(searchTerm.toLowerCase()))
 
   useEffect(() => {
     if (deducedSelectedCustomer) {
@@ -62,7 +67,7 @@ const CreateContactForm = () => {
         const { fullName, ...rest } = values //no problem
         const { firstName, lastName } = separateFullName(fullName)
 
-        const contact = (await ContactService.createContact({ ...rest, firstName, lastName })).data
+        const contact = (await ContactService.createContact({ ...rest, firstName, lastName, fullName })).data
 
         setContextContact({
           id: contact.id,
