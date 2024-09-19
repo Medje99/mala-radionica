@@ -1,27 +1,17 @@
 import { Button, Form, Input, Select, Typography } from 'antd'
 import { IProduct } from '@/model/response/IProductResponse'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { onHandleSubmit } from './actions'
 import { useGlobalContext } from '@/components/GlobalContextProvider'
 import { useGetAllProducts } from '@/components/tables/products-table-components/actions'
 
 export const createNewProductForm = () => {
-  const [newManufacturer, setNewManufacturer] = useState('') // State for Select value
   const { setHeaderTitle } = useGlobalContext()
   useEffect(() => {
     setHeaderTitle('Unos proizvoda')
   }, [])
   const [createNewProductForm] = Form.useForm<IProduct>()
   const { uniqueManufacturers } = useGetAllProducts()
-
-  const handleManufacturerChange = (value: string) => {
-    setNewManufacturer(value) // Update state on any change
-
-    // Check if the selected value is an existing manufacturer
-    if (uniqueManufacturers.includes(value)) {
-      setNewManufacturer('') // Clear if existing
-    }
-  }
 
   return (
     <div className=" flex-row product bg-gradient-to-r from-purple-500 to-pink-500 h-[calc(100vh-6rem)]">
@@ -50,23 +40,18 @@ export const createNewProductForm = () => {
           <Form.Item className="mb-4 w-full md:w-1/2" label="Proizvođač" name="manufacturer" labelCol={{ span: 24 }}>
             <Select
               onKeyDown={(event: any) => {
-                setTimeout(() => {
-                  createNewProductForm.setFieldValue('manufacturer', event.target.value)
-                }, 0) // fixes cutting last char when new contact
+                createNewProductForm.setFieldValue('manufacturer', event.target.value)
               }}
               showSearch
               placeholder="Izaberi proizvođača"
-              optionFilterProp="children"
               filterOption={(input, option) => {
                 const optionText = option?.children ? (option.children as unknown as string).toLowerCase() : ''
                 return optionText.includes(input.toLowerCase())
               }}
-              onChange={handleManufacturerChange}
-              value={newManufacturer} // Directly use newManufacturer state
               notFoundContent={null}
             >
               {uniqueManufacturers.map((manufacturer) => (
-                <Select.Option key={manufacturer} value={manufacturer}>
+                <Select.Option key={manufacturer} value={manufacturer ?? ''}>
                   {manufacturer}
                 </Select.Option>
               ))}
