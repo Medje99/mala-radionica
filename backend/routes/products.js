@@ -127,4 +127,18 @@ router.delete("/:id", (req, res) => {
   });
 });
 
+router.get("/unique-manufacturers", (req, res) => {
+  db.query("SELECT DISTINCT manufacturer FROM product", (err, results) => {
+    if (err) {
+      console.error("Error retrieving unique manufacturers:", err);
+      res.status(500).send("Error retrieving unique manufacturers");
+    } else {
+      // Extract manufacturer names from the result rows
+      const manufacturers = results.map((row) => row.manufacturer);
+      console.log("Retrieved unique manufacturers:", manufacturers);
+      res.json(manufacturers);
+    }
+  });
+});
+
 module.exports = router;
