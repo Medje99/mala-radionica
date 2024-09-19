@@ -37,14 +37,17 @@ const contactFormActions = () => {
     }
   }
 
-  const handleSelectChange = (
-    pickedContact: string,
-    setCurrentContact: React.Dispatch<React.SetStateAction<string | undefined>>,
-    setInputValue: React.Dispatch<React.SetStateAction<string>>,
-  ) => {
-    setCurrentContact(pickedContact)
-    setInputValue('')
-  }
+  // const handleSelectChange = (
+  //   pickedContact: string,
+  //   setCurrentContact: React.Dispatch<React.SetStateAction<string | undefined>>,
+  //   setInputValue: React.Dispatch<React.SetStateAction<string>>,
+  // ) => {
+  //   setCurrentContact(pickedContact)
+  //   setInputValue('')
+  // }
+
+  //that's it ?!
+
   const useGetAllContacts = () => {
     const [allContacts, setAllContacts] = useState<IContactsResponse[]>([])
 
@@ -64,7 +67,6 @@ const contactFormActions = () => {
   return {
     cutToVLI,
     setContactFormValues,
-    handleSelectChange,
     useGetAllContacts,
   }
 }

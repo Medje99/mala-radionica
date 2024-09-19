@@ -10,7 +10,7 @@ import { separateFullName } from '@/Utilities/getSeparatedFullName'
 import ActionButton from '../../CustomButtons/ActionButton'
 import { useGlobalContext } from '../../GlobalContextProvider'
 
-const { cutToVLI, setContactFormValues, handleSelectChange, useGetAllContacts } = contactFormActions() // createTaskFormActions
+const { cutToVLI, setContactFormValues, useGetAllContacts } = contactFormActions() // createTaskFormActions
 
 // Component main function
 const CreateContactForm = () => {
@@ -18,19 +18,19 @@ const CreateContactForm = () => {
   const [newContact, setNewContact] = useState(false) // definined default false
   const { allContacts } = useGetAllContacts() // getting contact full list via get request
   const [contactForm] = Form.useForm<IContactsResponse>() // create form instance useState for all fields and elements abstracted
-  const [selectedLabel, setSelectedContact] = useState<string | undefined>('') //contactSelect one from select dropdown
+  const [selectedLabel, setSelectedLabel] = useState<string | undefined>('') //contactSelect one from select dropdown
   const [searchTerm, setContactSearchTerm] = useState<string>(selectedLabel as string) //contact name,lastname input if no match
   const [fullVLI, setFullVLI] = useState<VLI[]>()
 
   const deducedSelectedCustomer = allContacts.find(
-    (item) => concateFullName(item.firstName, item.lastName) === selectedLabel, //finding whole object that matches label
+    (item) => concateFullName(item.firstName, item.lastName) === selectedLabel, //finding whole object that matches selected label
   )
 
   const filteredVLIs = fullVLI?.filter(
     (
       item, // Each item is compared to search term if it's matching it gets on filteredVLI list
     ) => item.value.toLowerCase().includes(searchTerm.toLowerCase()), // big diference between value and label
-  )
+  ) // filter dropdown needed
 
   useEffect(() => {
     if (deducedSelectedCustomer) {
@@ -39,7 +39,7 @@ const CreateContactForm = () => {
         fullName: concateFullName(deducedSelectedCustomer.firstName, deducedSelectedCustomer.lastName),
       })
     }
-  }, [deducedSelectedCustomer, searchTerm, contactForm]) // if selected
+  }, [newContact, searchTerm, contactForm]) // if selected
 
   useEffect(() => {
     cutToVLI(allContacts, setFullVLI) //allContacts are full objects with all info
@@ -57,8 +57,8 @@ const CreateContactForm = () => {
         const separatedName = separateFullName(fullName)
         const formatedData = {
           ...values,
-          firstName: separatedName.firstName, // extracting firstName
-          lastName: separatedName.lastName,
+          firstName: separatedName.firstName, // extracting firstName by space
+          lastName: separatedName.lastName, // briliant for new customer
         }
 
         ContactService.createContact(formatedData)
@@ -116,14 +116,17 @@ const CreateContactForm = () => {
             showSearch
             placeholder="Izaberi ili dodaj"
             value={selectedLabel}
-            onChange={(event: string) => handleSelectChange(event, setSelectedContact, setContactSearchTerm)}
+            onChange={(event: string) => {
+              setSelectedLabel(event), setContactSearchTerm('')
+            }} //event is selection
+            //
             onSearch={setContactSearchTerm}
             filterOption={true}
             allowClear
             onKeyDown={(event: any) => {
               setTimeout(() => {
                 contactForm.setFieldValue('fullName', event.target.value)
-              }, 0) // fixes cutting last char
+              }, 0) // fixes cutting last char when new contact
             }}
             notFoundContent={null}
           >
