@@ -8,7 +8,7 @@ interface ErrorResponse {
   error?: string
 }
 
-const onHandleSubmit = (form: FormInstance<IProduct>) => {
+export const onHandleSubmit = (form: FormInstance<IProduct>) => {
   form
     .validateFields()
     .then((values: any) => {
@@ -39,4 +39,18 @@ const onHandleSubmit = (form: FormInstance<IProduct>) => {
     })
 }
 
-export { onHandleSubmit }
+export const fetchUniqueManufacturers = async () => {
+  try {
+    const manufacturers: string[] = await ProductsService.getUniqueManufacturers()
+    // Format manufacturer names
+    const formattedManufacturers = manufacturers.map((manufacturer) => {
+      const trimmedManufacturer = manufacturer.trim()
+      return trimmedManufacturer.charAt(0).toUpperCase() + trimmedManufacturer.slice(1)
+    })
+
+    return formattedManufacturers // Return the formatted array
+  } catch (error) {
+    console.error('Error fetching manufacturers:', error)
+    return [] // Return an empty array or handle the error as needed
+  }
+}

@@ -5,24 +5,18 @@ import { useEffect, useState } from 'react'
 
 const useGetAllProducts = () => {
   const [allProducts, setAllProducts] = useState<IProduct[]>([])
-  const [uniqueManufacturers, setUniqueManufacturers] = useState<string[]>([])
 
   useEffect(() => {
     ProductsService.getAllProducts()
       .then((response) => {
         setAllProducts(response.data)
-
-        // Extract unique manufacturers
-        const manufacturers = new Set<string>()
-        response.data.forEach((product) => manufacturers.add(product.manufacturer))
-        setUniqueManufacturers(Array.from(manufacturers))
       })
       .catch((error) => {
         console.error('Error fetching products:', error)
       })
   }, [])
 
-  return { allProducts, uniqueManufacturers, setUniqueManufacturers }
+  return { allProducts }
 }
 
 const handleEdit = (

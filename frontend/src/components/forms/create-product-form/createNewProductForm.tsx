@@ -1,17 +1,27 @@
 import { Button, Form, Input, Select, Typography } from 'antd'
 import { IProduct } from '@/model/response/IProductResponse'
-import { useEffect } from 'react'
-import { onHandleSubmit } from './actions'
+import { useEffect, useState } from 'react'
+import { fetchUniqueManufacturers, onHandleSubmit } from './actions'
 import { useGlobalContext } from '@/components/GlobalContextProvider'
-import { useGetAllProducts } from '@/components/tables/products-table-components/actions'
 
 export const createNewProductForm = () => {
+  //title related
   const { setHeaderTitle } = useGlobalContext()
   useEffect(() => {
     setHeaderTitle('Unos proizvoda')
   }, [])
   const [createNewProductForm] = Form.useForm<IProduct>()
-  const { uniqueManufacturers } = useGetAllProducts()
+  //title related
+  const [uniqueManufacturers, setUniqueManufacturers] = useState<string[]>([])
+
+  useEffect(() => {
+    const loadManufacturers = async () => {
+      const manufacturers = await fetchUniqueManufacturers() // Directly use the formatted data
+      setUniqueManufacturers(manufacturers)
+    }
+
+    loadManufacturers()
+  }, [])
 
   return (
     <div className=" flex-row product bg-gradient-to-r from-purple-500 to-pink-500 h-[calc(100vh-6rem)]">
