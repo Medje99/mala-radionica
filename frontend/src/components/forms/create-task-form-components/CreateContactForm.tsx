@@ -1,107 +1,92 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { Form, Input, Select, Typography, message } from 'antd' // Import message from antd
+import { Form, Input, Select, Typography, message } from 'antd'
 import contactFormActions from './actions'
 import { useEffect, useState } from 'react'
 import ContactService from '@/services/ContactsService'
 import { IContactsResponse } from '@/model/response/IContactResponse'
 import { concateFullName } from '@/Utilities/setFullName'
-import { VLI } from './types'
 import { separateFullName } from '@/Utilities/getSeparatedFullName'
+import { VLI } from './types'
 import ActionButton from '../../CustomButtons/ActionButton'
 import { useGlobalContext } from '../../GlobalContextProvider'
+import { AxiosError } from 'axios'
 
-const { cutToVLI, setContactFormValues, useGetAllContacts } = contactFormActions() // createTaskFormActions
+const { useGetAllContacts } = contactFormActions()
 
-// Component main function
 const CreateContactForm = () => {
-  const { setContextContact, setCurrentPage, currentPage } = useGlobalContext() // context passing to form 2
-  const [newContact, setNewContact] = useState(false) // definined default false
-  const { allContacts } = useGetAllContacts() // getting contact full list via get request
-  const [contactForm] = Form.useForm<IContactsResponse>() // create form instance useState for all fields and elements abstracted
-  const [selectedLabel, setSelectedLabel] = useState<string | undefined>('') //contactSelect one from select dropdown
-  const [searchTerm, setContactSearchTerm] = useState<string>(selectedLabel as string) //contact name,lastname input if no match
+  const { setContextContact, setCurrentPage, currentPage } = useGlobalContext()
+  const [newContact, setNewContact] = useState(false)
+  const { allContacts } = useGetAllContacts()
+  const [contactForm] = Form.useForm<IContactsResponse>()
+  const [selectedLabel, setSelectedLabel] = useState<string | undefined>('')
+  const [searchTerm, setContactSearchTerm] = useState<string>(selectedLabel as string)
   const [fullVLI, setFullVLI] = useState<VLI[]>()
 
-  const deducedSelectedCustomer = allContacts.find(
-    (item) => concateFullName(item.firstName, item.lastName) === selectedLabel, //finding whole object that matches selected label
-  )
+  useEffect(() => {
+    setFullVLI(
+      allContacts.map((item) => ({
+        label: item.id.toLocaleString(),
+        value: concateFullName(item.firstName, item.lastName),
+        id: item.id,
+      })),
+    )
+  }, [allContacts])
 
-  const filteredVLIs = fullVLI?.filter(
-    (
-      item, // Each item is compared to search term if it's matching it gets on filteredVLI list
-    ) => item.value.toLowerCase().includes(searchTerm.toLowerCase()), // big diference between value and label
-  ) // filter dropdown needed
+  const deducedSelectedCustomer = allContacts.find(
+    (item) => concateFullName(item.firstName, item.lastName) === selectedLabel,
+  )
+  const filteredVLIs = fullVLI?.filter((item) => item.value.toLowerCase().includes(searchTerm.toLowerCase()))
 
   useEffect(() => {
     if (deducedSelectedCustomer) {
-      setContextContact({
-        id: deducedSelectedCustomer.id,
-        fullName: concateFullName(deducedSelectedCustomer.firstName, deducedSelectedCustomer.lastName),
-      })
-    }
-  }, [newContact, searchTerm, contactForm]) // if selected
-
-  useEffect(() => {
-    cutToVLI(allContacts, setFullVLI) //allContacts are full objects with all info
-  }, [allContacts, setFullVLI]) //
-
-  useEffect(() => {
-    setContactFormValues(deducedSelectedCustomer, contactForm, setNewContact)
-  }, [deducedSelectedCustomer])
-
-  const handleSaveContact = (advanceToNextForm: boolean = false) => {
-    if (newContact) {
-      // Validate and submit the form for new contact
-      contactForm.validateFields().then((values) => {
-        const { fullName } = values
-        const separatedName = separateFullName(fullName)
-        const formatedData = {
-          ...values,
-          firstName: separatedName.firstName, // extracting firstName by space
-          lastName: separatedName.lastName, // briliant for new customer
-        }
-
-        ContactService.createContact(formatedData)
-          .then((response) => {
-            const contact = response.data
-
-            // Update the context with the new contact ID
-            setContextContact({
-              id: contact.id, //for new entries they get id here
-              fullName: concateFullName(contact.firstName, contact.lastName), // fullname for context
-            })
-
-            if (advanceToNextForm) {
-              setCurrentPage(currentPage + 1)
-            }
-
-            contactForm.resetFields()
-            message.success('Kontakt uspesno kreiran!')
-          })
-          .catch((error) => {
-            console.error('Error creating contact:', error)
-            if (error.response && error.response.data && error.response.data.error) {
-              if (error.response.data.error.includes('Duplicate entry')) {
-                message.error('Kontakt sa istim brojem telefona već postoji.')
-                return
-              }
-            }
-            message.error('Problem sa dodavanjem kontakta, kontaktirajte administratora.')
-          })
-      })
+      setNewContact(false)
+      contactForm.setFieldsValue({ ...deducedSelectedCustomer }) // Direktno postavljamo vrednosti iz objekta
     } else {
-      //existing customer
-      // Set context for existing contact and advance
-      if (deducedSelectedCustomer) {
-        // replace deducedCustomer with new customer in if statements
+      setNewContact(true)
+      contactForm.resetFields(['phoneNumber', 'city', 'address', 'other'])
+    }
+
+    setContextContact(
+      deducedSelectedCustomer
+        ? {
+            id: deducedSelectedCustomer.id,
+            fullName: concateFullName(deducedSelectedCustomer.firstName, deducedSelectedCustomer.lastName),
+          }
+        : undefined,
+    ) // Postavljamo context samo ako postoji deducedSelectedCustomer
+  }, [deducedSelectedCustomer, newContact, searchTerm, contactForm])
+
+  const handleSaveContact = async (advanceToNextForm = false) => {
+    try {
+      if (newContact) {
+        const values = await contactForm.validateFields()
+        const { fullName, ...rest } = values //no problem
+        const { firstName, lastName } = separateFullName(fullName)
+
+        const contact = (await ContactService.createContact({ ...rest, firstName, lastName })).data
+
         setContextContact({
-          id: deducedSelectedCustomer.id, // take id directly from selection value
+          id: contact.id,
+          fullName: concateFullName(contact.firstName, contact.lastName),
+        })
+
+        contactForm.resetFields()
+        message.success('Kontakt uspesno kreiran!')
+      } else if (deducedSelectedCustomer) {
+        setContextContact({
+          id: deducedSelectedCustomer.id,
           fullName: concateFullName(deducedSelectedCustomer.firstName, deducedSelectedCustomer.lastName),
         })
       }
 
       if (advanceToNextForm) {
         setCurrentPage(currentPage + 1)
+      }
+    } catch (error: any | AxiosError) {
+      console.error('Error creating/setting contact:', error)
+      if (error?.response.data.error?.includes('Duplicate entry')) {
+        message.error('Kontakt sa istim brojem telefona već postoji.')
+      } else {
+        message.error('Problem sa dodavanjem/postavljanjem kontakta, kontaktirajte administratora.')
       }
     }
   }

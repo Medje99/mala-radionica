@@ -19,5 +19,3 @@ export interface VLI {
   label: string
   id: number
 }
-
-export interface wholeContact {}

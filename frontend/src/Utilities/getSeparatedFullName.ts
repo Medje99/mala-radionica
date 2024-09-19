@@ -3,6 +3,7 @@ export const separateFullName = (fullName: string) => {
   const nameParts = fullName.trim().split(' ')
 
   // Handle edge cases where full name is less than two words
+
   if (nameParts.length < 2) {
     return {
       firstName: fullName,
