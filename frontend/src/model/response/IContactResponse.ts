@@ -13,3 +13,11 @@ export interface IContact {
   id: number | undefined
   fullName: string
 }
+
+export interface VLI {
+  value: string
+  label: string
+  id: number
+}
+
+export interface wholeContact {}

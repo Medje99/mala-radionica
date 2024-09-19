@@ -1,20 +1,21 @@
 import { IContactsResponse } from '@/model/response/IContactResponse'
 import { concateFullName } from '@/Utilities/setFullName'
 import React, { useEffect, useState } from 'react'
-import { ContactSelect } from './types'
+import { VLI } from './types'
 import { FormInstance } from 'antd'
 import ContactService from '@/services/ContactsService'
 
 const contactFormActions = () => {
-  const setContactSelectOptions = (
-    contacts: IContactsResponse[], // prop list of all contact
-    setNewContactSelect: React.Dispatch<React.SetStateAction<ContactSelect[] | undefined>>, // prop
+  const cutToVLI = (
+    contacts: IContactsResponse[], // prop list of all contact full object
+    setVLI: React.Dispatch<React.SetStateAction<VLI[] | undefined>>, // prop
   ) => {
-    const selectLabel = contacts.map((item) => ({
-      label: concateFullName(item.firstName, item.lastName),
-      value: concateFullName(item.firstName, item.lastName),
+    const VLI = contacts.map((item) => ({
+      label: item.id.toLocaleString(), // label and
+      value: concateFullName(item.firstName, item.lastName), // value same cut one ?
+      id: item.id,
     }))
-    setNewContactSelect(selectLabel)
+    setVLI(VLI) // contact list cut to Value Label id
   }
 
   const setContactFormValues = (
@@ -61,7 +62,7 @@ const contactFormActions = () => {
   }
 
   return {
-    setContactSelectOptions,
+    cutToVLI,
     setContactFormValues,
     handleSelectChange,
     useGetAllContacts,
