@@ -16,12 +16,12 @@ const CreateContactForm = () => {
   const [newContact, setNewContact] = useState(false)
   const { allContacts } = useGetAllContacts()
   const [contactForm] = Form.useForm<IContactsResponse>()
-  const [selectedLabel, setSelectedLabel] = useState<string | undefined>('')
+  const [selectedLabel, setSelectedLabel] = useState<string>('')
   const [searchTerm, setContactSearchTerm] = useState<string>('')
   const [fullVLI, setFullVLI] = useState<
     {
       value: string
-      label: string
+      label: string ///..................... type definition
       id: number
     }[]
   >()

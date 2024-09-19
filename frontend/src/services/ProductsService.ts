@@ -6,6 +6,16 @@ const getAllProducts = async () => {
   return await axios.get<IProduct[]>(baseUrl + '/Products')
 }
 
+const getUniqueManufacturers = async () => {
+  try {
+    const response = await axios.get<string[]>(`${baseUrl}/products/unique-manufacturers`)
+    return response.data
+  } catch (error) {
+    console.error('Error fetching unique manufacturers:', error)
+    throw error
+  }
+}
+
 const createProductEntry = async (data: IProduct) => {
   return await axios.post<IProduct[]>(baseUrl + '/Products', data)
 }
@@ -42,6 +52,7 @@ const updateMultipleProducts = async (productsToUpdate: { id: number; quantity: 
 
 const ProductsService = {
   getAllProducts,
+  getUniqueManufacturers,
   createProductEntry,
   updateProduct,
   deleteProduct,

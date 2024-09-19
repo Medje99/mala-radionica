@@ -1,35 +1,27 @@
-import { Button, Form, Input, Typography } from 'antd'
+import { Button, Form, Input, Select, Typography } from 'antd'
 import { IProduct } from '@/model/response/IProductResponse'
 import { useEffect, useState } from 'react'
 import { onHandleSubmit } from './actions'
 import { useGlobalContext } from '@/components/GlobalContextProvider'
-import ProductsService from '@/services/ProductsService'
 import { useGetAllProducts } from '@/components/tables/products-table-components/actions'
 
 export const createNewProductForm = () => {
+  const [newManufacturer, setNewManufacturer] = useState('') // State for Select value
   const { setHeaderTitle } = useGlobalContext()
   useEffect(() => {
     setHeaderTitle('Unos proizvoda')
   }, [])
   const [createNewProductForm] = Form.useForm<IProduct>()
-  const { allProducts } = useGetAllProducts()
-  const [modelList, setModelList] = useState<any[]>([])
+  const { uniqueManufacturers } = useGetAllProducts()
 
-  useEffect(() => {
-    ProductsService.getAllProducts()
-      .then((response) => {
-        setProducts(response.data)
-        setModelList(
-          response.data.map((product) => ({
-            value: product.model,
-            label: product.model,
-          })),
-        )
-      })
-      .catch((error) => {
-        console.error('Error fetching products:', error)
-      })
-  }, [])
+  const handleManufacturerChange = (value: string) => {
+    setNewManufacturer(value) // Update state on any change
+
+    // Check if the selected value is an existing manufacturer
+    if (uniqueManufacturers.includes(value)) {
+      setNewManufacturer('') // Clear if existing
+    }
+  }
 
   return (
     <div className=" flex-row product bg-gradient-to-r from-purple-500 to-pink-500 h-[calc(100vh-6rem)]">
@@ -56,8 +48,31 @@ export const createNewProductForm = () => {
 
         <div className="flex flex-col md:flex-row w-full md:w-3/4 lg:w-2/3 gap-6 md:gap-8">
           <Form.Item className="mb-4 w-full md:w-1/2" label="Proizvođač" name="manufacturer" labelCol={{ span: 24 }}>
-            <Input className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <Select
+              onKeyDown={(event: any) => {
+                setTimeout(() => {
+                  createNewProductForm.setFieldValue('manufacturer', event.target.value)
+                }, 0) // fixes cutting last char when new contact
+              }}
+              showSearch
+              placeholder="Izaberi proizvođača"
+              optionFilterProp="children"
+              filterOption={(input, option) => {
+                const optionText = option?.children ? (option.children as unknown as string).toLowerCase() : ''
+                return optionText.includes(input.toLowerCase())
+              }}
+              onChange={handleManufacturerChange}
+              value={newManufacturer} // Directly use newManufacturer state
+              notFoundContent={null}
+            >
+              {uniqueManufacturers.map((manufacturer) => (
+                <Select.Option key={manufacturer} value={manufacturer}>
+                  {manufacturer}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
+
           <Form.Item className="mb-4 w-full md:w-1/2" label="Model" name="model" labelCol={{ span: 24 }}>
             <Input className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </Form.Item>
