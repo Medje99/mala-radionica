@@ -25,6 +25,11 @@ const GlobalContext = createContext<GlobalContext | null>(null)
 
 export const useGlobalContext = (): GlobalContext => {
   const context = useContext(GlobalContext)
+  // useContext hook is used to access the value of the context object
+  // within the component that is using the context.
+
+  // If the context is not found, it throws an error, indicating that the component is not
+  // wrapped by the ContextProvider.
   if (!context) {
     throw new Error('useModalState must be used within a ModalStateProvider')
   }
@@ -64,7 +69,9 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
         setEndDate,
       }}
     >
+      {/* this is a prop that is passed to the ContextProvider component. It is used to render the children of the ContextProvider component after appending the context to the children. */}
       {children}
+      {/* The children prop is used to render the components that are wrapped by the ContextProvider component. */}
     </GlobalContext.Provider>
   )
 }

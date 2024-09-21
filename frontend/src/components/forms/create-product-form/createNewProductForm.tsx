@@ -73,7 +73,7 @@ export const createNewProductForm = () => {
           </Form.Item>
         </div>
 
-        <div className="flex flex-col md:flex-row w-full md:w-3/4 lg:w-2/3 gap-6 md:gap-8">
+        <div className="flex flex-col md:flex-row w-full md:w-3/4 lg:w-2/3 gap-6 md:gap-8 mt-20">
           <Form.Item
             rules={[{ required: true, message: 'Unesite cenu!' }]}
             className="mb-4 w-full md:w-1/3"
