@@ -44,8 +44,8 @@ export const fetchUniqueManufacturers = async () => {
     const manufacturers: string[] = await ProductsService.getUniqueManufacturers()
     // Format manufacturer names
     const formattedManufacturers = manufacturers.map((manufacturer) => {
-      const trimmedManufacturer = manufacturer.trim()
-      return trimmedManufacturer.charAt(0).toUpperCase() + trimmedManufacturer.slice(1)
+      const trimmedManufacturer = manufacturer?.trim()
+      return trimmedManufacturer?.charAt(0).toUpperCase() + trimmedManufacturer?.slice(1)
     })
 
     return formattedManufacturers // Return the formatted array

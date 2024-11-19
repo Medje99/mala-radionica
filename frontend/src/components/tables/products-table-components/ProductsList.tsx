@@ -191,7 +191,7 @@ const ProductsList: React.FC = () => {
           </h1>
         </Link>
       )}
-    </div>
+    </div> //closing div main 
   )
 }
 
