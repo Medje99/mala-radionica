@@ -49,7 +49,7 @@ const ProductsList: React.FC = () => {
       title: 'Akcije',
       key: 'action',
       render: (record: IProduct) => (
-        <Space size="large" className="flex justify-center gap-10">
+        <Space size="large" className="flex justify-center lg:gap-10 gap-2">
           <Tooltip title="Izmeni">
             <Button
               type="primary"
@@ -80,6 +80,12 @@ const ProductsList: React.FC = () => {
     },
   ]
 
+  //const ProductList: React.FC<ProductProps> = ({ allProducts }) => {
+  // Calculate the total price
+  const totalPrice = allProducts.reduce((total, product) => {
+    return total + (product.price * product.quantity);
+  }, 0);
+
   return (
     <div className=" flex-row product h-[calc(100vh-6rem)]   overflow-y-auto  bg-gradient-to-r from-amber-200 to-yellow-500">
       <Space id="search-container" className="col-span-12 flex ">
@@ -90,20 +96,25 @@ const ProductsList: React.FC = () => {
           id="search"
         />
       </Space>
-      <section className="w-full px-24">
+      <section className="w-full lg:px-24">
         <Table
           size="small"
           columns={columns} //don't like align center
           dataSource={filteredProducts}
           pagination={{
             pageSize: 13,
-
             showSizeChanger: false,
             showTotal: (total) => `Ukupno ${total} proizvoda`,
           }} // Adjust page size as needed
           rowKey="id" // Use 'id' as the row key
-          className=" p-7 mt-5 rounded-xl "
+          className=" lg:p-7 mt-5 rounded-xl "
+          
         />
+    <div>
+    <h2>Total Price of All Products {totalPrice.toLocaleString() + " RSD"}</h2>
+<h2>Total Price of All Products {Math.round((totalPrice/117)).toLocaleString() + " EUR"}</h2>
+
+    </div>
       </section>
 
       {/* Task Edit Modal */}

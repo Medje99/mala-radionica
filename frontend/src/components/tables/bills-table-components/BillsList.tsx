@@ -135,9 +135,10 @@ const BillsList: React.FC = () => {
       </Space>
 
       {/* BillTable container */}
-      <section className="mx-24">
+      <section className="lg:mx-24">
         <Table
-          className="p-7 mt-5 rounded-xl"
+              scroll={{ x: 'max-content' }}
+          className="lg:p-7 mt-5 rounded-xl"
           size="small"
           columns={columns} // it doesnt like   defaultSortOrder in combination with custom sorter
           dataSource={filteredBills}

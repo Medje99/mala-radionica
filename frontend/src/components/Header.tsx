@@ -22,8 +22,12 @@ const Header = () => {
 
   return (
     <header className="px-4 lg:px-6 h-16 flex items-center bg-black text-white">
-      <Typography className="text-2xl font-medium font-bold header-title">{headerTitle}</Typography>
-      <div className="flex items-center gap-20 ml-auto main-nav">
+<div className="hidden sm:block">
+  <Typography className="text-2xl font-medium font-bold header-title">{headerTitle}</Typography>
+</div>
+
+      {/* problem here  */}
+      <div className="flex items-center ml-auto main-nav gap-4 sm:gap-10 md:gap-20"> 
         {/* {location.pathname !== '/' && ( */}
         <Tooltip title="Home">
           <Link to="/" className="text-l font-medium hover:underline underline-offset-8 nav-link">

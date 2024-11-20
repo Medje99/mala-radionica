@@ -7,9 +7,17 @@ const app = express(); //Create Express instance
 
 //Cross_Origin_Resource_Sharing configuration
 const corsOptions = {
-  origin: "http://localhost:5173", // your frontend URL:port
+  origin: (origin, callback) => {
+    const allowedOrigins = ['http://localhost:5173', 'http://192.168.8.157:5173']; // Add other allowed origins if needed
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) { // Allow listed origins and requests with no origin (like Postman)
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   optionsSuccessStatus: 200,
 };
+
 
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
@@ -54,6 +62,7 @@ app.use((req, res) => {
 
 //Start Express Listener process
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {  // <-- Add '0.0.0.0' here
   console.log(`Middleware Server listening on port ${port}`);
 });
+

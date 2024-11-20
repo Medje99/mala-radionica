@@ -38,7 +38,7 @@ const ContactsList: React.FC = () => {
     align: 'center',
     key: 'action',
     render: (record: IContactsResponse) => (
-      <Space size="large" className="flex justify-center gap-12">
+      <Space size="large" className="flex justify-center lg:gap-12 gap-2">
         <Tooltip title="Izmeni">
           <Button
             type="primary"
@@ -79,14 +79,14 @@ const ContactsList: React.FC = () => {
         />
       </Space>
       {/* //search */}
-      <section className="w-full px-24 ">
+      <section className="w-full lg:px-24 ">
         <Table
           size="small"
           columns={columns} //don't like align center
           dataSource={filteredContacts}
           pagination={{ pageSize: 14 }} // Adjust page size as needed
           rowKey="id" // Use 'id' as the row key
-          className="p-7 mt-5 rounded-xl"
+          className="lg:p-7 mt-5 rounded-xl"
         />
       </section>
       <Modal

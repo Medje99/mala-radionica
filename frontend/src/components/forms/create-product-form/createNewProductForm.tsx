@@ -24,31 +24,32 @@ export const createNewProductForm = () => {
   }, [])
 
   return (
-    <div className=" flex-row product bg-gradient-to-r from-purple-500 to-pink-500 h-[calc(100vh-6rem)]">
-      <Form
-        id="create-new-product-form"
-        form={createNewProductForm}
-        title="Unos proizvoda"
-        layout="vertical"
-        className=" rounded-lg md:my-24  md:w-[30%] lg:w-[30%] flex flex-col items-center"
-      >
-        <Typography.Title level={1} className="text-center pb-10">
+    <div className="min-h-screen bg-gradient-to-r from-purple-500 to-pink-900 py-4 px-4 lg:py-20 ">
+    <Form
+      id="create-new-product-form"
+      form={createNewProductForm}
+      title="Unos proizvoda"
+      layout="vertical"
+      className="bg-white rounded-lg mx-auto  shadow-md"
+      style={{ maxWidth: '94vw', width: '500px' }} // Adjust max width for ultrawide and responsiveness
+    >
+        <Typography.Title level={1} className="text-center">
           Unos proizvoda
         </Typography.Title>
 
         <Form.Item
           rules={[{ required: true, message: 'Popuni naziv proizvoda!' }]}
-          className="w-full md:w-3/4 lg:w-2/3 "
+          className="w-full md:w-3/4 lg:w-2/3 lg:my-10 my-2 "
           label="Naziv proizvoda"
           name="name"
           labelCol={{ span: 24 }}
         >
-          <Input className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <Input className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500 " />
         </Form.Item>
 
-        <div className="flex flex-col md:flex-row w-full md:w-3/4 lg:w-2/3 gap-6 md:gap-8">
-          <Form.Item className="mb-4 w-full md:w-1/2" label="Proizvođač" name="manufacturer" labelCol={{ span: 24 }}>
-            <Select
+        <div className="flex flex-row md:flex-row w-full md:w-3/4 lg:w-2/3 gap-6 md:gap-8 lg:py-2">
+          <Form.Item className="lg:mb-auto mb-0 w-full md:w-1/2 lg:my-10 my-2" label="Proizvođač" name="manufacturer" labelCol={{ span: 24 }}>
+            <Select 
               onKeyDown={(event: any) => {
                 createNewProductForm.setFieldValue('manufacturer', event.target.value)
               }}
@@ -61,49 +62,56 @@ export const createNewProductForm = () => {
               notFoundContent={null}
             >
               {uniqueManufacturers.map((manufacturer) => (
-                <Select.Option key={manufacturer} value={manufacturer ?? ''}>
+                <Select.Option  key={manufacturer} value={manufacturer ?? ''}>
                   {manufacturer}
                 </Select.Option>
               ))}
             </Select>
           </Form.Item>
 
-          <Form.Item className="mb-4 w-full md:w-1/2" label="Model" name="model" labelCol={{ span: 24 }}>
-            <Input className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <Form.Item className="lg:mb-auto mb-0 w-full md:w-1/2 lg:my-10 my-2" label="Model" name="model" labelCol={{ span: 24 }}>
+            <Input className="rounded-md border border-gray-300 lg:py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
           </Form.Item>
         </div>
 
-        <div className="flex flex-col md:flex-row w-full md:w-3/4 lg:w-2/3 gap-6 md:gap-8 mt-20">
-          <Form.Item
-            rules={[{ required: true, message: 'Unesite cenu!' }]}
-            className="mb-4 w-full md:w-1/3"
-            label="Cena"
-            name="price"
-            labelCol={{ span: 24 }}
-          >
-            <Input
-              type="number"
-              min={1}
-              className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </Form.Item>
-          <Form.Item
-            rules={[{ required: true, message: 'Molimo unesite količinu!' }]}
-            className="mb-4 w-full md:w-1/3"
-            label="Količina"
-            name="quantity"
-            labelCol={{ span: 24 }}
-          >
-            <Input
-              type="number"
-              min={0}
-              className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </Form.Item>
-          <Form.Item className="mb-4 w-full md:w-1/3" label="SKU" name="SKU" labelCol={{ span: 24 }}>
-            <Input className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-          </Form.Item>
-        </div>
+        <div className="flex flex-row md:flex-row w-full md:w-3/4 lg:w-2/3 gap-6 md:gap-8 mt-6">
+  <Form.Item
+    rules={[{ required: true, message: 'Unesite cenu!' }]}
+    className="mb-4 w-full md:w-1/2 flex-col "
+    label="Cena"
+    name="price"
+    labelCol={{ span: 24 }} // Use full width for label on smaller screens
+  >
+    <Input
+      type="number"
+      min={1}
+      className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </Form.Item>
+
+  <Form.Item
+    rules={[{ required: true, message: 'Molimo unesite količinu!' }]}
+    className="mb-4 w-full md:w-1/2"
+    label="Količina"
+    name="quantity"
+    labelCol={{ span: 24 }} // Use full width for label on smaller screens
+  >
+    <Input
+      type="number"
+      min={0}
+      className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </Form.Item>
+
+
+
+
+  {/* sku!!! */}
+
+  <Form.Item className="mb-4 w-full md:w-1/3" label="SKU" name="SKU" labelCol={{ span: 24 }}>
+    <Input className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+  </Form.Item>
+</div>
 
         <div className="flex justify-center gap-8 mt-8">
           <Button

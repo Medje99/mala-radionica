@@ -8,7 +8,7 @@ if %errorlevel%==0 (
     echo MySQL is already running.
 call "C:\Users\Barjo\Documents\mala-radionica\backup_database.bat"
 cd frontend
-start cmd.exe /k "npm run dev"
+start cmd.exe /k "npm run dev --host"
 cd ../backend
 start cmd.exe /k "npm start"
 timeout /t 5 /nobreak > nul

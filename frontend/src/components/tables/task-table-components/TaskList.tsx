@@ -9,6 +9,8 @@ import { useGlobalContext } from '@/components/GlobalContextProvider'
 import CreateBillForm from '@/components/forms/create-task-form-components/CreateBillForm'
 
 export const TasksList = () => {
+  const isSmallScreen = window.innerWidth < 640;
+
   const { setContextContact: setContextcontact, setCurrentTask, setHeaderTitle, setCurrentPage } = useGlobalContext()
   useEffect(() => {
     setHeaderTitle('Aktivni poslovi')
@@ -55,7 +57,7 @@ export const TasksList = () => {
       align: 'center',
 
       render: (record: ITaskResponse) => (
-        <Space className="gap-1 flex justify-center mr-10 items-center ">
+        <Space className="lg:gap-1 gap-0 flex justify-center lg:mr-10  items-center ">
           <Tooltip title="Izmeni">
             <Button
               type="primary"
@@ -106,104 +108,94 @@ export const TasksList = () => {
   ]
 
   return (
-    <div className=" flex-row task h-[calc(100vh-6rem)]  overflow-y-auto bg-gradient-to-r from-teal-400 to-gray-800">
-      {/*edit FormTaskList*/}
+    <div className="flex flex-col h-[calc(100vh-6rem)] overflow-y-auto bg-gradient-to-r from-teal-400 to-gray-800 p-4">
+  {/* Edit Task Modal */}
+  <Modal
+    open={isEditModalOpen}
+    onCancel={() => setEditModalOpen(false)}
+    footer={null}
+    closeIcon={null}
+    title="Izmeni posao :"
+    className="editModal"
+  >
+    <Form form={FormTaskList}>
+      <Form.Item label="Naziv posla" name="job_name" rules={[{ required: true, message: 'Unesi naziv posla' }]}>
+        <Input />
+      </Form.Item>
+      <Form.Item label="Detalji posla" name="job_description">
+        <Input.TextArea />
+      </Form.Item>
+      <Form.Item className="flex justify-center gap-2">
+        <Button
+          className="flex-1"
+          type="primary"
+          onClick={() => handleSave(FormTaskList, editingTask, filteredTasks, setFilteredTasks, setEditModalOpen)}
+        >
+          Izmeni
+        </Button>
+        <Button className="flex-1" type="primary" onClick={() => setEditModalOpen(false)}>
+          Otkazi
+        </Button>
+      </Form.Item>
+    </Form>
+  </Modal>
 
-      <Modal
-        open={isEditModalOpen}
-        onCancel={() => setEditModalOpen(false)}
-        footer={null}
-        closeIcon={null}
-        title="Izmeni posao :"
-        className="flex editModal "
-      >
-        <Form form={FormTaskList}>
-          <Form.Item label="Naziv posla" name="job_name" rules={[{ required: true, message: 'Unesi naziv posla' }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item label="Detalji posla" name="job_description">
-            <Input.TextArea />
-          </Form.Item>
-          <Form.Item className="flex justify-center">
-            <Button
-              className="flex-1 mr-2"
-              type="primary"
-              onClick={() => handleSave(FormTaskList, editingTask, filteredTasks, setFilteredTasks, setEditModalOpen)}
-            >
-              Izmeni
-            </Button>
+  {/* Create Bill Modal */}
+  <Modal
+    open={billModalOpen}
+    onCancel={() => setBillModalOpen(false)}
+    footer={null}
+    closeIcon={null}
+    className="billModal"
+  >
+    <CreateBillForm
+      callback={() => {
+        setBillModalOpen(false);
+        setCurrentPage(0);
+      }}
+    />
+  </Modal>
 
-            <Button className="flex-1 ml-2" type="primary" onClick={() => setEditModalOpen(false)}>
-              Otkazi
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
+  {/* Task Search Bar */}
+  <Space id="search-container" className="w-full mb-4">
+    <Input
+      className="focus:ring-2 focus:ring-blue-500 focus:outline-none appearance-none w-full text-sm leading-6 text-slate-900 placeholder-slate-400 rounded-md py-2 pl-10 ring-1 ring-slate-200 shadow-sm"
+      type="text"
+      aria-label="Pretrazi aktivne poslove"
+      placeholder="Pretrazi aktivne poslove"
+      id="search"
+      onChange={(e) => setSearchTerm(e.target.value)}
+    />
+  </Space>
 
-      {/* Bill Modal */}
-      <Modal
-        // onClose={()=>CreateBillForm.ResetForm()}
-        open={billModalOpen}
-        onCancel={() => {
-          setBillModalOpen(false)
-        }}
-        footer={null}
-        closeIcon={null}
-        className="flex billModal"
-      >
-        <CreateBillForm
-          callback={() => {
-            setBillModalOpen(false)
-            setCurrentPage(0)
-            //just to refresh tasklist ... task-> actions has a useEffect that triggers re-render on page change
-          }}
-        />
-        {/* Pass the closing logic */}
-      </Modal>
+  {/* Task Table */}
+  <section className="flex justify-center">
+    <Table
+      className="lg:px-12 pt-8 w-full"
+      size="small"
+      pagination={{
+        hideOnSinglePage: true,
+        pageSize: 18,
+        showSizeChanger: false,
+        showTotal: (total) => `Ukupno ${total} aktivnih poslova`,
+      }}
+      columns={columns}
+      expandable={{
+        expandedRowRender: (record) => (
+          <Typography key={record.id} className="text-center bg-gray-100 border-b border-gray-200 py-4 text-lg">
+            {record.job_description}
+          </Typography>
+        ),
+        rowExpandable: (record) => !!record.job_description,
+        columnWidth: 20,
+      }}
+      dataSource={filteredTasks}
+      rowKey="id"
+      scroll={{ x: 'max-content' }}
+    />
+  </section>
+</div>
 
-      {/* Task Search Bar */}
-      <Space id="search-container" className=" ">
-        <Input
-          className="focus:ring-2 focus:ring-blue-500 focus:outline-none appearance-none w-full text-sm leading-6 text-slate-900 placeholder-slate-400 rounded-md py-2 pl-10 ring-1 ring-slate-200 shadow-sm"
-          type="text"
-          aria-label="Pretrazi aktivne poslove"
-          placeholder="Pretrazi aktivne poslove"
-          id="search"
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </Space>
-
-      {/* task Table */}
-
-      <section
-        className=" display: grid
-  place-items: center"
-      >
-        <Table
-          className="px-12 pt-8"
-          size="small"
-          pagination={{
-            hideOnSinglePage: true,
-            pageSize: 18,
-            showSizeChanger: false,
-            showTotal: (total) => `Ukupno ${total} aktivnih  poslova`,
-          }}
-          columns={columns}
-          expandable={{
-            expandedRowRender: (record) => (
-              <Typography key={record.id} className="text-center bg-gray-100 border-b border-gray-200 py-4 text-lg">
-                {record.job_description}
-              </Typography>
-            ),
-
-            rowExpandable: (record) => !!record.job_description,
-            columnWidth: 20,
-          }}
-          dataSource={filteredTasks}
-          rowKey="id"
-        />
-      </section>
-    </div>
   )
 }
 

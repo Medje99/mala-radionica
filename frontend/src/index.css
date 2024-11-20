@@ -54,9 +54,9 @@ form label {
   color: rgb(255, 255, 255);
 }
 
-.ant-table-thead > tr > th {
+/* .ant-table-thead > tr > th {
   font-size: 1.5em;
-}
+} */
 
 .product-select-wrapper {
   display: inline-flex;
@@ -82,7 +82,7 @@ form label {
 
 #create-new-product-form {
   justify-content: center;
-  margin-left: 33%;
+  /* margin-left: 33%; */
   background-color: rgba(255, 255, 255, 0.711);
 }
 
@@ -182,10 +182,31 @@ a:hover {
 
 .action-button {
   box-shadow: #ffffffc9 2px 2px 10px 10px;
-  padding-inline: 3em;
-  padding: 1.5em;
+  padding: 1.5em 3em; /* Use padding shorthand for consistent spacing */
   border: 10px;
 }
+
+/* 
+interesting  */
+
+/* 
+interesting  */
+
+/* Media query for portrait phones */
+@media (max-width: 767px) { /* Adjust breakpoint as needed */
+  .action-button {
+    margin-top:1em;
+    padding: 1.5em 0.75em; /* Reduce padding on smaller screens */
+    font-size: smaller;  /* Optionally reduce font size as well */
+  }
+
+}
+
+/* 
+interesting  */
+/* 
+interesting  */
+
 .ant-message {
   top: 2em; /* Adjust as needed */
 }
