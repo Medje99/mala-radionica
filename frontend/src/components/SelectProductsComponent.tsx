@@ -180,7 +180,7 @@ const SelectProductsComponent: React.FC<SelectProductsComponentProps> = ({ rows,
             </Button>
           </Tooltip>
 
-          <Tooltip title="Ukloni proizvod" placement="right">
+          <Tooltip title="Ukloni proizvod " placement="right">
             <Button type="dashed" onClick={removeRow} icon={<MinusOutlined />}>
               <ArrowUpOutlined />
             </Button>
