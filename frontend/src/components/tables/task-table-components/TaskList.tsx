@@ -108,7 +108,7 @@ export const TasksList = () => {
   ]
 
   return (
-    <div className="flex flex-col h-[calc(100vh-6rem)] overflow-y-auto bg-gradient-to-r from-teal-400 to-gray-800 p-4">
+    <div className="flex flex-col h-[calc(100vh-6rem)] overflow-y-auto p-4 ">
   {/* Edit Task Modal */}
   <Modal
     open={isEditModalOpen}

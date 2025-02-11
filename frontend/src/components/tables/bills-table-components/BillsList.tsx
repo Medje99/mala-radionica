@@ -122,7 +122,7 @@ const BillsList: React.FC = () => {
   ]
 
   return (
-    <div className=" flex-row bill  overflow-y-auto h-[calc(100vh-6rem)]  ">
+    <div className=" flex-row bill  overflow-y-auto h-[calc(100vh-6rem)] bg-gradient-to-r from-teal-400 to-gray-800 ">
       <Space id="search-container" className="">
         <Input
           className="focus:ring-2 focus:ring-blue-500 focus:outline-none appearance-none w-full text-sm leading-6 text-slate-900 placeholder-slate-400 rounded-md py-2 pl-10 ring-1 ring-slate-200 shadow-sm"
@@ -142,7 +142,7 @@ const BillsList: React.FC = () => {
           size="small"
           columns={columns} // it doesnt like   defaultSortOrder in combination with custom sorter
           dataSource={filteredBills}
-          pagination={{ pageSize: 14 }}
+          pagination={{ pageSize: 15 }}
           rowKey="bill_id"
           expandable={{
             expandedRowRender: (record, index) => (

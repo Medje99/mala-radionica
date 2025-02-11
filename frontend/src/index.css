@@ -154,15 +154,19 @@ form label {
 .ant-input-search-button {
   display: none;
 }
-
 .header-title {
   width: 0;
   font-weight: 900;
-  color: rgb(120, 187, 221);
+  color: #124258bd;
   font-size: clamp(2rem, 2vw, 2rem);
   white-space: nowrap;
   word-break: break-all;
+  
 }
+.header-title:hover {  color: #124258fb;
+  font-size: clamp(2.1rem, 2vw, 2rem);
+}
+
 
 .ant-table-content {
   max-height: 70vh;
@@ -171,7 +175,7 @@ form label {
 
 a {
   font-size: x-large;
-  color: #68cfff;
+  color: #124258bd;
 }
 a:hover {
   color: #00a6f3;

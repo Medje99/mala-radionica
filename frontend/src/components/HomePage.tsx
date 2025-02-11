@@ -1,6 +1,5 @@
 import MultiStepForm from './MultiStepForm'
 import TasksList from './tables/task-table-components/TaskList'
-import SellItemForm from './forms/sell-item-form/SellItemForm'
 
 const HomePage = () => {
   return (

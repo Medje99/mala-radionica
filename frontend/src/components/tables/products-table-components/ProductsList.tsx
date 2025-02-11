@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import { useGlobalContext } from '../../GlobalContextProvider'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 
+
 const ProductsList: React.FC = () => {
   const { setHeaderTitle } = useGlobalContext()
   //Product set title
@@ -36,14 +37,43 @@ const ProductsList: React.FC = () => {
     setFilteredProducts(filtered)
   }, [searchTerm, allProducts])
 
+
   const columns = [
     proizvod,
     proizvodjac,
     model,
     cena,
-    kolicina,
-    SKU,
-
+    SKU, // ✅ Keeping SKU and Kolicina together
+    {
+      align: 'center',
+      title: 'Kolicina',
+      dataIndex: 'quantity',
+      key: 'quantity',
+      render: (quantity: number) => {
+        return (
+          <Space className="flex justify-center w-full ">
+            <Button
+              className='px-10'
+              type="primary"
+              style={{
+                backgroundColor: quantity > 0 ? 'green' : 'red',
+                borderColor: quantity > 0 ? 'green' : 'red',
+              }}
+            >
+              {quantity}
+            </Button>
+          </Space>
+        );
+      },
+  
+      filters: [
+        { text: 'Na stanju', value: 1 },
+        { text: 'Nema na stanju', value: 0 },
+      ],
+      onFilter: (value: boolean | Key, record: IProduct) => (record.quantity > 0 ? 1 : 0) === value,
+    },
+  
+    // ✅ Existing "Akcije" (Actions) Column
     {
       align: 'center',
       title: 'Akcije',
@@ -59,7 +89,7 @@ const ProductsList: React.FC = () => {
               <EditOutlined />
             </Button>
           </Tooltip>
-
+  
           <Popconfirm
             title="Da li ste sigurni da zelite da obrisete ovaj proizvod?"
             onConfirm={() => handleDelete(record.id, filteredProducts, setFilteredProducts)}
@@ -78,12 +108,16 @@ const ProductsList: React.FC = () => {
         </Space>
       ),
     },
-  ]
+  ];
 
   //const ProductList: React.FC<ProductProps> = ({ allProducts }) => {
   // Calculate the total price
   const totalPrice = allProducts.reduce((total, product) => {
     return total + (product.price * product.quantity);
+  }, 0);
+
+  const totalQuantity = allProducts.reduce((total, product) => {
+    return total + (product.quantity);
   }, 0);
 
   return (
@@ -113,6 +147,7 @@ const ProductsList: React.FC = () => {
     <div>
     <h2>Total Price of All Products {totalPrice.toLocaleString() + " RSD"}</h2>
 <h2>Total Price of All Products {Math.round((totalPrice/117)).toLocaleString() + " EUR"}</h2>
+    <h2>Total Quantity of All Products {totalQuantity.toLocaleString()}</h2>
 
     </div>
       </section>

@@ -53,31 +53,38 @@ router.put("/:id", (req, res) => {
   const contactId = req.params.id;
   const { firstName, lastName, phoneNumber, city, address, other } = req.body;
 
-  if (!firstName || !lastName || !phoneNumber || !city || !address) {
-    return res.status(400).send("All required fields must be provided.");
+  // Construct query dynamically to only update provided fields
+  let fields = [];
+  let values = [];
+
+  const data = { firstName, lastName, phoneNumber, city, address, other };
+
+  Object.keys(data).forEach((key) => {
+    if (data[key] !== undefined && data[key] !== null) {
+      fields.push(`${key} = ?`);
+      values.push(data[key] === "" ? "" : data[key]); // Keep empty strings as empty
+    }
+  });
+
+  if (fields.length === 0) {
+    return res.status(400).send("No valid fields provided for update.");
   }
 
-  const query = `
-    UPDATE contacts 
-    SET firstName = ?, lastName = ?, phoneNumber = ?, city = ?, address = ?, other = ?
-    WHERE id = ?
-  `;
+  values.push(contactId);
 
-  db.query(
-    query,
-    [firstName, lastName, phoneNumber, city, address, other, contactId],
-    (err, results) => {
-      if (err) {
-        console.error("Error updating contact:", err);
-        res.status(500).send("Error updating contact");
-      } else if (results.affectedRows === 0) {
-        res.status(404).send("Contact not found");
-      } else {
-        console.log("Contact updated successfully:", results);
-        res.send("Contact updated successfully");
-      }
+  const query = `UPDATE contacts SET ${fields.join(", ")} WHERE id = ?`;
+
+  db.query(query, values, (err, results) => {
+    if (err) {
+      console.error("Error updating contact:", err);
+      return res.status(500).send("Error updating contact");
+    } else if (results.affectedRows === 0) {
+      return res.status(404).send("Contact not found");
+    } else {
+      console.log("Contact updated successfully:", results);
+      return res.send("Contact updated successfully");
     }
-  );
+  });
 });
 
 router.delete("/:id", (req, res) => {

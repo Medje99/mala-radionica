@@ -21,9 +21,9 @@ const Header = () => {
   //useEffect(() => {}, [location.pathname])
 
   return (
-    <header className="px-4 lg:px-6 h-16 flex items-center bg-black text-white">
+<header className="px-4 lg:px-6 p-7 h-16 flex items-center bg-white opacity-90 text-white">                
 <div className="hidden sm:block">
-  <Typography className="text-2xl font-medium font-bold header-title">{headerTitle}</Typography>
+  {/* <Typography className="text-2xl font-medium font-bold header-title">{headerTitle}</Typography> */}
 </div>
 
       {/* problem here  */}
