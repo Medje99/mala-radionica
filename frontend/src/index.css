@@ -74,10 +74,8 @@ form label {
   /* background-color: rgb(228, 228, 228); */
   padding: 2em;
   /* padding-top: 4em; */
-  border-radius: 1em;
-  max-height: 89vh;
   overflow-y: auto;
-  box-shadow: #fffffff3 0px 0px 10px 3px;
+  /* box-shadow: #fffffff3 0px 0px 10px 3px; */
 }
 
 #create-new-product-form {
@@ -115,7 +113,7 @@ form label {
 } */
 
 #musterija-form {
-  background-color: rgba(244, 241, 241, 0.958);
+  /* background-color: rgba(244, 241, 241, 0.958); */
   font-style: oblique;
   font-size: large;
 }

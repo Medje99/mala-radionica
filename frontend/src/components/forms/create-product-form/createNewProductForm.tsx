@@ -24,7 +24,7 @@ export const createNewProductForm = () => {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-purple-500 to-pink-900 py-4 px-4 lg:py-20 ">
+    <div className="min-h-screen py-4 px-4 lg:py-20 ">
     <Form
       id="create-new-product-form"
       form={createNewProductForm}

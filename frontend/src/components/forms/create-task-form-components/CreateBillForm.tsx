@@ -100,7 +100,8 @@ const CreateBillForm = ({ callback }: { callback: () => void }) => {
 
   return (
     <Form
-      id="bill-form"
+      id="glowic"
+      className='bg-white opacity-90'
       form={FormBillCreate}
       layout="vertical"
       onFinish={submitLogic}

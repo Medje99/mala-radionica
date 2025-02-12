@@ -65,10 +65,10 @@ const CreateTaskForm = () => {
 
   return (
     <Form
-      id="task-form"
+      id="glowic"
       form={TaskForm}
       layout="vertical"
-      className="rounded-lg"
+      className="bg-white opacity-90"
       initialValues={{ creation_date: dayjs(Date.now()), end_date: dayjs(Date.now()) }}
     >
       <div className="flex flex-row justify-between mt-5" />

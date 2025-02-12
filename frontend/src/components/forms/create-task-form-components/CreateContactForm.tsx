@@ -97,7 +97,7 @@ const CreateContactForm = () => {
   }
 
   return (
-    <Form form={contactForm} layout="vertical" id="musterija-form">
+    <Form form={contactForm} layout="vertical" id="glowic" className='bg-white opacity-90'>
       <Typography className="font-bold text-xl mb-12 text-center">Izaberi ili unesi novu musteriju</Typography>
 
       <Form.Item label={newContact ? 'Nova musterija' : 'Izabrana musterija '} name="fullName">
