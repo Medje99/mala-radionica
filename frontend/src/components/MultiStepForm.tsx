@@ -8,14 +8,14 @@ export default function MultiStepForm() {
   const { currentPage, setFormTitle, formTitleString, setHeaderTitle, setCurrentPage } = useGlobalContext()
 
   useEffect(() => {
-    setHeaderTitle(formTitleString)
+    // setHeaderTitle(formTitleString)
     setCurrentPage(0)
   }, [])
 
-  useEffect(() => {
-    const titles = ['Izaberi ili dodaj musteriju', 'Unesi podatke o poslu', 'Naplata:']
-    setFormTitle(titles[currentPage] || '')
-  }, [currentPage])
+  // useEffect(() => {
+  //   const titles = ['Izaberi ili dodaj musteriju', 'Unesi podatke o poslu', 'Naplata:']
+  //   setFormTitle(titles[currentPage] || '')
+  // }, [currentPage])
 
   const renderFormPart = () => {
     const forms = [<CreateContactForm />, <CreateTaskForm />, <CreateBillForm callback={() => {}} />]

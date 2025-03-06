@@ -6,6 +6,8 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { firstName, taskName, endDate, laborCost, total_cost, parts_cost, lastName } from './contants'
 import { useGlobalContext } from '@/components/GlobalContextProvider'
 import { useGetAllBills, markAsPaid, handleEdit, handleDelete } from './actions'
+import { Card} from 'antd';
+import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
 const BillsList: React.FC = () => {
   const { setHeaderTitle, currentTask, setCurrentTask } = useGlobalContext() // working on edditing
@@ -19,6 +21,74 @@ const BillsList: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   // const [FormBillList] = Form.useForm<IBillResponse>()
 
+  const [currentFilter, setCurrentFilter] = useState<number | null>(null);
+  const [totalCost, setTotalCost] = useState<number>(0);  
+  const handlePrintUnpaidBills = () => {
+    const unpaidBills = filteredBills.filter((bill) => !bill.paid);
+  
+    if (unpaidBills.length === 0) {
+      message.warning("Nema neplaćenih računa za štampu.");
+      return;
+    }
+  
+    // Izračunavanje ukupne cene neplaćenih računa
+    const totalUnpaidCost = unpaidBills.reduce((sum, bill) => sum + (bill.total_cost || 0), 0);
+  
+    const printWindow = window.open("", "_blank");
+    if (!printWindow) return;
+  
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Neplaćeni računi</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 20px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { border: 1px solid black; padding: 8px; text-align: left; }
+            th { background-color: #f2f2f2; }
+            .total { font-weight: bold; font-size: 18px; margin-top: 20px; }
+          </style>
+        </head>
+        <body>
+          <h2>Lista neplaćenih računa</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Ime</th>
+                <th>Prezime</th>
+                <th>Posao</th>
+                <th>Datum završetka</th>
+                <th>Cena usluge (RSD)</th>
+                <th>Ukupna cena (RSD)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${unpaidBills
+                .map(
+                  (bill) => `
+                  <tr>
+                    <td>${bill.firstName}</td>
+                    <td>${bill.lastName}</td>
+                    <td>${bill.job_name}</td>
+                    <td>${bill.end_date}</td>
+                    <td>${bill.labor_cost}</td>
+                    <td>${bill.total_cost}</td>
+                  </tr>
+                `
+                )
+                .join("")}
+            </tbody>
+          </table>
+          <p class="total">Ukupna cena neplaćenih računa: <strong>${totalUnpaidCost.toFixed(2)} RSD</strong></p>
+          <script>
+            window.onload = function() { window.print(); }
+          </script>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+  };
+  
   useEffect(() => {
     setFilteredBills(bills)
     const filtered = bills.filter((bill) => {
@@ -32,6 +102,27 @@ const BillsList: React.FC = () => {
     })
     setFilteredBills(filtered)
   }, [searchTerm, bills])
+
+  useEffect(() => {
+    let calculatedTotal = 0;
+  
+    if (currentFilter === 1) {
+      // Calculate total for "Placeno" (paid) bills
+      calculatedTotal = filteredBills
+        .filter((bill) => bill.paid == true)
+        .reduce((sum, bill) => sum + (bill.total_cost || 0), 0);
+    } else if (currentFilter === 0) {
+      // Calculate total for "Neplaceno" (unpaid) bills
+      calculatedTotal = filteredBills
+        .filter((bill) => bill.paid == false)
+        .reduce((sum, bill) => sum + (bill.total_cost || 0), 0);
+    } else {
+      // Calculate total for all bills (no filter selected)
+      calculatedTotal = filteredBills.reduce((sum, bill) => sum + (bill.total_cost || 0), 0);
+    }
+  
+    setTotalCost(calculatedTotal); // Update the total cost state
+  }, [filteredBills, currentFilter]);
 
   const columns = [
     firstName,
@@ -49,6 +140,10 @@ const BillsList: React.FC = () => {
       title: 'Placeno',
       dataIndex: 'paid',
       key: 'paid',
+      filtersChange: [
+        { text: 'Placeni', value: true },
+        { text: 'Ne placeni', value: false },
+      ],
       render: (paid: number, record: IBillResponse) => {
         // Pass 'record' as an argument
         return paid ? (
@@ -80,6 +175,7 @@ const BillsList: React.FC = () => {
         { text: 'Ne placeni', value: 0 },
       ],
       onFilter: (value: boolean | Key, record: IBillResponse) => {
+        setCurrentFilter(value as number);
         return record.paid === value // Parse value to number for comparison
       },
     },
@@ -144,6 +240,12 @@ const BillsList: React.FC = () => {
           dataSource={filteredBills}
           pagination={{ pageSize: 15 }}
           rowKey="bill_id"
+          onChange={(pagination, filtersChange) => {
+            // Handle filter reset
+            if (filtersChange.paid === null || filtersChange.paid === undefined) {
+              setCurrentFilter(null); // Reset the filter state
+            }
+          }}
           expandable={{
             expandedRowRender: (record, index) => (
               <div key={index} className="bill flex flex-col items-center p-4">
@@ -176,6 +278,97 @@ const BillsList: React.FC = () => {
           }}
         />
       </section>
+
+      <div className="lg:mx-24 mt-4">
+        <Card className="bg-gradient-to-r from-black-500 to-purple-500 border-2 border-blue-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 p-5">
+          <Typography className="text-lg font-bold text-center text-white">
+            {currentFilter === 1 ? (
+              <>
+                <CheckCircleOutlined className="text-green-300 mr-2" />
+                Ukupna cena plaćenih računa: <span className="text-green-300">{totalCost.toFixed(2)} RSD</span>
+              </>
+            ) : currentFilter === 0 ? (
+              <>
+                <CloseCircleOutlined className="text-red-300 mr-2" />
+                Ukupna cena neplaćenih računa: <span className="text-red-300">{totalCost.toFixed(2)} RSD</span>
+              </>
+            ) : (
+              `Ukupna cena svih računa: ${totalCost.toFixed(2)} RSD`
+            )}
+          </Typography>
+          <div className="mt-4 flex justify-center">
+            <Button 
+              type="primary" 
+              onClick={() => {
+                const unpaidBills = filteredBills.filter((bill) => !bill.paid);
+                if (unpaidBills.length === 0) {
+                  message.warning("Nema neplaćenih računa za štampu.");
+                  return;
+                }
+                const totalUnpaidCost = unpaidBills.reduce((sum, bill) => sum + (bill.total_cost || 0), 0);
+                const printWindow = window.open("", "_blank");
+                if (!printWindow) return;
+                printWindow.document.write(`
+                  <html>
+                    <head>
+                      <title>Neplaćeni računi</title>
+                      <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                        th, td { border: 1px solid black; padding: 8px; text-align: left; }
+                        th { background-color: #f2f2f2; }
+                        .total { font-weight: bold; font-size: 18px; margin-top: 20px; }
+                      </style>
+                    </head>
+                    <body>
+                      <h2>Lista neplaćenih računa</h2>
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Ime</th>
+                            <th>Prezime</th>
+                            <th>Posao</th>
+                            <th>Detalji posla</th>
+                            <th>Datum završetka</th>
+                            <th>Cena usluge (RSD)</th>
+                            <th>Ukupna cena (RSD)</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          ${unpaidBills
+                            .map(
+                              (bill) => `
+                              <tr>
+                                <td>${bill.firstName}</td>
+                                <td>${bill.lastName}</td>
+                                <td>${bill.job_name}</td>
+                                <td>${bill.job_description || "Nema opisa"}</td>
+                                <td>${bill.end_date}</td>
+                                <td>${bill.labor_cost}</td>
+                                <td>${bill.total_cost}</td>
+                              </tr>
+                            `
+                            )
+                            .join("")}
+                        </tbody>
+                      </table>
+                      <p class="total">Ukupna cena neplaćenih računa: <strong>${totalUnpaidCost.toFixed(2)} RSD</strong></p>
+                      <script>
+                        window.onload = function() { window.print(); }
+                      </script>
+                    </body>
+                  </html>
+                `);
+                printWindow.document.close();
+              }}
+              className="bg-white text-blue-600 border-blue-500 hover:bg-blue-500 hover:text-white transition-colors duration-300"
+            >
+              Štampaj neplaćene račune
+            </Button>
+          </div>
+        </Card>
+      </div>
+
 
       <Modal
         title="Izmeni racun"

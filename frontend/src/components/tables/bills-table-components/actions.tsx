@@ -3,12 +3,13 @@ import BillService from '@/services/BillService'
 import { IBillResponse } from '@/model/response/IBillResponse'
 import { FormInstance } from 'antd/es/form/Form'
 import { useEffect, useState } from 'react'
+import { useGlobalContext } from '@/components/GlobalContextProvider'
 
 export const useGetAllBills = () => {
   const [bills, setBills] = useState<IBillResponse[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
-
+  const { currentPage } = useGlobalContext()
   useEffect(() => {
     const fetchBills = async () => {
       try {
@@ -23,7 +24,7 @@ export const useGetAllBills = () => {
     }
 
     fetchBills()
-  }, [])
+  }, [currentPage])
 
   return { bills, loading, error }
 }

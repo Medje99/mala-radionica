@@ -7,7 +7,6 @@ import { useState, useEffect } from 'react'
 
 const useGetAllTasks = () => {
   const [tasks, setTasks] = useState<ITaskResponse[]>([])
-
   const { currentPage } = useGlobalContext()
   //refreshes TaskList if current page changes
   useEffect(() => {

@@ -62,7 +62,7 @@ export const ContextProvider = ({ children }: { children: React.ReactNode }) => 
         Contact,
         setContextContact,
         currentTask,
-        setCurrentTask: setCurrentTask,
+        setCurrentTask,
         headerTitle,
         setHeaderTitle,
         end_date,

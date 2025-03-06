@@ -44,7 +44,19 @@ const ProductsList: React.FC = () => {
     proizvodjac,
     model,
     cena,
-    SKU, // ✅ Keeping SKU and Kolicina together
+    {
+      ...SKU, // Keep existing SKU properties
+      render: (sku: string) => (
+        <a
+          className='text-sm'
+          href={`https://www.venerabike.rs/pretraga?q=${sku}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {sku}
+        </a>
+      ),
+    }, // ✅ Keeping SKU and Kolicina together
     {
       align: 'center',
       title: 'Kolicina',
