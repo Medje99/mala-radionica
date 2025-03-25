@@ -5,14 +5,12 @@ import ContactService from '@/services/ContactsService'
 import { IContactsResponse } from '@/model/response/IContactResponse'
 import { concateFullName } from '@/Utilities/setFullName'
 import { separateFullName } from '@/Utilities/getSeparatedFullName'
-import ActionButton from '../../CustomButtons/ActionButton'
 import { useGlobalContext } from '../../GlobalContextProvider'
 import { AxiosError } from 'axios'
 import spiderman from "..//..//../assets/spiderman.png";
 import TaskService from '@/services/TaskService'
 // import { creation_date } from '@/components/tables/task-table-components/constants'
 import dayjs from 'dayjs'
-import { ShoppingCartOutlined } from '@ant-design/icons'
 import chainsaw from "..//..//../assets/chainsaw.svg";
 import cart from "..//..//../assets/cart.svg";
 import heli from "..//..//../assets/heli.svg";
@@ -169,6 +167,7 @@ const CreateContactForm = () => {
 
       <div className="flex flex-col items-center mt-5">
         <div className="flex flex-row justify-between w-full">
+
         <div onClick={() => handleSaveContact(true, "Ostrenje")} style={{ cursor: "pointer" }}>
   <Image 
     src={chainsaw} 
@@ -200,11 +199,9 @@ const CreateContactForm = () => {
     preview={false} 
   />
 </div>
-
-
-
-
        </div>
+
+
         <img src={spiderman} alt="Spiderman" width="300" height="300"   className="mt-10 mx-auto opacity-80 hover:opacity-100 transition duration-300"  
  />
       <div className="flex flex-col justify-center items-center gap-7 mt-10">

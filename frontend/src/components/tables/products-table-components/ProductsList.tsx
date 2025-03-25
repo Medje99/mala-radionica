@@ -1,265 +1,370 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { IProduct } from '@/model/response/IProductResponse'
-import { Input, Popconfirm, message, Modal, Form, InputNumber, Space, Button, Tooltip, Table } from 'antd'
-import { proizvod, proizvodjac, model, cena, kolicina, SKU } from './constats'
+import { Input, Popconfirm, message, Modal, Form, InputNumber, Space, Button, Tooltip, Table, Card, Dropdown } from 'antd'
 import { useGetAllProducts, handleEdit, handleDelete, handleSave } from './actions'
 import { Link } from 'react-router-dom'
 import { useGlobalContext } from '../../GlobalContextProvider'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import CreateNewProductForm from '@/components/forms/create-product-form/createNewProductForm'
+import { ColumnsType } from 'antd/es/table'
+import { debounce } from 'lodash'
 
+interface ProductSummary {
+  totalPriceRSD: number
+  totalPriceEUR: number
+  totalQuantity: number
+}
 
 const ProductsList: React.FC = () => {
   const { setHeaderTitle } = useGlobalContext()
-  //Product set title
+  
+  // Set page title
   useEffect(() => {
     setHeaderTitle('Proizvodi')
-  }, [])
+    return () => setHeaderTitle('')
+  }, [setHeaderTitle])
 
-  const { allProducts } = useGetAllProducts()
+  const { allProducts, loading, error } = useGetAllProducts()
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredProducts, setFilteredProducts] = useState<IProduct[]>([])
   const [editingProduct, setEditingProduct] = useState<IProduct>({} as IProduct)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [FormProductList] = Form.useForm<IProduct>()
+  const [formProductList] = Form.useForm<IProduct>()
 
-  //Product update list on search/product change another useEffect in AllProducts
-
+  // Show error message if API fails
   useEffect(() => {
-    const filtered = allProducts.filter((product) => {
-      const searchText = searchTerm.toLowerCase()
-      return (
-        product.name?.toLowerCase().includes(searchText) ||
-        product.manufacturer?.toLowerCase().includes(searchText) ||
-        product.model?.toLowerCase().includes(searchText) ||
-        product.SKU?.toLowerCase().includes(searchText)
-      )
-    })
-    setFilteredProducts(filtered)
-  }, [searchTerm, allProducts])
+    if (error) {
+      message.error('Došlo je do greške pri učitavanju proizvoda')
+    }
+  }, [error])
 
+  // Debounced search function
+  const debouncedSearch = useCallback(
+    debounce((term: string, products: IProduct[]) => {
+      const filtered = products.filter((product) => {
+        const searchText = term.toLowerCase()
+        return (
+          product.name?.toLowerCase().includes(searchText) ||
+          product.manufacturer?.toLowerCase().includes(searchText) ||
+          product.model?.toLowerCase().includes(searchText) ||
+          product.SKU?.toLowerCase().includes(searchText)
+        )
+      })
+      setFilteredProducts(filtered)
+    }, 300),
+    []
+  )
 
-  const columns = [
-    proizvod,
-    proizvodjac,
-    model,
-    cena,
+  // Update filtered products when search term or products change
+  useEffect(() => {
+    debouncedSearch(searchTerm, allProducts)
+  }, [searchTerm, allProducts, debouncedSearch])
+
+  // Calculate product summary
+  const calculateSummary = (products: IProduct[]): ProductSummary => {
+    return products.reduce(
+      (acc, product) => {
+        acc.totalPriceRSD += product.price * product.quantity
+        acc.totalPriceEUR += (product.price * product.quantity) / 117
+        acc.totalQuantity += product.quantity
+        return acc
+      },
+      { totalPriceRSD: 0, totalPriceEUR: 0, totalQuantity: 0 }
+    )
+  }
+
+  const summary = calculateSummary(allProducts)
+
+  // Table columns definition
+  const getColumns = (): ColumnsType<IProduct> => [
     {
-      ...SKU, // Keep existing SKU properties
-      render: (sku: string) => (
-        <a
-          className='text-sm'
-          href={`https://www.venerabike.rs/pretraga?q=${sku}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {sku}
-        </a>
+      title: 'Proizvod',
+      dataIndex: 'name',
+      key: 'name',
+      sorter: (a, b) => a.name.localeCompare(b.name),
+      render: (text) => <span className="font-medium">{text}</span>,
+    },
+    {
+      title: 'Proizvođač',
+      dataIndex: 'manufacturer',
+      key: 'manufacturer',
+      sorter: (a, b) => (a.manufacturer || '').localeCompare(b.manufacturer || ''),
+    },
+    {
+      title: 'Model',
+      dataIndex: 'model',
+      key: 'model',
+      sorter: (a, b) => (a.model || '').localeCompare(b.model || ''),
+    },
+    {
+      title: 'Cena (RSD)',
+      dataIndex: 'price',
+      key: 'price',
+      align: 'right',
+      render: (price) => (
+        <span className="text-lg font-bold text-blue-800">
+          {price.toLocaleString('sr-RS')} RSD
+        </span>
       ),
-    }, // ✅ Keeping SKU and Kolicina together
+      sorter: (a, b) => a.price - b.price,
+    },
     {
-      align: 'center',
-      title: 'Kolicina',
+      title: 'SKU',
+      dataIndex: 'SKU',
+      key: 'SKU',
+      render: (sku) => (
+        <Dropdown
+          menu={{
+            items: [
+              {
+                key: 'venera',
+                label: (
+                  <a
+                    href={`https://www.venerabike.rs/pretraga?q=${sku}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    Venera Bike
+                  </a>
+                ),
+              },
+              {
+                key: 'swords',
+                label: (
+                  <a
+                    href={`https://swordsrbija.com/?s=${sku}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    Swords Srbija
+                  </a>
+                ),
+              },
+              {
+                key: 'tehnomotornis',
+                label: (
+                  <a
+                    href={`https://www.tehnomotornis.rs/pretraga?q=${sku}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                  >
+                    Tehnomotornis
+                  </a>
+                ),
+              },
+            ],
+          }}
+        >
+          <Button 
+            type="primary" 
+            className="p-0 w-[100px] overflow-hidden text-ellipsis whitespace-nowrap"
+            style={{
+              padding: '4px 8px',
+              height: 'auto',
+              fontSize: '14px'
+            }}
+          >
+            {sku}
+          </Button>
+        </Dropdown>
+      ),
+    },
+    {
+      title: 'Količina',
       dataIndex: 'quantity',
       key: 'quantity',
-      render: (quantity: number) => {
-        return (
-          <Space className="flex justify-center w-full ">
-            <Button
-              className='px-10'
-              type="primary"
-              style={{
-                backgroundColor: quantity > 0 ? 'green' : 'red',
-                borderColor: quantity > 0 ? 'green' : 'red',
-              }}
-            >
-              {quantity}
-            </Button>
-          </Space>
-        );
-      },
-  
+      align: 'center',
+      render: (quantity) => (
+        <Button
+          type="primary"
+          style={{
+            backgroundColor: quantity > 0 ? '#52c41a' : '#f5222d',
+            borderColor: quantity > 0 ? '#52c41a' : '#f5222d',
+          }}
+        >
+          {quantity}
+        </Button>
+      ),
       filters: [
         { text: 'Na stanju', value: 1 },
         { text: 'Nema na stanju', value: 0 },
       ],
-      onFilter: (value: boolean | Key, record: IProduct) => (record.quantity > 0 ? 1 : 0) === value,
+      onFilter: (value, record) => (record.quantity > 0 ? 1 : 0) === value,
     },
-  
-    // ✅ Existing "Akcije" (Actions) Column
     {
-      align: 'center',
       title: 'Akcije',
-      key: 'action',
-      render: (record: IProduct) => (
-        <Space size="large" className="flex justify-center lg:gap-10 gap-2">
-          <Tooltip title="Izmeni">
-            <Button
-              type="primary"
-              ghost
-              onClick={() => handleEdit(record, setEditingProduct, FormProductList, setIsModalOpen)}
-            >
-              <EditOutlined />
-            </Button>
-          </Tooltip>
-  
-          <Popconfirm
-            title="Da li ste sigurni da zelite da obrisete ovaj proizvod?"
-            onConfirm={() => handleDelete(record.id, filteredProducts, setFilteredProducts)}
-            onCancel={() => message.error('Brisanje proizvoda otkazano')}
-            okText="Da"
-            cancelText="Ne"
-            okButtonProps={{ style: { background: 'green' } }}
-            cancelButtonProps={{ style: { background: 'red' } }}
-          >
-            <Tooltip title="Obrisi">
-              <Button danger ghost>
-                <DeleteOutlined />
-              </Button>
-            </Tooltip>
-          </Popconfirm>
-        </Space>
+      key: 'actions',
+      align: 'center',
+      render: (_, record) => (
+        <ActionButtons record={record} />
       ),
     },
-  ];
+  ]
 
-  //const ProductList: React.FC<ProductProps> = ({ allProducts }) => {
-  // Calculate the total price
-  const totalPrice = allProducts.reduce((total, product) => {
-    return total + (product.price * product.quantity);
-  }, 0);
-
-  const totalQuantity = allProducts.reduce((total, product) => {
-    return total + (product.quantity);
-  }, 0);
+  const ActionButtons = ({ record }: { record: IProduct }) => (
+    <Space size="middle">
+      <Tooltip title="Izmeni">
+        <Button
+          type="primary"
+          ghost
+          onClick={() => handleEdit(record, setEditingProduct, formProductList, setIsModalOpen)}
+          icon={<EditOutlined />}
+          aria-label={`Izmeni proizvod ${record.name}`}
+        />
+      </Tooltip>
+      <Popconfirm
+        title="Da li ste sigurni da želite da obrišete ovaj proizvod?"
+        onConfirm={() => handleDelete(record.id, filteredProducts, setFilteredProducts)}
+        onCancel={() => message.info('Brisanje proizvoda otkazano')}
+        okText="Da"
+        cancelText="Ne"
+        okButtonProps={{ className: 'bg-green-500' }}
+        cancelButtonProps={{ className: 'bg-red-500' }}
+      >
+        <Tooltip title="Obriši">
+          <Button danger ghost icon={<DeleteOutlined />} aria-label={`Obriši proizvod ${record.name}`} />
+        </Tooltip>
+      </Popconfirm>
+    </Space>
+  )
 
   return (
-    <div className="flex flex-row product h-[calc(100vh-6rem)] overflow-y-auto bg-gradient-to-r from-amber-200 to-yellow-500">
-      {/* Left Side: CreateNewProductForm */}
-      <div className="w-1/4 p-4">
-        <CreateNewProductForm />
-      </div>
-  
-      {/* Right Side: List and Search */}
-      <div className="w-3/4 p-4">
-        <Space id="search-container" className="col-span-12 flex">
-          <Input.Search
-            size="large"
-            placeholder="Pretraži proizvode"
-            onChange={(e) => setSearchTerm(e.target.value)}
-            id="search"
-          />
-        </Space>
-  
-        <section className="w-full lg:px-24">
-          <Table
-            size="small"
-            columns={columns} // don't like align center
-            dataSource={filteredProducts}
-            pagination={{
-              pageSize: 13,
-              showSizeChanger: false,
-              showTotal: (total) => `Ukupno ${total} proizvoda`,
-            }} // Adjust page size as needed
-            rowKey="id" // Use 'id' as the row key
-            className="lg:p-7 mt-5 rounded-xl"
-          />
-  
-          <div>
-            <h2>Total Price of All Products {totalPrice.toLocaleString() + " RSD"}</h2>
-            <h2>Total Price of All Products {Math.round(totalPrice / 117).toLocaleString() + " EUR"}</h2>
-            <h2>Total Quantity of All Products {totalQuantity.toLocaleString()}</h2>
+    <div className="product-container bg-white min-h-[calc(100vh-6rem)] p-4">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        {/* Create Product Form - Left Side */}
+        <div className="lg:col-span-1">
+          <CreateNewProductForm />
+        </div>
+
+        {/* Product List - Right Side */}
+        <div className="lg:col-span-3">
+          <div className="mb-6">
+            <Input.Search
+              size="large"
+              placeholder="Pretraži proizvode..."
+              onChange={(e) => setSearchTerm(e.target.value)}
+              allowClear
+              enterButton
+              loading={loading}
+              className="max-w-md"
+            />
           </div>
-        </section>
-  
-        {/* Task Edit Modal */}
-        <Modal
-          className="flex"
-          title="Uredi proizvod"
-          open={isModalOpen}
-          onOk={() => handleSave(FormProductList, editingProduct, filteredProducts, setFilteredProducts, setIsModalOpen)}
-          onCancel={() => setIsModalOpen(false)}
-          okText="Sacuvaj"
-          cancelText="Otkazi"
-          cancelButtonProps={{
-            style: {
-              backgroundColor: '#f5222d',
-              color: '#fff',
-            },
-          }}
-        >
-          <Form form={FormProductList} layout="vertical" className="task">
-            <Form.Item
-              label="Naziv proizvoda"
-              name="name"
-              rules={[{ required: true, message: 'Popuni naziv posla!' }]}
-              className="mb-4"
-            >
-              <Input className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            </Form.Item>
-            <Form.Item
-              label="Proizvodjac"
-              name="manufacturer"
-              rules={[{ required: false, message: 'Molimo unesite proizvodjaca' }]}
-              className="mb-4"
-            >
-              <Input className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            </Form.Item>
-            <Form.Item
-              label="Model"
-              name="model"
-              rules={[{ required: false, message: 'Molimo unesite model proizvoda' }]}
-              className="mb-4"
-            >
-              <Input className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            </Form.Item>
-            <Form.Item
-              label="Cena"
-              name="price"
-              rules={[{ required: true, message: 'Molimo unesite cenu proizvoda' }]}
-              className="mb-4"
-            >
-              <InputNumber
-                style={{ width: '100%' }}
-                className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </Form.Item>
-            <Form.Item
-              label="Kolicina"
-              name="quantity"
-              rules={[{ required: true, message: 'Molimo unesite kolicinu proizvoda' }]}
-              className="mb-4"
-              required
-            >
-              <InputNumber
-                style={{ width: '100%' }}
-                className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </Form.Item>
-            <Form.Item
-              label="SKU"
-              name="SKU"
-              rules={[{ required: true, message: 'Molimo unesite SKU proizvoda' }]}
-              className="mb-4"
-            >
-              <Input
-                style={{ width: '100%' }}
-                className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </Form.Item>
-          </Form>
-        </Modal>
-  
-        {filteredProducts.length === 0 && (
-          <Link to="/ProductCreate" className="text-center">
-            <h1 className="lg:leading-tighter text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl xl:text-[3.4rem] 2xl:text-[3.75rem]">
-              Dodaj novi proizvod
-            </h1>
-          </Link>
-        )}
+
+          {/* Summary Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <Card title="Ukupna vrednost (RSD)" bordered={false} className="shadow-sm bg-blue-50">
+              <div className="text-3xl font-bold text-blue-800">
+                {summary.totalPriceRSD.toLocaleString('sr-RS')} RSD
+              </div>
+            </Card>
+            <Card title="Ukupna vrednost (EUR)" bordered={false} className="shadow-sm bg-green-50">
+              <div className="text-3xl font-bold text-green-800">
+                {Math.round(summary.totalPriceEUR).toLocaleString('sr-RS')} €
+              </div>
+            </Card>
+            <Card title="Ukupna količina" bordered={false} className="shadow-sm bg-purple-50">
+              <div className="text-3xl font-bold text-purple-800">
+                {summary.totalQuantity.toLocaleString('sr-RS')}
+              </div>
+            </Card>
+          </div>
+
+          {/* Products Table */}
+          <Table
+            columns={getColumns()}
+            dataSource={filteredProducts}
+            loading={loading}
+            rowKey="id"
+            pagination={{
+              pageSize: 10,
+              showSizeChanger: true,
+              showTotal: (total) => `Ukupno ${total} proizvoda`,
+              pageSizeOptions: ['10', '20', '50'],
+            }}
+            scroll={{ x: true }}
+            className="shadow-sm rounded-lg overflow-hidden"
+          />
+
+          {/* Empty State */}
+          {!loading && filteredProducts.length === 0 && (
+            <div className="text-center py-12">
+              <h2 className="text-xl font-semibold mb-4">Nema pronađenih proizvoda</h2>
+              <Link to="/ProductCreate" className="text-blue-600 hover:underline">
+                Dodajte novi proizvod
+              </Link>
+            </div>
+          )}
+        </div>
       </div>
+
+      {/* Edit Product Modal */}
+      <Modal
+        title={`Uređivanje proizvoda: ${editingProduct.name || ''}`}
+        open={isModalOpen}
+        onOk={() => handleSave(formProductList, editingProduct, filteredProducts, setFilteredProducts, setIsModalOpen)}
+        onCancel={() => setIsModalOpen(false)}
+        okText="Sačuvaj"
+        cancelText="Otkaži"
+        okButtonProps={{ className: 'bg-blue-500' }}
+        cancelButtonProps={{ className: 'bg-red-500' }}
+        width={700}
+      >
+        <Form
+          form={formProductList}
+          layout="vertical"
+          className="mt-6"
+          initialValues={editingProduct}
+        >
+          <Form.Item
+            label="Naziv proizvoda"
+            name="name"
+            rules={[{ required: true, message: 'Unesite naziv proizvoda' }]}
+          >
+            <Input placeholder="Naziv proizvoda" />
+          </Form.Item>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Form.Item label="Proizvođač" name="manufacturer">
+              <Input placeholder="Proizvođač" />
+            </Form.Item>
+            <Form.Item label="Model" name="model">
+              <Input placeholder="Model" />
+            </Form.Item>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Form.Item
+              label="Cena (RSD)"
+              name="price"
+              rules={[{ required: true, message: 'Unesite cenu' }]}
+            >
+              <InputNumber
+                min={0}
+                step={100}
+                className="w-full"
+                formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Količina"
+              name="quantity"
+              rules={[{ required: true, message: 'Unesite količinu' }]}
+            >
+              <InputNumber min={0} className="w-full" />
+            </Form.Item>
+          </div>
+          <Form.Item
+            label="SKU"
+            name="SKU"
+            rules={[{ required: true, message: 'Unesite SKU' }]}
+          >
+            <Input placeholder="SKU kod" />
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
-  );
+  )
 }
 
 export default ProductsList

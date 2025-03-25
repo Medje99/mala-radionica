@@ -1,14 +1,17 @@
-import { Form, Input, DatePicker, Switch, Space, message, Typography, Col } from 'antd'
+import { Form, Input, DatePicker, Switch, Space, message, Typography, Col,Image } from 'antd'
 import { useEffect, useState } from 'react'
 import ActionButton from '../../CustomButtons/ActionButton'
 import { useGlobalContext } from '../../GlobalContextProvider'
 import TaskService from '@/services/TaskService'
 import { ITaskResponse } from '@/model/response/ITaskResponse'
 import dayjs from 'dayjs'
-
 import { creation_date } from '@/components/tables/task-table-components/constants'
 import { endDate } from '@/components/tables/bills-table-components/contants'
 import { LeftOutlined } from '@ant-design/icons'
+import heli from "..//..//../assets/heli.svg";
+import book from "..//..//../assets/book.svg";
+import money from "..//..//../assets/money.svg";
+
 
 const CreateTaskForm = () => {
   const {
@@ -120,15 +123,36 @@ const CreateTaskForm = () => {
         </Col>
       </div>
       <div className="flex flex-row justify-between mt-5">
-        <LeftOutlined className="ml-10 backB" onClick={() => setCurrentPage(currentPage - 1)} title="Nazad" />
-        <ActionButton
-          onClickHandler={onClickHandler}
-          title={isFinished ? 'Naplata' : 'Dodaj na listu poslova'}
-          className={`transition-all duration-500 transform action-button ${
-            animating ? 'opacity-0 rotate-45' : 'opacity-100 rotate-0'
-          }`}
-        />
-      </div>
+        {/* <LeftOutlined className="ml-10 backB" title="Nazad" /> */}
+        <div 
+ onClick={() => setCurrentPage(currentPage - 1)} 
+  style={{ cursor: "pointer", marginTop: "-10px" }} // Adjust this value as needed
+>
+  <Image 
+    src={heli} 
+    className="buto" 
+    style={{ 
+      transform: "scale(1.5, 1.5)", 
+      transformOrigin: "center" 
+    }} 
+    preview={false} 
+  />
+</div>
+
+<div onClick={onClickHandler} style={{ cursor: "pointer" }}>
+<Image 
+    src={isFinished ? money : book} 
+    className="buto" 
+    style={{ 
+      transform: "scale(1.5, 1.5)", 
+      transformOrigin: "center" 
+    }} 
+    preview={false} 
+  />
+  
+  </div>
+  </div>
+
     </Form>
   )
 }

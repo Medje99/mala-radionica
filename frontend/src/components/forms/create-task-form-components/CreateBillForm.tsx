@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Form, Switch, InputNumber, Typography, message, DatePicker } from 'antd'
+import { Form, Switch, InputNumber, Typography, message, DatePicker,Image } from 'antd'
 import { useEffect, useState } from 'react'
 import ActionButton from '../../CustomButtons/ActionButton' // recives function , button title, button class , and aditional styles
 import BillService from '@/services/BillService'
@@ -9,6 +9,14 @@ import moment from 'moment'
 import { VerticalRightOutlined } from '@ant-design/icons'
 import { useGlobalContext } from '../../GlobalContextProvider'
 import SelectProductsComponent from '../../SelectProductsComponent'
+import poor_dude from "..//..//../assets/poor_dude.svg";
+import money from "..//..//../assets/money.svg";
+import heli from "..//..//../assets/heli.svg";
+
+
+
+
+
 
 const CreateBillForm = ({ callback }: { callback: () => void }) => {
   //using callback so that tasklist refreshes when some item is billed
@@ -156,20 +164,38 @@ const CreateBillForm = ({ callback }: { callback: () => void }) => {
           className="rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </Form.Item>
+      <div className="flex flex-col mt-5 mx-6">
+      <div className="flex flex-row justify-between w-full">
 
-      <div className="flex">
-        <VerticalRightOutlined
-          className="ml-10 hover cursor-pointer backB "
-          onClick={() => setCurrentPage(currentPage - 1)}
-        />
-        <ActionButton
-          onClickHandler={submitLogic}
-          title={isPaid ? 'Naplata' : 'Dodaj na listu dugova'}
-          style={{ marginBlock: '10px' }}
-          className={`transition-all duration-500 transform  ${
-            animating ? 'opacity-0 rotate-45' : 'opacity-100 rotate-0'
-          }  rounded-md bg-blue-500 hover:bg-blue-600 `}
-        />
+      <div 
+  onClick={() => setCurrentPage(currentPage - 1)}
+  style={{ cursor: "pointer", marginTop: "-10px" }} // Adjust this value as needed
+>
+  <Image 
+    src={heli} 
+    className="buto" 
+    style={{ 
+      transform: "scale(1.8, 1.8)", 
+      transformOrigin: "center" 
+    }} 
+    preview={false} 
+  />
+</div>
+      
+   
+      <div onClick={submitLogic} style={{ cursor: "pointer" }}>
+<Image 
+    src={isPaid?money:poor_dude} 
+    className="buto" 
+    style={{ 
+      transform: "scale(1.5, 1.5)", 
+      transformOrigin: "center" 
+    }} 
+    preview={false} 
+  />
+  
+  </div>
+      </div>
       </div>
     </Form>
   )
